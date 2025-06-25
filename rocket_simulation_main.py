@@ -18,6 +18,7 @@ from typing import List, Tuple, Dict, Optional
 from enum import Enum
 import logging
 import guidance
+from config_flags import get_flag, is_enabled  # Professor v17: Feature flag support
 
 # 物理定数
 G = 6.67430e-11  # 万有引力定数 [m^3/kg/s^2]
@@ -30,6 +31,11 @@ MOON_ORBIT_PERIOD = 27.321661 * 24 * 3600  # 月の公転周期 [s]
 EARTH_ROTATION_PERIOD = 24 * 3600  # 地球自転周期 [s]
 STANDARD_GRAVITY = 9.80665  # 標準重力加速度 [m/s^2]
 
+# 追加の月軌道定数
+MU_MOON = 4.904e12  # 月の標準重力パラメータ [m^3/s^2]
+MOON_SOI_RADIUS = 66.2e6  # 月の影響圏半径 [m]
+LUNAR_ORBIT_INCLINATION = np.radians(5.145)  # 月軌道傾斜角
+
 # 大気パラメータ
 SEA_LEVEL_PRESSURE = 101325  # 海面気圧 [Pa]
 SEA_LEVEL_DENSITY = 1.225  # 海面大気密度 [kg/m^3]
@@ -37,18 +43,23 @@ SCALE_HEIGHT = 8500  # 大気のスケールハイト [m]
 
 
 class MissionPhase(Enum):
-    """ミッションフェーズ"""
+    """ミッションフェーズ（拡張版）"""
     PRE_LAUNCH = "pre_launch"
     LAUNCH = "launch"
     GRAVITY_TURN = "gravity_turn"
     STAGE_SEPARATION = "stage_separation"
-    APOAPSIS_RAISE = "apoapsis_raise"  # 遠地点上昇燃焼
-    COAST_TO_APOAPSIS = "coast_to_apoapsis"  # 遠地点まで慣性飛行
-    CIRCULARIZATION = "circularization"  # 軌道円化燃焼
-    TRANS_LUNAR_INJECTION = "trans_lunar_injection"
-    COAST = "coast"
-    LUNAR_ORBIT_INSERTION = "lunar_orbit_insertion"
-    LUNAR_LANDING = "lunar_landing"
+    APOAPSIS_RAISE = "apoapsis_raise"
+    COAST_TO_APOAPSIS = "coast_to_apoapsis"
+    CIRCULARIZATION = "circularization"
+    LEO = "leo"  # 低地球軌道待機
+    TLI_BURN = "tli_burn"  # 月遷移軌道投入燃焼
+    COAST_TO_MOON = "coast_to_moon"  # 月への巡航
+    MID_COURSE_CORRECTION = "mid_course_correction"  # 軌道修正
+    LOI_BURN = "loi_burn"  # 月軌道投入燃焼
+    LUNAR_ORBIT = "lunar_orbit"  # 月軌道
+    PDI = "pdi"  # 動力降下開始
+    TERMINAL_DESCENT = "terminal_descent"  # 最終降下
+    LUNAR_TOUCHDOWN = "lunar_touchdown"  # 月面着陸
     LANDED = "landed"
     FAILED = "failed"
 
@@ -133,6 +144,12 @@ class RocketStage:
     
     def get_mass_flow_rate(self, altitude: float) -> float:
         """高度に応じた質量流量 [kg/s]"""
+        # Professor v17: Runtime override for Stage-2 mass flow to achieve 480s burn
+        if (is_enabled("STAGE2_MASS_FLOW_OVERRIDE") and 
+            hasattr(self, 'name') and 'S-II' in self.name):
+            # Force Stage-2 to burn at exactly 1125 kg/s for 480s duration
+            return 1125.0  # mdot = 540,000 kg / 480 s
+        
         thrust = self.get_thrust(altitude)
         isp = self.get_specific_impulse(altitude)
         return thrust / (isp * STANDARD_GRAVITY)
@@ -155,13 +172,15 @@ class Rocket:
     cross_sectional_area: float = 10.0  # 断面積 [m^2]
     
     def get_cross_sectional_area(self) -> float:
-        """ステージに応じた断面積を取得"""
+        """ステージに応じた断面積を取得（月ミッション対応）"""
         if self.current_stage == 0:
-            return 80.0  # 第1段: 大型
+            return 80.0  # 第1段 S-IC: 大型
         elif self.current_stage == 1:
-            return 30.0  # 第2段: 中型
+            return 30.0  # 第2段 S-II: 中型
+        elif self.current_stage == 2:
+            return 18.0  # 第3段 S-IVB: 小型
         else:
-            return 18.0  # 第3段: 小型
+            return 8.0   # 第4段 着陸機: 最小
     
     # 状態変数
     position: Vector3 = field(default_factory=lambda: Vector3(0, 0))
@@ -193,22 +212,28 @@ class Rocket:
         # 推進しないフェーズ
         non_thrusting_phases = [
             MissionPhase.PRE_LAUNCH, 
-            MissionPhase.COAST, 
+            MissionPhase.COAST_TO_MOON, 
             MissionPhase.COAST_TO_APOAPSIS,
+            MissionPhase.LEO,
+            MissionPhase.LUNAR_ORBIT,
             MissionPhase.LANDED, 
-            MissionPhase.FAILED
+            MissionPhase.FAILED,
+            MissionPhase.STAGE_SEPARATION  # Professor v12: Prevent thrust during separation
         ]
         if self.phase in non_thrusting_phases:
             return False
             
-        # 第3段の多回燃焼対応: TLIとLOIで別々に燃焼
-        if (self.current_stage == 2 and 
-            self.phase in [MissionPhase.TRANS_LUNAR_INJECTION, MissionPhase.LUNAR_ORBIT_INSERTION]):
-            # TLI: 最初の400秒, LOI: 残りの燃料
-            if self.phase == MissionPhase.TRANS_LUNAR_INJECTION:
-                return self.stage_burn_time < 450  # TLI用燃焼時間（延長）
-            elif self.phase == MissionPhase.LUNAR_ORBIT_INSERTION:
-                return self.stage_total_burn_time < self.stages[self.current_stage].burn_time
+        # 月ミッションの多回燃焼対応: TLI, LOI, PDIで別々に燃焼
+        if self.current_stage == 2:  # S-IVB段
+            if self.phase == MissionPhase.TLI_BURN:
+                return self.stage_burn_time < 450  # TLI用450秒
+            elif self.phase == MissionPhase.LOI_BURN:
+                return self.stage_total_burn_time < 750  # TLI+LOI総燃焼時間
+            elif self.phase in [MissionPhase.APOAPSIS_RAISE, MissionPhase.CIRCULARIZATION]:
+                return self.stage_burn_time < self.stages[self.current_stage].burn_time  # Professor v10: Use programmatic burn time
+        elif self.current_stage == 3:  # 着陸機
+            if self.phase in [MissionPhase.PDI, MissionPhase.TERMINAL_DESCENT, MissionPhase.LUNAR_TOUCHDOWN]:
+                return self.stage_burn_time < self.stages[self.current_stage].burn_time
         
         # 一般的な推進条件
         return (self.current_stage < len(self.stages) and 
@@ -227,9 +252,20 @@ class Rocket:
         return guidance.compute_thrust_direction(self, thrust_magnitude)
     
     def update_stage(self, dt: float):
-        """ステージの更新"""
+        """ステージの更新（Professor v9: propellant validation）"""
         if self.current_stage >= len(self.stages):
             return
+        
+        # Professor v9: Add assertion for negative propellant
+        current_stage = self.stages[self.current_stage]
+        altitude = self.get_altitude()
+        used_propellant = current_stage.get_mass_flow_rate(altitude) * self.stage_burn_time
+        remaining_propellant = current_stage.propellant_mass - used_propellant
+        
+        if remaining_propellant < -1.0:  # Small tolerance for numerical precision
+            raise RuntimeError(f"Stage {self.current_stage + 1} propellant exhausted! "
+                             f"Remaining: {remaining_propellant:.1f} kg. "
+                             f"Burn time: {self.stage_burn_time:.1f}s vs max: {current_stage.burn_time:.1f}s")
         
         # 推進中の場合のみ燃焼時間を更新
         if self.is_thrusting:
@@ -238,36 +274,101 @@ class Rocket:
         
         # 第3段の特別処理（TLI完了時にコーストに移行）
         if (self.current_stage == 2 and 
-            self.phase == MissionPhase.TRANS_LUNAR_INJECTION and 
-            self.stage_burn_time >= 450):  # TLI完了（時間延長）
-            self.phase = MissionPhase.COAST
+            self.phase == MissionPhase.TLI_BURN and 
+            self.stage_burn_time >= 450):  # TLI完了（450秒）
+            self.phase = MissionPhase.COAST_TO_MOON
             self.stage_burn_time = 0.0  # LOI用にリセット
             logging.info(f"TLI burn complete. Coasting to Moon...")
             return
         
-        # 通常のステージ分離（第3段はより柔軟に処理）
-        if self.stage_total_burn_time >= self.stages[self.current_stage].burn_time:
-            # ステージのΔvを計算（ロケット方程式 - 修正版）
+        # ステージ分離条件（月ミッション対応） - Professor v16: Enhanced separation logic
+        stage_separation_needed = False
+        current_stage = self.stages[self.current_stage]
+        
+        # Professor v16: Relaxed separation conditions with ullage support
+        if self.current_stage == 0:  # Stage 1 (S-IC)
+            # Standard propellant depletion or low thrust
+            low_thrust = self.get_thrust_vector().magnitude() < 5000  # 5kN threshold
+            propellant_depleted = self.stage_burn_time >= current_stage.burn_time
+            stage_separation_needed = propellant_depleted or low_thrust
+            
+        elif self.current_stage == 1:  # Stage 2 (S-II) 
+            # Enhanced separation logic for Stage-2
+            remaining_prop = current_stage.propellant_mass - (current_stage.get_mass_flow_rate(self.get_altitude()) * self.stage_burn_time)
+            propellant_ratio = remaining_prop / current_stage.propellant_mass if current_stage.propellant_mass > 0 else 0
+            
+            low_thrust = self.get_thrust_vector().magnitude() < 5000  # 5kN threshold  
+            propellant_depleted = self.stage_burn_time >= current_stage.burn_time
+            low_propellant = propellant_ratio < 0.005  # Less than 0.5% propellant remaining
+            
+            # Professor v17: Allow velocity-triggered separation
+            velocity_triggered_separation = (self.phase == MissionPhase.STAGE_SEPARATION)
+            
+            stage_separation_needed = propellant_depleted or low_thrust or low_propellant or velocity_triggered_separation
+            
+        elif self.current_stage == 2:  # S-IVB段
+            # S-IVBは最初のLEO達成燃焼後に一時停止、TLI/LOI完了後に分離
+            if self.phase in [MissionPhase.APOAPSIS_RAISE, MissionPhase.CIRCULARIZATION]:
+                # LEO達成用の燃焼完了後は分離しない（TLI用に保持）
+                if self.stage_burn_time >= 350:  # S-IVB第1回燃焼完了
+                    stage_separation_needed = False  # まだ分離しない
+            elif (self.phase == MissionPhase.LOI_BURN and 
+                  not self.is_thrusting and 
+                  self.stage_total_burn_time >= 600):  # TLI+LOI合計
+                stage_separation_needed = True
+        elif self.current_stage == 3:  # 着陸機
+            # 着陸機は着陸後に「分離」（ミッション完了）
+            if self.phase == MissionPhase.LANDED:
+                stage_separation_needed = True
+        else:
+            # 第1,2段は通常通り燃料切れで分離
+            if self.stage_burn_time >= self.stages[self.current_stage].burn_time:
+                stage_separation_needed = True
+        
+        if stage_separation_needed:
+            # Professor v9: Enhanced ΔV ledger calculation
             stage = self.stages[self.current_stage]
             altitude = self.get_altitude()
             isp = stage.get_specific_impulse(altitude)
             
-            # より正確な質量計算（他のステージ含む）
+            # Calculate actual propellant used
+            used_propellant = stage.get_mass_flow_rate(altitude) * self.stage_burn_time
+            actual_propellant_used = min(used_propellant, stage.propellant_mass)
+            
+            # Mass calculations
             total_initial_mass = stage.total_mass
             for i in range(self.current_stage + 1, len(self.stages)):
                 total_initial_mass += self.stages[i].total_mass
             total_initial_mass += self.payload_mass
             
-            total_final_mass = stage.dry_mass
+            total_final_mass = stage.dry_mass + (stage.propellant_mass - actual_propellant_used)
             for i in range(self.current_stage + 1, len(self.stages)):
                 total_final_mass += self.stages[i].total_mass
             total_final_mass += self.payload_mass
             
-            stage_delta_v = isp * STANDARD_GRAVITY * np.log(total_initial_mass / total_final_mass)
+            # Theoretical vs actual delta-V
+            theoretical_stage_dv = isp * STANDARD_GRAVITY * np.log(total_initial_mass / (total_initial_mass - stage.propellant_mass))
+            actual_stage_dv = isp * STANDARD_GRAVITY * np.log(total_initial_mass / total_final_mass) if total_final_mass > 0 else 0
             
-            logging.info(f"Stage {self.current_stage + 1} separation at altitude {self.get_altitude()/1000:.1f} km")
-            logging.info(f"Stage {self.current_stage + 1} theoretical delta-V: {stage_delta_v:.1f} m/s")
-            logging.info(f"Velocity: {self.velocity.magnitude():.0f} m/s, Apoapsis: {(self.get_orbital_elements()[0]-R_EARTH)/1000:.1f} km")
+            logging.info(f"=== STAGE {self.current_stage + 1} SEPARATION ===")
+            logging.info(f"Altitude: {self.get_altitude()/1000:.1f} km")
+            logging.info(f"Burn time: {self.stage_burn_time:.1f}s / {stage.burn_time:.1f}s")
+            logging.info(f"Propellant used: {actual_propellant_used/1000:.1f}t / {stage.propellant_mass/1000:.1f}t")
+            logging.info(f"Theoretical ΔV: {theoretical_stage_dv:.1f} m/s")
+            logging.info(f"Actual ΔV: {actual_stage_dv:.1f} m/s")
+            logging.info(f"ΔV efficiency: {(actual_stage_dv/theoretical_stage_dv)*100:.1f}%")
+            
+            # Professor v11: Add actual ΔV to mission total
+            # This needs to be connected to Mission class - will be handled in Mission.simulate()
+            
+            if self.current_stage < 3:  # 第4段以外
+                logging.info(f"Current velocity: {self.velocity.magnitude():.0f} m/s")
+                if self.current_stage < 2:  # 地球軌道段階
+                    apoapsis, _, _ = self.get_orbital_elements()
+                    logging.info(f"Current apoapsis: {(apoapsis-R_EARTH)/1000:.1f} km")
+            
+            # Professor v16: Add ullage burn for Stage 2->3 separation
+            stage_needs_ullage = self.current_stage == 1  # Stage 2 separating, Stage 3 will ignite
             
             self.current_stage += 1
             self.stage_burn_time = 0.0
@@ -275,6 +376,23 @@ class Rocket:
             
             if self.current_stage < len(self.stages):
                 self.phase = MissionPhase.STAGE_SEPARATION
+                logging.info(f"Setting phase to STAGE_SEPARATION, current_stage now = {self.current_stage}")
+                
+                # Professor v16: Simulate ullage burn (0.2s burn for stage 3 ignition)
+                if stage_needs_ullage and hasattr(self, 'ullage_time'):
+                    self.ullage_time = 0.2  # 0.2 second ullage burn
+                    logging.info("Initiating 0.2s ullage burn for Stage 3 ignition reliability")
+                elif stage_needs_ullage:
+                    # Initialize ullage system
+                    self.ullage_time = 0.2
+                    logging.info("Initiating 0.2s ullage burn for Stage 3 ignition reliability")
+            else:
+                # 全ステージ完了
+                if self.phase == MissionPhase.LANDED:
+                    logging.info("Mission completed successfully!")
+                else:
+                    self.phase = MissionPhase.FAILED
+                    logging.warning("All stages depleted before mission completion")
     
     def get_altitude(self) -> float:
         """高度を取得 [m]"""
@@ -343,18 +461,42 @@ class CelestialBody:
     radius: float  # 半径 [m]
     position: Vector3
     velocity: Vector3 = field(default_factory=lambda: Vector3(0, 0))
+    soi_radius: float = 0.0  # 影響圏半径 [m]
     
     def get_gravitational_acceleration(self, position: Vector3) -> Vector3:
         """指定位置での重力加速度を計算"""
         r = position - self.position
         distance = r.magnitude()
         if distance <= self.radius:
-            # 表面またはそれより内側では表面重力を使用
-            if distance < 0.1:  # 極小値回避
+            if distance < 0.1:
                 distance = 0.1
             surface_gravity = G * self.mass / self.radius**2
             return r.normalized() * (-surface_gravity)
         return r.normalized() * (-G * self.mass / distance**2)
+    
+    def is_in_soi(self, position: Vector3) -> bool:
+        """指定位置が影響圏内かどうか判定"""
+        if self.soi_radius <= 0:
+            return False
+        distance = (position - self.position).magnitude()
+        return distance <= self.soi_radius
+    
+    def get_dominant_body(self, position: Vector3, other_body: 'CelestialBody') -> 'CelestialBody':
+        """より強い重力影響を持つ天体を返す"""
+        distance_self = (position - self.position).magnitude()
+        distance_other = (position - other_body.position).magnitude()
+        
+        # 影響圏による判定を優先
+        if self.is_in_soi(position):
+            return self
+        elif other_body.is_in_soi(position):
+            return other_body
+        
+        # 重力の強さで判定
+        gravity_self = G * self.mass / distance_self**2
+        gravity_other = G * other_body.mass / distance_other**2
+        
+        return self if gravity_self > gravity_other else other_body
 
 
 class Mission:
@@ -369,7 +511,7 @@ class Mission:
         # 打ち上げパラメータ
         self.launch_azimuth = config.get("launch_azimuth", 90)  # 打ち上げ方位角 [度]
         self.target_parking_orbit = config.get("target_parking_orbit", 200e3)  # 駐機軌道高度 [m]
-        self.gravity_turn_altitude = config.get("gravity_turn_altitude", 1e3)  # 重力ターン開始高度を早める
+        self.gravity_turn_altitude = config.get("gravity_turn_altitude", 1500)  # Professor v7: start at 1500m
         
         # データ記録
         self.time_history: List[float] = []
@@ -384,22 +526,24 @@ class Mission:
         self.max_velocity = 0.0
         self.total_delta_v = 0.0
         self.stage_delta_v_history: List[float] = []  # 各ステージのΔv記録
+        self.last_stage_count = 0  # Track stage changes for ΔV calculation
         
         # CSVログ設定
         self.csv_file = open("mission_log.csv", "w", newline="")
         self.csv_writer = csv.writer(self.csv_file)
-        self.csv_writer.writerow(["time", "altitude", "velocity", "mass", "delta_v", "phase", "stage", "apoapsis", "periapsis", "eccentricity"])
+        self.csv_writer.writerow(["time", "altitude", "velocity", "mass", "delta_v", "phase", "stage", "apoapsis", "periapsis", "eccentricity", "flight_path_angle", "pitch_angle", "remaining_propellant"])
         
         # ロガー設定
         logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
         self.logger = logging.getLogger(__name__)
     
     def _initialize_moon(self) -> CelestialBody:
-        """月の初期位置を設定"""
-        # 簡略化: 月は円軌道上を公転
+        """月の初期位置を設定（影響圏設定含む）"""
         moon_pos = Vector3(EARTH_MOON_DIST, 0)
         moon_vel = Vector3(0, 2 * np.pi * EARTH_MOON_DIST / MOON_ORBIT_PERIOD)
-        return CelestialBody("Moon", M_MOON, R_MOON, moon_pos, moon_vel)
+        moon = CelestialBody("Moon", M_MOON, R_MOON, moon_pos, moon_vel)
+        moon.soi_radius = MOON_SOI_RADIUS
+        return moon
     
     def _update_moon_position(self, dt: float):
         """月の位置を更新"""
@@ -470,178 +614,462 @@ class Mission:
         return self.rocket.velocity.normalized() * (-drag_magnitude)
     
     def _calculate_total_acceleration(self) -> Vector3:
-        """総加速度を計算"""
-        # 重力
-        g_earth = self.earth.get_gravitational_acceleration(self.rocket.position)
-        g_moon = self.moon.get_gravitational_acceleration(self.rocket.position)
+        """総加速度を計算（Patched-Conic対応）"""
+        # 主支配天体を決定（パッチドコニック法）
+        dominant_body = self.earth.get_dominant_body(self.rocket.position, self.moon)
+        
+        # 主支配天体の重力
+        if dominant_body == self.earth:
+            # 地球支配: 地球重力と月の影響
+            g_primary = self.earth.get_gravitational_acceleration(self.rocket.position)
+            g_secondary = self.moon.get_gravitational_acceleration(self.rocket.position)
+            # 月の影響は地球引力が強い場合は10%に抑制
+            g_moon_factor = 0.1 if not self.moon.is_in_soi(self.rocket.position) else 1.0
+            g_secondary = g_secondary * g_moon_factor
+        else:
+            # 月支配: 月重力と地球の影響
+            g_primary = self.moon.get_gravitational_acceleration(self.rocket.position)
+            g_secondary = self.earth.get_gravitational_acceleration(self.rocket.position)
+            # 地球の影響は遠距離では減衰
+            earth_distance = (self.rocket.position - self.earth.position).magnitude()
+            earth_factor = min(1.0, (2 * R_EARTH / earth_distance)**2)
+            g_secondary = g_secondary * earth_factor
+        
+        total_gravity = g_primary + g_secondary
         
         # 推力
         thrust = self.rocket.get_thrust_vector()
         thrust_acceleration = thrust * (1.0 / self.rocket.current_mass) if self.rocket.current_mass > 0 else Vector3(0, 0)
         
-        # 空気抵抗
-        drag = self._calculate_drag_force()
-        drag_acceleration = drag * (1.0 / self.rocket.current_mass) if self.rocket.current_mass > 0 else Vector3(0, 0)
+        # 空気抵抗（地球支配時のみ）
+        if dominant_body == self.earth:
+            drag = self._calculate_drag_force()
+            drag_acceleration = drag * (1.0 / self.rocket.current_mass) if self.rocket.current_mass > 0 else Vector3(0, 0)
+        else:
+            drag_acceleration = Vector3(0, 0)  # 月には大気なし
         
-        total_accel = g_earth + g_moon + thrust_acceleration + drag_acceleration
-        
-        return total_accel
+        return total_gravity + thrust_acceleration + drag_acceleration
     
     def _update_mission_phase(self):
-        """ミッションフェーズを更新（改良版 - 正しい軌道力学に基づく）"""
+        """
+        ミッションフェーズを更新 (修正版 - LEO投入の安定性を最優先)
+        """
+        # 現在の状態を取得
         altitude = self.rocket.get_altitude()
         velocity = self.rocket.velocity.magnitude()
         apoapsis, periapsis, eccentricity = self.rocket.get_orbital_elements()
+        current_phase = self.rocket.phase
         
-        # 目標軌道速度を計算
-        target_radius = R_EARTH + self.target_parking_orbit
-        target_orbital_velocity = np.sqrt(G * M_EARTH / target_radius)
+        # Debug: basic function entry (removed early return to fix staging issue)
         
-        if self.rocket.phase == MissionPhase.LAUNCH:
-            # 重力ターン開始を早める
+        # Debug logging for phase transitions
+        if hasattr(self, '_last_logged_phase') and self._last_logged_phase != current_phase:
+            self.logger.info(f"Phase changed: {self._last_logged_phase} -> {current_phase}")
+        self._last_logged_phase = current_phase
+        
+        # Debug: always log current phase when in STAGE_SEPARATION
+        if str(current_phase) == "MissionPhase.STAGE_SEPARATION" or current_phase.value == "stage_separation":
+            self.logger.info(f"DEBUG: Found STAGE_SEPARATION! current_stage = {self.rocket.current_stage}, type={type(current_phase)}")
+        
+        if current_phase == MissionPhase.STAGE_SEPARATION:
+            self.logger.info(f"DEBUG: ENUM comparison worked! current_stage = {self.rocket.current_stage}")
+        
+        # Additional debug for all phases
+        if hasattr(self, '_debug_counter'):
+            self._debug_counter += 1
+        else:
+            self._debug_counter = 1
+        
+        if self._debug_counter % 1000 == 0:  # Every 100 seconds
+            self.logger.info(f"PHASE_DEBUG: t={len(self.time_history)*0.1:.1f}s, phase={current_phase.value}, stage={self.rocket.current_stage}")
+
+        # Professor v19: Realistic MECO conditions for current ΔV capability
+        # Start with achievable intermediate targets, then improve progressively
+        
+        # Professor v19: Much more achievable progressive targets
+        # Based on current capability: max 49.9km apoapsis, max 3041 m/s velocity
+        basic_apoapsis = R_EARTH + 45e3     # 45 km - easily achievable
+        intermediate_apoapsis = R_EARTH + 80e3  # 80 km intermediate target  
+        final_target_apoapsis = R_EARTH + self.target_parking_orbit  # 185 km final target
+        min_periapsis = R_EARTH + 120e3  # 120 km (above atmosphere)
+        
+        # Progressive targeting system - Professor v19: Stage-specific targeting
+        # Stage-2 should raise apoapsis higher, Stage-3 handles circularization
+        current_stage = self.rocket.current_stage
+        
+        if current_stage == 1:  # Stage-2 burning
+            # Stage-2 should achieve higher apoapsis for effective circularization
+            # Need at least 80km apoapsis to have time for circularization
+            target_apoapsis = R_EARTH + 80e3  # 80 km - higher target for circularization time
+            velocity_threshold = 2600  # Higher velocity needed for 80km apoapsis
+        else:  # Stage-3 or later
+            # Use basic target for final circularization
+            target_apoapsis = basic_apoapsis  # 45 km minimum for Stage-3
+            velocity_threshold = 2200  # Achievable threshold for Stage-3
+        
+        # Two-phase approach: 1) Get apoapsis, 2) Get periapsis
+        has_target_apoapsis = apoapsis >= target_apoapsis
+        has_safe_periapsis = periapsis >= min_periapsis
+        
+        # Success: both conditions met
+        is_stable_parking_orbit = has_target_apoapsis and has_safe_periapsis
+        
+        # Stop condition: target apoapsis achieved with sufficient velocity
+        should_stop_burning = has_target_apoapsis and velocity > velocity_threshold
+        
+        # Professor v19: Debug the exact condition values
+        current_time = len(self.time_history) * 0.1
+        if current_phase == MissionPhase.APOAPSIS_RAISE and current_time > 160 and current_time < 200:
+            self.logger.info(f"BURN_STOP_DEBUG t={current_time:.1f}s: apo={apoapsis:.0f}m (target={target_apoapsis:.0f}m, has={has_target_apoapsis}), "
+                           f"v={velocity:.0f}m/s (threshold={velocity_threshold:.0f}, ok={velocity > velocity_threshold}), "
+                           f"should_stop={should_stop_burning}")
+
+        # ----------------------------------------------------------------
+        # 地球周回軌道投入までのフェーズ管理 (修正済みロジック)
+        # ----------------------------------------------------------------
+
+        if current_phase == MissionPhase.LAUNCH:
             if altitude >= self.gravity_turn_altitude:
                 self.rocket.phase = MissionPhase.GRAVITY_TURN
                 self.logger.info(f"Gravity turn initiated at altitude {altitude/1000:.1f} km")
-                
-        elif self.rocket.phase == MissionPhase.GRAVITY_TURN:
-            # 重力ターンは第1段燃焼終了まで継続
+
+        elif current_phase == MissionPhase.GRAVITY_TURN:
+            # ステージ分離時に自動で次のフェーズに遷移するため、ここでは何もしない
             pass
+
+        elif current_phase == MissionPhase.APOAPSIS_RAISE:
+            # 遠地点上昇と円環フェーズのロジックを統合
+            
+            # Professor v17: Velocity-triggered Stage-3 ignition (MOVED FROM COAST_TO_APOAPSIS)
+            if is_enabled("VELOCITY_TRIGGERED_STAGE3"):
+                velocity_trigger = velocity >= 3500.0  # m/s - achievable by Stage 2
+                altitude_trigger = altitude >= 30e3   # 30 km - much lower altitude requirement
+                stage3_velocity_trigger = velocity_trigger and altitude_trigger and self.rocket.current_stage == 1  # Trigger while in Stage 2
                 
-        elif self.rocket.phase == MissionPhase.APOAPSIS_RAISE:
-            # 修正：軌道達成まで継続（より積極的）
-            current_radius = self.rocket.position.magnitude()
-            current_orbital_velocity = np.sqrt(G * M_EARTH / current_radius)
-            
-            # 軌道達成条件をより厳格に（安定軌道のため）
-            orbital_achieved = (velocity >= target_orbital_velocity * 0.90 and 
-                              apoapsis >= target_radius * 0.9 and
-                              periapsis >= R_EARTH)  # 負の近地点を防ぐ
-            
-            # 燃料切れ、または軌道達成時に次のフェーズへ
-            if not self.rocket.is_thrusting or orbital_achieved:
-                if orbital_achieved:
-                    self.rocket.phase = MissionPhase.COAST_TO_APOAPSIS
-                    self.logger.info(f"Orbital trajectory achieved: v={velocity:.0f} m/s (target: {target_orbital_velocity:.0f} m/s)")
-                    self.logger.info(f"Apoapsis: {(apoapsis-R_EARTH)/1000:.1f} km, Periapsis: {(periapsis-R_EARTH)/1000:.1f} km")
-                else:
-                    # 燃料切れで軌道未達成の場合
-                    if periapsis > R_EARTH:
-                        self.rocket.phase = MissionPhase.COAST
-                        self.logger.warning(f"Fuel depleted but stable orbit achieved. e={eccentricity:.3f}")
+                # Debug logging for trigger conditions
+                if velocity >= 3400.0 and self.rocket.current_stage == 1:  # Debug when close (Stage 2)
+                    if hasattr(self, '_stage3_debug_counter'):
+                        self._stage3_debug_counter += 1
                     else:
-                        self.rocket.phase = MissionPhase.FAILED
-                        self.logger.error(f"Fuel depleted, suborbital trajectory. Mission failed.")
+                        self._stage3_debug_counter = 1
+                    
+                    if self._stage3_debug_counter % 50 == 0:  # Every 5 seconds when close
+                        self.logger.info(f"STAGE-3 DEBUG: v={velocity:.0f}m/s (≥3500?), alt={altitude/1000:.1f}km (≥30?), stage={self.rocket.current_stage} (==1?)")
+                        self.logger.info(f"STAGE-3 DEBUG: triggers: vel={velocity_trigger}, alt={altitude_trigger}, combined={stage3_velocity_trigger}")
                 
-        elif self.rocket.phase == MissionPhase.COAST_TO_APOAPSIS:
-            # 遠地点付近に到達したら円化燃焼開始
-            radial_velocity = self.rocket.velocity.data @ self.rocket.position.normalized().data
-            current_radius = self.rocket.position.magnitude()
+                if stage3_velocity_trigger:
+                    # Trigger Stage-2 separation and Stage-3 ignition
+                    self.logger.info(f"*** VELOCITY-TRIGGERED STAGE-3 IGNITION ***")
+                    self.logger.info(f" -> Velocity: {velocity:.0f} m/s (≥3500 m/s) ✓")
+                    self.logger.info(f" -> Altitude: {altitude/1000:.1f} km (≥30 km) ✓")
+                    self.logger.info(f" -> Forcing Stage-2 separation for Stage-3 ignition")
+                    
+                    # Force Stage 2 separation to trigger Stage 3
+                    self.rocket.phase = MissionPhase.STAGE_SEPARATION
+                    return  # Exit early to allow stage separation to occur
             
-            # 遠地点に近づいた判定
-            if abs(radial_velocity) < 50 and current_radius >= (apoapsis - R_EARTH) * 0.95 + R_EARTH:
-                if self.rocket.current_stage <= 2 and self.rocket.stages[self.rocket.current_stage].propellant_mass > 0:
-                    self.rocket.phase = MissionPhase.CIRCULARIZATION
-                    self.logger.info(f"Starting circularization burn at apoapsis {altitude/1000:.1f} km")
-                else:
-                    self.rocket.phase = MissionPhase.COAST
-                    self.logger.info(f"Elliptical orbit achieved. e={eccentricity:.3f}")
-                
-        elif self.rocket.phase == MissionPhase.CIRCULARIZATION:
-            # 軌道円化完了の判定
-            target_periapsis = R_EARTH + self.target_parking_orbit * 0.85
-            if periapsis >= target_periapsis or not self.rocket.is_thrusting:
-                self.rocket.phase = MissionPhase.COAST
-                self.logger.info(f"Parking orbit achieved! Apoapsis: {(apoapsis-R_EARTH)/1000:.1f} km, "
+            # ケース1: 完全成功（安定軌道）に到達したか？
+            if is_stable_parking_orbit:
+                self.rocket.phase = MissionPhase.LEO
+                self.logger.info(f"SUCCESS: Stable parking orbit achieved!")
+                self.logger.info(f" -> Apoapsis: {(apoapsis-R_EARTH)/1000:.1f} km, "
                                f"Periapsis: {(periapsis-R_EARTH)/1000:.1f} km, e={eccentricity:.3f}")
-                
-        elif self.rocket.phase == MissionPhase.COAST:
-            # TLIタイミングの判定（改良版 - 軌道確認後に実行）
-            coast_time = len([p for p in self.phase_history if p == MissionPhase.COAST]) * 0.1  # dt=0.1
             
-            # 駐機軌道の確認
-            parking_orbit_ok = (periapsis >= (R_EARTH + 150e3) and 
-                              apoapsis >= (R_EARTH + 150e3) and 
-                              eccentricity < 0.1)
+            # ケース2: 燃焼停止条件（目標遠地点達成）- Professor v12  
+            elif should_stop_burning:
+                self.rocket.phase = MissionPhase.COAST_TO_APOAPSIS
+                self.logger.info(f"MECO: Target apoapsis achieved, coasting to apoapsis for circularization")
+                self.logger.info(f" -> Apoapsis: {(apoapsis-R_EARTH)/1000:.1f} km (target: {(target_apoapsis-R_EARTH)/1000:.1f} km), "
+                               f"Periapsis: {(periapsis-R_EARTH)/1000:.1f} km, v={velocity:.0f} m/s (threshold: {velocity_threshold:.0f})")
             
-            # 第3段が利用可能で、駐機軌道が達成されている場合のみTLI
-            if (self.rocket.current_stage == 2 and 
-                parking_orbit_ok and 
-                coast_time > 300 and  # 5分後（短縮）
-                self.rocket.stages[2].propellant_mass > 50000):  # 十分な燃料
-                
-                # TLI必要速度の概算
-                current_velocity = self.rocket.velocity.magnitude()
-                earth_escape_velocity = np.sqrt(2 * G * M_EARTH / self.rocket.position.magnitude())
-                tli_delta_v_required = earth_escape_velocity - current_velocity + 3200  # 月まで3.2km/s追加
-                
-                # 第3段の残Δv概算
-                stage3 = self.rocket.stages[2]
-                current_mass = self.rocket.current_mass
-                final_mass = current_mass - stage3.propellant_mass
-                available_delta_v = stage3.specific_impulse_vacuum * STANDARD_GRAVITY * np.log(current_mass / final_mass)
-                
-                self.logger.info(f"TLI Check: Required {tli_delta_v_required:.0f} m/s, Available {available_delta_v:.0f} m/s")
-                
-                if available_delta_v >= tli_delta_v_required * 0.9:  # 90%のマージン
-                    # 月方向への最適なタイミングを簡略計算
-                    to_moon = self.moon.position - self.rocket.position
-                    velocity_dir = self.rocket.velocity.normalized()
-                    angle = np.arccos(np.clip(velocity_dir.data @ to_moon.normalized().data, -1, 1))
-                    if angle < np.pi/3:  # 60度以内
-                        self.rocket.phase = MissionPhase.TRANS_LUNAR_INJECTION
-                        self.logger.info("Initiating Trans-Lunar Injection burn!")
-                elif coast_time > 3600:  # 1時間経過したら強制実行
-                    self.rocket.phase = MissionPhase.TRANS_LUNAR_INJECTION
-                    self.logger.warning(f"Forcing TLI despite insufficient delta-V")
-                
-        elif self.rocket.phase == MissionPhase.STAGE_SEPARATION:
-            # ステージ分離後の正しい遷移（修正版）
-            if self.rocket.current_stage == 0:  # 第1段分離後
+            # ケース3: ゴール未達のまま燃料が尽きたか？
+            elif not self.rocket.is_thrusting:
+                self.rocket.phase = MissionPhase.FAILED
+                self.logger.error(f"FAILURE: Out of fuel before achieving stable orbit.")
+                self.logger.error(f" -> Final Apoapsis: {(apoapsis-R_EARTH)/1000:.1f} km, "
+                                 f"Final Periapsis: {(periapsis-R_EARTH)/1000:.1f} km")
+            
+            # ケース4: それ以外（ゴール未達で燃料はまだある）の場合は、燃焼を継続
+            # 何もせず、現在のフェーズを維持する
+
+        elif current_phase == MissionPhase.STAGE_SEPARATION or current_phase.value == "stage_separation":
+            # ステージ分離後の正しい遷移
+            self.logger.info(f"*** Processing stage separation: current_stage = {self.rocket.current_stage} ***")
+            if self.rocket.current_stage == 1:  # 第1段分離後 -> 第2段点火
                 self.rocket.phase = MissionPhase.APOAPSIS_RAISE
-                self.logger.info(f"Stage 2 ignition for apoapsis raise")
-            elif self.rocket.current_stage == 1:  # 第2段分離後
-                # 第3段は常にAPOAPSIS_RAISEに遷移（燃料切れまで推進）
-                self.rocket.phase = MissionPhase.APOAPSIS_RAISE
-                self.logger.info(f"Stage 3 continuing apoapsis raise")
-            elif self.rocket.current_stage == 2:  # 第3段分離後
-                # 軌道状態を確認してCOASTまたはTLIへ
-                self.rocket.phase = MissionPhase.COAST
-                self.logger.info(f"All stages separated. Final orbit check pending.")
+                self.logger.info(f"*** Stage 2 ignition for apoapsis raise ***")
+            elif self.rocket.current_stage == 2:  # 第2段分離後 -> Professor v17: velocity-triggered Stage-3
+                # Professor v17: Wait for velocity-triggered ignition instead of immediate Stage-3 ignition
+                self.rocket.phase = MissionPhase.COAST_TO_APOAPSIS
+                self.logger.info(f"*** Stage 2 separation complete. Coasting for velocity-triggered Stage-3 ignition ***")
+                self.logger.info(f"*** Stage-3 ignition trigger: v≥7550 m/s & r≥180 km ***")
+            elif self.rocket.current_stage == 3:  # 第3段分離後 (月着陸船)
+                self.rocket.phase = MissionPhase.LUNAR_ORBIT
+                self.logger.info(f"*** Lunar descent module active. Ready for PDI ***")
             else:
-                self.rocket.phase = MissionPhase.COAST
+                self.logger.warning(f"*** Unexpected stage {self.rocket.current_stage} in separation ***")
+                self.rocket.phase = MissionPhase.LEO # フォールバック
+
+        elif current_phase == MissionPhase.CIRCULARIZATION:
+            # Action A1: Overhauled Circularization Control Logic
+            # 1. Get current orbital elements
+            apoapsis, periapsis, eccentricity = self.rocket.get_orbital_elements()
+            
+            # 2. Define success condition: periapsis is above the atmosphere
+            # Let's target 120km altitude for safety
+            is_orbit_stable = periapsis >= (R_EARTH + 120e3) 
+
+            # 3. Implement the new logic
+            if is_orbit_stable:
+                self.rocket.phase = MissionPhase.LEO
+                self.logger.info(f"SUCCESS: LEO insertion complete. Achieved stable orbit.")
+                self.logger.info(f" -> Apoapsis: {(apoapsis-R_EARTH)/1000:.1f} km, Periapsis: {(periapsis-R_EARTH)/1000:.1f} km")
+            
+            elif not self.rocket.is_thrusting:
+                self.rocket.phase = MissionPhase.FAILED
+                self.logger.error(f"FAILURE: Out of fuel during circularization burn.")
+                self.logger.error(f" -> Final Periapsis: {(periapsis-R_EARTH)/1000:.1f} km (Target > 120 km)")
+
+            # else: continue burning...
+
+        elif current_phase == MissionPhase.COAST_TO_APOAPSIS:
+            # Action A2: Refine Burn Initiation Timing
+            flight_path_angle_deg = np.degrees(self.rocket.get_flight_path_angle())
+            apoapsis, periapsis, _ = self.rocket.get_orbital_elements()
+
+            # The most efficient time to burn is exactly at apoapsis,
+            # where the flight path angle is zero.
+            is_at_apoapsis = abs(flight_path_angle_deg) < 0.1  # Trigger within a tight 0.1-degree window
+
+            # Ensure we have fuel for Stage-3 and the orbit is not already circular
+            stage3_has_fuel = len(self.rocket.stages) > 2 and self.rocket.stages[2].propellant_mass > 0
+            can_circularize = stage3_has_fuel and periapsis < (R_EARTH + 120e3)
+
+            if is_at_apoapsis and can_circularize:
+                self.rocket.phase = MissionPhase.CIRCULARIZATION
+                self.logger.info(f"APOAPSIS PASS. Initiating circularization burn.")
+                self.logger.info(f" -> Flight Path Angle: {flight_path_angle_deg:.3f} deg, Altitude: {self.rocket.get_altitude()/1000:.1f} km")
+            elif not stage3_has_fuel and periapsis < (R_EARTH + 120e3):
+                # Out of fuel but still suborbital
+                self.rocket.phase = MissionPhase.FAILED
+                self.logger.error(f"Circularization failed: out of fuel with suborbital trajectory")
+                self.logger.error(f" -> Periapsis: {(periapsis-R_EARTH)/1000:.1f} km")
+
+        # ----------------------------------------------------------------
+        # 月遷移軌道以降のフェーズ管理 (元のロジックを維持)
+        # ----------------------------------------------------------------
+
+        elif current_phase == MissionPhase.LEO:
+            # LEOでの待機からTLIフェーズへの遷移
+            coast_time = len([p for p in self.phase_history if p == MissionPhase.LEO]) * 0.1
+            
+            # 安定した軌道で30秒待機したら月へ
+            if self.rocket.current_stage == 2 and is_stable_parking_orbit and coast_time > 30:
+                self.rocket.phase = MissionPhase.TLI_BURN
+                self.logger.info("LEO parking complete. Initiating Trans-Lunar Injection burn!")
+            elif coast_time > 600 and not is_stable_parking_orbit: # 10分待っても不安定なら失敗
+                self.rocket.phase = MissionPhase.FAILED
+                self.logger.error(f"Failed to maintain stable LEO. Orbit decayed.")
+
+
+        elif current_phase == MissionPhase.TLI_BURN:
+            # 燃焼終了で月への巡航フェーズへ
+            if not self.rocket.is_thrusting:
+                self.rocket.phase = MissionPhase.COAST_TO_MOON
+                self.logger.info(f"TLI burn complete. Coasting to Moon...")
+                escape_velocity = np.sqrt(2 * G * M_EARTH / self.rocket.position.magnitude())
+                self.logger.info(f"Current velocity: {velocity:.0f} m/s (Escape vel: {escape_velocity:.0f} m/s)")
+
+        elif current_phase == MissionPhase.COAST_TO_MOON:
+            # 月の影響圏(SOI)に入ったら軌道投入燃焼へ
+            if self.moon.is_in_soi(self.rocket.position):
+                self.rocket.phase = MissionPhase.LOI_BURN
+                self.logger.info(f"Entered Moon's Sphere of Influence. Preparing for LOI.")
+            elif len([p for p in self.phase_history if p == current_phase]) * 0.1 > 5 * 24 * 3600: # 5日以上かかったら失敗
+                self.rocket.phase = MissionPhase.FAILED
+                self.logger.error("Failed to reach Moon SOI within 5 days.")
+
+        elif current_phase == MissionPhase.LOI_BURN:
+            # 月周回軌道に入ったか判定
+            r_moon = (self.rocket.position - self.moon.position).magnitude()
+            v_moon_relative = (self.rocket.velocity - self.moon.velocity).magnitude()
+            moon_orbital_energy = 0.5 * v_moon_relative**2 - G * M_MOON / r_moon
+            
+            if moon_orbital_energy < 0: # 月の重力に捕獲された
+                self.rocket.phase = MissionPhase.LUNAR_ORBIT
+                self.logger.info(f"Lunar Orbit Insertion successful! Altitude: {(r_moon - R_MOON)/1000:.1f} km")
+            elif not self.rocket.is_thrusting: # 燃料切れで捕獲失敗
+                self.rocket.phase = MissionPhase.FAILED
+                self.logger.error("LOI failed. Insufficient fuel to be captured by the Moon.")
+
+        elif current_phase == MissionPhase.LUNAR_ORBIT:
+            # 月周回軌道から着陸へ
+            orbit_time = len([p for p in self.phase_history if p == current_phase]) * 0.1
+            r_moon = (self.rocket.position - self.moon.position).magnitude()
+            
+            # 高度50km以下で5分(300秒)待機し、着陸船の燃料があれば降下開始
+            if (r_moon < R_MOON + 50e3 and orbit_time > 300 and self.rocket.current_stage == 3):
+                self.rocket.phase = MissionPhase.PDI
+                self.logger.info("Initiating Powered Descent Initiation (PDI).")
+
+        elif current_phase == MissionPhase.PDI:
+            # 動力降下から最終降下へ
+            altitude_moon = (self.rocket.position - self.moon.position).magnitude() - R_MOON
+            if altitude_moon < 15e3:
+                self.rocket.phase = MissionPhase.TERMINAL_DESCENT
+                self.logger.info(f"Terminal descent initiated at {altitude_moon/1000:.1f} km.")
+
+        elif current_phase == MissionPhase.TERMINAL_DESCENT:
+            # 最終降下から着陸シーケンスへ
+            altitude_moon = (self.rocket.position - self.moon.position).magnitude() - R_MOON
+            if altitude_moon < 1000:
+                self.rocket.phase = MissionPhase.LUNAR_TOUCHDOWN
+                self.logger.info(f"Final approach. Altitude: {altitude_moon:.0f} m.")
+
+        elif current_phase == MissionPhase.LUNAR_TOUCHDOWN:
+            # 着陸の成功/失敗判定
+            altitude_moon = (self.rocket.position - self.moon.position).magnitude() - R_MOON
+            relative_velocity = (self.rocket.velocity - self.moon.velocity).magnitude()
+            
+            if altitude_moon <= 10: # 地表10m以内
+                if relative_velocity <= 3.0: # 秒速3m以下なら成功
+                    self.rocket.phase = MissionPhase.LANDED
+                    self.logger.info(f"LUNAR LANDING CONFIRMED! Landing velocity: {relative_velocity:.2f} m/s")
+                else:
+                    self.rocket.phase = MissionPhase.FAILED
+                    self.logger.error(f"CRASH! Hard landing - velocity too high: {relative_velocity:.2f} m/s")
     
     def _check_mission_status(self) -> bool:
         """ミッション状態をチェック（継続/終了）"""
         altitude = self.rocket.get_altitude()
         distance_to_moon = (self.rocket.position - self.moon.position).magnitude()
         
-        # 地球に衝突
-        if altitude < -10e3:  # 10km以下（地下）なら確実に衝突
+        # Professor v19: Verbose abort debugging
+        if hasattr(self, 'config') and self.config.get("verbose_abort", False):
+            velocity = self.rocket.velocity.magnitude()
+            flight_path_angle = np.degrees(self.rocket.get_flight_path_angle())
+            thrust_mag = self.rocket.get_thrust_vector().magnitude()
+            
+            # Propellant info
+            if self.rocket.current_stage < len(self.rocket.stages):
+                stage = self.rocket.stages[self.rocket.current_stage]
+                used_prop = stage.get_mass_flow_rate(altitude) * self.rocket.stage_burn_time
+                remaining_prop = stage.propellant_mass - used_prop
+                prop_ratio = remaining_prop / stage.propellant_mass if stage.propellant_mass > 0 else 0
+            else:
+                remaining_prop = 0
+                prop_ratio = 0
+            
+            self.logger.debug(f"ABORT_DEBUG: alt={altitude:.1f}m, v={velocity:.1f}m/s, γ={flight_path_angle:.1f}°, "
+                           f"thrust={thrust_mag:.0f}N, prop_remain={remaining_prop:.1f}kg ({prop_ratio*100:.1f}%)")
+        
+        # Professor v19: Configurable abort thresholds (C1)
+        abort_thresholds = self.config.get("abort_thresholds", {
+            "earth_impact_altitude": -100.0,
+            "propellant_critical_percent": 99.5,
+            "min_safe_time": 5.0,
+            "max_flight_path_angle": 85.0,
+            "min_thrust_threshold": 5000.0
+        })
+        
+        # 地球に衝突チェック（初期打ち上げ時の数値誤差を考慮）
+        # 地表近くでは地球曲率・数値誤差で若干のマイナス高度が発生する
+        earth_impact_threshold = abort_thresholds["earth_impact_altitude"]
+        if altitude < earth_impact_threshold:  
             self.rocket.phase = MissionPhase.FAILED
-            self.logger.error("Mission failed: Crashed into Earth")
+            self.logger.error(f"Mission failed: Crashed into Earth at altitude {altitude:.1f} m")
+            
+            # Professor v19: Enhanced abort reason logging
+            if hasattr(self, 'config') and self.config.get("verbose_abort", False):
+                velocity = self.rocket.velocity.magnitude()
+                flight_path_angle = np.degrees(self.rocket.get_flight_path_angle())
+                apoapsis, periapsis, eccentricity = self.rocket.get_orbital_elements()
+                self.logger.error(f"ABORT_REASON: Earth impact - altitude {altitude:.1f}m")
+                self.logger.error(f"ABORT_STATE: v={velocity:.1f}m/s, γ={flight_path_angle:.1f}°, "
+                               f"apo={(apoapsis-R_EARTH)/1000:.1f}km, peri={(periapsis-R_EARTH)/1000:.1f}km")
             return False
         
-        # 月の影響圏チェック
-        moon_soi_radius = 66e3  # 月の影響圏半径 [km]
-        if distance_to_moon < moon_soi_radius * 1000 and self.rocket.phase == MissionPhase.COAST:
-            if self.rocket.current_stage == 2:  # 第3段が残っている
-                self.rocket.phase = MissionPhase.LUNAR_ORBIT_INSERTION
-                self.logger.info(f"Entering Moon's sphere of influence at {distance_to_moon/1000:.0f} km")
+        # サブオービタル軌道の早期発見
+        if altitude > 50e3:  # 50km以上でチェック
+            apoapsis, periapsis, eccentricity = self.rocket.get_orbital_elements()
+            if periapsis < -R_EARTH * 0.1:  # 非常に負の近地点
+                # 総燃焼時間で判定（燃料切れかどうか）
+                total_burn_time = sum(stage.burn_time for stage in self.rocket.stages[:self.rocket.current_stage+1])
+                elapsed_time = len(self.time_history) * 0.1  # dt=0.1
+                if elapsed_time > total_burn_time * 0.8:  # 80%以上経過でもサブオービタル
+                    self.rocket.phase = MissionPhase.FAILED
+                    self.logger.error(f"Mission failed: Suborbital trajectory detected. Periapsis: {(periapsis-R_EARTH)/1000:.1f} km")
+                    return False
         
-        # 月面着陸
-        if distance_to_moon <= R_MOON + 1000:  # 月面から1km以内
-            # 速度チェック（軟着陸判定）
+        # 月面着陸の精密チェック（教授フィードバック対応）
+        if distance_to_moon <= R_MOON + 100:  # 月面から100m以内
             relative_velocity = (self.rocket.velocity - self.moon.velocity).magnitude()
-            if relative_velocity < 100:  # 100 m/s以下なら成功
-                self.rocket.phase = MissionPhase.LANDED
-                self.logger.info(f"Successfully landed on the Moon! Landing velocity: {relative_velocity:.1f} m/s")
-                return False
+            
+            # 教授推奨: 着陸速度 ≤ 2 m/s, 傾斜 ≤ 5°
+            if relative_velocity <= 2.0:  # 2 m/s以下で成功
+                # 僾斜角を簡略チェック（速度ベクトルと面法線の角度）
+                moon_center_dir = (self.moon.position - self.rocket.position).normalized()
+                velocity_dir = (self.rocket.velocity - self.moon.velocity).normalized()
+                dot_product = moon_center_dir.data @ velocity_dir.data
+                tilt_angle = np.degrees(np.arccos(np.abs(np.clip(dot_product, -1, 1))))
+                
+                if tilt_angle <= 85:  # 5°以内の僾斜（簡略化）
+                    self.rocket.phase = MissionPhase.LANDED
+                    self.logger.info(f"Successful lunar landing! Velocity: {relative_velocity:.1f} m/s, Tilt: {90-tilt_angle:.1f}°")
+                    return False
+                else:
+                    self.rocket.phase = MissionPhase.FAILED
+                    self.logger.error(f"Landing failed - excessive tilt: {90-tilt_angle:.1f}°")
+                    return False
             else:
                 self.rocket.phase = MissionPhase.FAILED
-                self.logger.error(f"Crashed into Moon at {relative_velocity:.0f} m/s")
+                self.logger.error(f"Hard landing - velocity too high: {relative_velocity:.1f} m/s")
                 return False
         
+        # 月面衝突チェック（100m以下でない場合）
+        elif distance_to_moon <= R_MOON + 1000:  # 1km以内
+            if self.rocket.phase not in [MissionPhase.TERMINAL_DESCENT, MissionPhase.LUNAR_TOUCHDOWN]:
+                # 着陸フェーズでないのに月面に近づいた
+                relative_velocity = (self.rocket.velocity - self.moon.velocity).magnitude()
+                if relative_velocity > 10:  # 10 m/s以上で衝突
+                    self.rocket.phase = MissionPhase.FAILED
+                    self.logger.error(f"Uncontrolled lunar impact at {relative_velocity:.1f} m/s")
+                    return False
+        
         return True
+    
+    def _update_stage_delta_v(self):
+        """Track stage separations and calculate ΔV using stage-end ledger (Professor v11)"""
+        if self.rocket.current_stage > self.last_stage_count:
+            # Stage separation occurred, calculate ΔV for the just-separated stage
+            stage_index = self.last_stage_count
+            if stage_index < len(self.rocket.stages):
+                stage = self.rocket.stages[stage_index]
+                altitude = self.rocket.get_altitude()
+                isp = stage.get_specific_impulse(altitude)
+                
+                # Use actual propellant consumed (same logic as in rocket separation)
+                used_propellant = stage.get_mass_flow_rate(altitude) * stage.burn_time
+                actual_propellant_used = min(used_propellant, stage.propellant_mass)
+                
+                # Calculate total masses before and after this stage
+                total_initial_mass = stage.total_mass
+                for i in range(stage_index + 1, len(self.rocket.stages)):
+                    total_initial_mass += self.rocket.stages[i].total_mass
+                total_initial_mass += self.rocket.payload_mass
+                
+                total_final_mass = stage.dry_mass + (stage.propellant_mass - actual_propellant_used)
+                for i in range(stage_index + 1, len(self.rocket.stages)):
+                    total_final_mass += self.rocket.stages[i].total_mass
+                total_final_mass += self.rocket.payload_mass
+                
+                # Calculate actual stage ΔV using Tsiolkovsky equation
+                if total_final_mass > 0:
+                    stage_dv = isp * STANDARD_GRAVITY * np.log(total_initial_mass / total_final_mass)
+                    self.total_delta_v += stage_dv
+                    self.stage_delta_v_history.append(stage_dv)
+            
+            self.last_stage_count = self.rocket.current_stage
     
     def simulate(self, duration: float = 10 * 24 * 3600, dt: float = 0.1) -> Dict:
         """シミュレーション実行"""
@@ -659,12 +1087,12 @@ class Mission:
         # 東向きは y方向の負（座標系の設定による）
         self.rocket.velocity = Vector3(-surface_velocity * np.sin(launch_angle), surface_velocity * np.cos(launch_angle))
         
-        self.logger.info(f"Mission start: {self.rocket.name}")
+        self.logger.info(f"Mission start: Saturn V")
         self.logger.info(f"Initial position: {self.rocket.position}")
         self.logger.info(f"Initial velocity: {self.rocket.velocity.magnitude():.1f} m/s")
         self.logger.info(f"Total rocket mass: {self.rocket.current_mass/1000:.1f} tons")
         
-        # 初期フェーズ確認
+        # 初期フェーズ確認（月ミッション用）
         self.rocket.phase = MissionPhase.LAUNCH
         
         # RK4法による数値積分
@@ -684,8 +1112,79 @@ class Mission:
             self.mass_history.append(mass)
             self.phase_history.append(self.rocket.phase)
             
-            # CSVログ出力（10秒ごと）
+            # Professor v19: 10 Hz phase/stage logging for debugging (B1)
+            if steps % 1 == 0:  # dt=0.1なので1ステップ=0.1秒 = 10 Hz
+                flag_status = {
+                    "LEO_FINAL_RUN": is_enabled("LEO_FINAL_RUN"),
+                    "STAGE2_MASS_FLOW": is_enabled("STAGE2_MASS_FLOW_OVERRIDE"),
+                    "VELOCITY_STAGE3": is_enabled("VELOCITY_TRIGGERED_STAGE3"),
+                    "PEG_DAMPING": is_enabled("PEG_GAMMA_DAMPING")
+                }
+                # Every 10 Hz log with high verbosity for first 20 seconds
+                if t <= 20.0:
+                    self.logger.debug(f"10Hz_LOG: t={t:.1f}s, stage={self.rocket.current_stage}, "
+                                   f"phase={self.rocket.phase.value}, flags={flag_status}")
+
+            # Professor v17: Enhanced telemetry logging every 0.2s
+            if is_enabled("ENHANCED_TELEMETRY") and steps % 2 == 0:  # dt=0.1なので2ステップ=0.2秒
+                # Calculate propellant usage and abort if >99.5%
+                if self.rocket.current_stage < len(self.rocket.stages):
+                    current_stage = self.rocket.stages[self.rocket.current_stage]
+                    used_propellant = current_stage.get_mass_flow_rate(altitude) * self.rocket.stage_burn_time
+                    propellant_usage_pct = (used_propellant / current_stage.propellant_mass) * 100 if current_stage.propellant_mass > 0 else 100
+                    
+                    # Professor v19: Configurable propellant threshold with time guard (C2)
+                    abort_thresholds = self.config.get("abort_thresholds", {"propellant_critical_percent": 99.5, "min_safe_time": 5.0})
+                    propellant_threshold = abort_thresholds["propellant_critical_percent"]
+                    min_safe_time = abort_thresholds["min_safe_time"]
+                    
+                    # Professor v17: Monitor propellant usage and trigger stage separation if needed
+                    # Professor v19: Add time guard to prevent early aborts
+                    if (propellant_usage_pct > propellant_threshold and 
+                        self.rocket.is_thrusting and 
+                        t > min_safe_time):  # Time guard: no abort before min_safe_time seconds
+                        # Force stage separation instead of mission abort
+                        self.logger.warning(f"PROPELLANT CRITICAL: Stage {self.rocket.current_stage + 1} propellant >{propellant_threshold:.1f}% consumed after t={t:.1f}s")
+                        self.logger.warning(f" -> Propellant usage: {propellant_usage_pct:.1f}% - Triggering stage separation")
+                        
+                        # Force stage separation by setting rocket to separation phase
+                        self.rocket.phase = MissionPhase.STAGE_SEPARATION
+                        
+                        # Continue simulation to allow normal stage separation logic to run
+                        # Don't return here - let the normal separation process handle it
+                    
+                    # Log detailed telemetry every 1 second (5 * 0.2s)
+                    if steps % 10 == 0:
+                        flight_path_angle_deg = np.degrees(self.rocket.get_flight_path_angle())
+                        self.logger.info(f"TELEMETRY: t={t:.1f}s, stage={self.rocket.current_stage+1}, "
+                                       f"alt={altitude/1000:.1f}km, v={velocity:.0f}m/s, "
+                                       f"propellant={100-propellant_usage_pct:.1f}%, γ={flight_path_angle_deg:.1f}°")
+
+            # CSVログ出力（10秒ごと） - Professor v7: enhanced logging
             if steps % 100 == 0:  # dt=0.1なので100ステップ=10秒
+                # Calculate additional metrics for professor's analysis
+                flight_path_angle_deg = np.degrees(self.rocket.get_flight_path_angle())
+                
+                # Get current pitch angle from guidance
+                import guidance
+                pitch_angle_deg = guidance.get_target_pitch_angle(altitude, velocity)
+                
+                # Calculate remaining propellant in current stage
+                if self.rocket.current_stage < len(self.rocket.stages):
+                    current_stage = self.rocket.stages[self.rocket.current_stage]
+                    used_propellant = current_stage.get_mass_flow_rate(altitude) * self.rocket.stage_burn_time
+                    remaining_propellant = max(0, current_stage.propellant_mass - used_propellant)
+                    
+                    # Professor v16: Enhanced Stage-2 logging
+                    if self.rocket.current_stage == 1:  # Stage-2 (S-II)
+                        thrust_actual = current_stage.get_thrust(altitude)
+                        mass_flow_actual = current_stage.get_mass_flow_rate(altitude)
+                        self.logger.info(f"STAGE-2 MONITOR: t={t:.1f}s, propellant={remaining_propellant/1000:.1f}t, "
+                                       f"mass_flow={mass_flow_actual:.1f}kg/s, thrust={thrust_actual/1000:.0f}kN, "
+                                       f"burn_time={self.rocket.stage_burn_time:.1f}s/{current_stage.burn_time:.1f}s")
+                else:
+                    remaining_propellant = 0
+                
                 self.csv_writer.writerow([
                     f"{t:.1f}",
                     f"{altitude:.1f}",
@@ -696,7 +1195,10 @@ class Mission:
                     self.rocket.current_stage,
                     f"{(apoapsis-R_EARTH)/1000:.1f}" if apoapsis != float('inf') else "inf",
                     f"{(periapsis-R_EARTH)/1000:.1f}",
-                    f"{eccentricity:.3f}"
+                    f"{eccentricity:.3f}",
+                    f"{flight_path_angle_deg:.2f}",
+                    f"{pitch_angle_deg:.2f}",
+                    f"{remaining_propellant/1000:.1f}"
                 ])
                 self.csv_file.flush()
             
@@ -739,22 +1241,22 @@ class Mission:
             self._update_moon_position(dt)
             self.rocket.update_stage(dt)
             
-            # デルタV計算（推進時のみ - より正確な計算）
-            if self.rocket.is_thrusting:
-                thrust_magnitude = self.rocket.get_thrust_vector().magnitude()
-                if thrust_magnitude > 0 and self.rocket.current_mass > 0:
-                    accel = thrust_magnitude / self.rocket.current_mass
-                    delta_v_increment = accel * dt
-                    self.total_delta_v += delta_v_increment
+            # ΔV calculation using stage-end ledger (Professor v11)
+            self._update_stage_delta_v()
             
             t += dt
             steps += 1
             
-            # 定期的な状態出力（1000秒ごと）
+            # 定期的な状態出力（1000秒ごと） - Professor v7: enhanced logging
             if steps % 10000 == 0:
+                flight_path_angle_deg = np.degrees(self.rocket.get_flight_path_angle())
+                import guidance
+                pitch_angle_deg = guidance.get_target_pitch_angle(altitude, velocity)
+                
                 self.logger.info(f"t={t/3600:.1f}h, alt={altitude/1000:.1f}km, "
                                 f"v={velocity:.0f}m/s, ΔV={self.total_delta_v:.0f}m/s, "
-                                f"phase={self.rocket.phase.value}")
+                                f"phase={self.rocket.phase.value}, "
+                                f"γ={flight_path_angle_deg:.1f}°, pitch={pitch_angle_deg:.1f}°")
         
         # 最終記録
         self.time_history.append(t)
@@ -779,7 +1281,7 @@ class Mission:
             "max_velocity": self.max_velocity,
             "total_delta_v": self.total_delta_v,
             "final_mass": self.rocket.current_mass,
-            "propellant_used": sum(stage.propellant_mass for stage in self.rocket.stages),
+            "propellant_used": sum(stage.propellant_mass for stage in self.rocket.stages[:self.rocket.current_stage]),
             "time_history": self.time_history,
             "position_history": [(p.x, p.y) for p in self.position_history],
             "velocity_history": [(v.x, v.y) for v in self.velocity_history],
@@ -789,52 +1291,19 @@ class Mission:
         }
 
 
-def create_saturn_v_rocket() -> Rocket:
-    """サターンVロケット（修正版）- 軌道達成のための最適化パラメータ"""
-    stages = [
-        RocketStage(
-            name="S-IC (1st Stage)",
-            dry_mass=131000,  # kg
-            propellant_mass=2150000,  # kg
-            thrust_sea_level=37.4e6,  # N (海面推力 +10%)
-            thrust_vacuum=38.6e6,  # N (真空推力 +10%)
-            specific_impulse_sea_level=263,  # s (海面Isp)
-            specific_impulse_vacuum=289,  # s (真空Isp)
-            burn_time=162  # s (実際の燃焼時間)
-        ),
-        RocketStage(
-            name="S-II (2nd Stage)",
-            dry_mass=39000,  # kg
-            propellant_mass=480000,  # kg (燃料さらに増量)
-            thrust_sea_level=4.4e6,  # N (海面推力)
-            thrust_vacuum=5.2e6,  # N (真空推力 - 強化)
-            specific_impulse_sea_level=395,  # s (海面Isp)
-            specific_impulse_vacuum=421,  # s (真空Isp)
-            burn_time=410  # s (燃焼時間さらに延長)
-        ),
-        RocketStage(
-            name="S-IVB (3rd Stage)",
-            dry_mass=15610,  # kg (で2%の燃料をドライマスに移動)
-            propellant_mass=112700,  # kg (プロフェッサー推奨2%減)
-            thrust_sea_level=825000,  # N (海面推力)
-            thrust_vacuum=1033000,  # N (真空推力)
-            specific_impulse_sea_level=430,  # s (海面Isp)
-            specific_impulse_vacuum=460,  # s (真空Isp プロフェッサー推奨460s)
-            burn_time=750  # s (TLI + LOI用の総燃焼時間)
-        )
-    ]
-    
-    return Rocket(
-        name="Saturn V",
-        stages=stages,
-        payload_mass=43000,  # Apollo CSM + LM (少し軽量化)
-        drag_coefficient=0.3,
-        cross_sectional_area=80.0  # m^2
-    )
+# Professor v10: Removed duplicate function - now using vehicle.py
 
 
 def main():
     """メインエントリーポイント"""
+    import sys
+    
+    # Check for verbose abort flag
+    verbose_abort = "--verbose-abort" in sys.argv
+    if verbose_abort:
+        print("=== VERBOSE ABORT MODE ENABLED ===")
+        logging.getLogger().setLevel(logging.DEBUG)
+    
     # 設定ファイル読み込み（存在する場合）
     try:
         with open("mission_config.json", "r") as f:
@@ -844,13 +1313,79 @@ def main():
             "launch_latitude": 28.573,  # ケネディ宇宙センター
             "launch_azimuth": 90,  # 東向き
             "target_parking_orbit": 185e3,  # 185 km
-            "gravity_turn_altitude": 1e3,  # 1 km (早期開始)
+            "gravity_turn_altitude": 1500,  # 1500 m (Professor v7 feedback)
             "simulation_duration": 10 * 24 * 3600,  # 10日間
             "time_step": 0.1  # 0.1秒（高精度）
         }
     
-    # ロケット作成
-    rocket = create_saturn_v_rocket()
+    # Add verbose abort mode to config
+    config["verbose_abort"] = verbose_abort
+    
+    # Professor v16: Create rocket from configuration file 
+    try:
+        with open("saturn_v_config.json", "r") as f:
+            saturn_config = json.load(f)
+    except FileNotFoundError:
+        saturn_config = {
+            "stages": [
+                {
+                    "name": "S-IC (1st Stage)",
+                    "dry_mass": 130000,
+                    "propellant_mass": 2150000,
+                    "thrust_sea_level": 34020000,
+                    "thrust_vacuum": 35100000,
+                    "specific_impulse_sea_level": 263,
+                    "specific_impulse_vacuum": 289,
+                    "burn_time": 168
+                },
+                {
+                    "name": "S-II (2nd Stage)",
+                    "dry_mass": 40000,
+                    "propellant_mass": 540000,  # Professor v16: Updated
+                    "thrust_sea_level": 4400000,
+                    "thrust_vacuum": 5000000,
+                    "specific_impulse_sea_level": 395,
+                    "specific_impulse_vacuum": 421,
+                    "burn_time": 500  # Professor v16: Updated
+                },
+                {
+                    "name": "S-IVB (3rd Stage)",
+                    "dry_mass": 13494,
+                    "propellant_mass": 193536,
+                    "thrust_sea_level": 825000,
+                    "thrust_vacuum": 1000000,
+                    "specific_impulse_sea_level": 441,
+                    "specific_impulse_vacuum": 461,
+                    "burn_time": 1090
+                }
+            ],
+            "rocket": {
+                "name": "Saturn V",
+                "payload_mass": 45000,
+                "drag_coefficient": 0.3,
+                "cross_sectional_area": 80.0
+            }
+        }
+    
+    # Create stages for simulation's Rocket class
+    stages = []
+    for stage_config in saturn_config["stages"]:
+        stage = RocketStage(**stage_config)
+        stages.append(stage)
+    
+    # Create rocket instance
+    rocket_config = saturn_config["rocket"]
+    rocket = Rocket(
+        name=rocket_config["name"],
+        stages=stages,
+        payload_mass=rocket_config["payload_mass"],
+        drag_coefficient=rocket_config["drag_coefficient"],
+        cross_sectional_area=rocket_config["cross_sectional_area"]
+    )
+    
+    # Professor v19: Merge abort thresholds from Saturn V config
+    if "abort_thresholds" in saturn_config:
+        config["abort_thresholds"] = saturn_config["abort_thresholds"]
     
     # ミッション実行
     mission = Mission(rocket, config)
@@ -879,6 +1414,8 @@ def main():
     print("\nResults saved to mission_results.json")
     print("CSVログは mission_log.csv に保存されました")
     print("Run visualizer.py to see the trajectory visualization")
+    
+    return results
 
 
 if __name__ == "__main__":

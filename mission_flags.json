@@ -1,0 +1,11 @@
+{
+  "LEO_FINAL_RUN": true,
+  "STAGE2_MASS_FLOW_OVERRIDE": true,
+  "PEG_GAMMA_DAMPING": true,
+  "VELOCITY_TRIGGERED_STAGE3": true,
+  "ENHANCED_TELEMETRY": true,
+  "PITCH_OPTIMIZATION": false,
+  "MONTE_CARLO_MODE": false,
+  "DEBUG_MODE": false,
+  "SAFE_MODE": true
+}

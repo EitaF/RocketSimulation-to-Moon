@@ -1,49 +1,119 @@
-# RocketSimulation-to-Moon
-Simulation to launch a rocket to the moon from the Earth.
+# Earth-to-Moon Rocket Flight Simulation
 
-# 月面着陸までの全6フェーズ
+A physics-accurate rocket flight simulation implementing multi-stage rocket dynamics, orbital mechanics, and guidance systems for Earth-to-Moon missions.
 
-## フェーズ1：打ち上げ・上昇 (Launch and Ascent)
-* **何をするか？**
-    ロケットを地上から発射し、地球の大気圏を突破して、宇宙空間（高度100km以上）まで上昇します。途中で不要になったロケット（第1段、第2段など）を切り離していきます。
-* **なぜ必要か？**
-    地球の強力な重力と、濃密な大気の抵抗に打ち勝つために、ミッション中で最大のエネルギー（推力）を必要とするフェーズです。ここを乗り越えないと宇宙には到達できません。
+## Features
 
-## フェーズ2：地球待機軌道への投入 (Earth Parking Orbit)
-* **何をするか？**
-    まずは月へ直接向かわず、LEO（低軌道）など、地球を周回する安定した軌道（待機軌道）に一度入ります。
-* **なぜ必要か？**
-    月は地球の周りを公転しているため、常に位置が変わります。最適なタイミングで月へ出発するために、この待機軌道で**「狙いを定める」時間と位置を確保**します。機器の最終チェックを行う重要な準備期間でもあります。
+- **Multi-stage rocket simulation** with realistic propellant consumption
+- **Orbital mechanics** with accurate gravitational modeling
+- **Atmospheric effects** including drag and density variation
+- **Advanced guidance systems** including gravity turn and circularization
+- **Real-time telemetry** and mission phase tracking
+- **LEO insertion optimization** with precise apoapsis timing and prograde thrust vectoring
 
-## フェーズ3：月遷移軌道への投入 (Trans-Lunar Injection - TLI)
-* **何をするか？**
-    待機軌道上の最適なタイミングで、再度エンジンを数分間噴射します。これにより一気に加速し、地球の重力を振り切って、**月に向かうための長い楕円軌道（遷移軌道）**に乗ります。
-* **なぜ必要か？**
-    月までの約38万kmの旅を始めるための、最も重要な加速です。この噴射の精度が、後の航行の成否を大きく左右します。これが月への旅の事実上のスタートです。
+## Core Components
 
-## フェーズ4：慣性航行 (Coasting / Cruise)
-* **何をするか？**
-    TLIの後はエンジンを停止し、慣性の法則に従って月に向かって飛行します。この航行は数日間続きます。途中、軌道のわずかなズレを補正するために、小型スラスターで数回の軌道微修正（TCM: Trajectory Correction Maneuver）を行います。
-* **なぜ必要か？**
-    一度軌道に乗れば、あとは地球と月の引力によって自然に航行できるため、燃料を大幅に節約できます。長旅の間の小さなズレを放置すると、月到着時に大きな誤差になるため、微修正が不可欠です。
+### Main Simulation Engine
+- `rocket_simulation_main.py` - Primary simulation engine with mission phases
+- `vehicle.py` - Rocket and stage definitions
+- `guidance.py` - Guidance and control systems
 
-## フェーズ5：月周回軌道への投入 (Lunar Orbit Insertion - LOI)
-* **何をするか？**
-    月が近づいてきたら、進行方向とは逆向きにエンジンを噴射して減速します。これにより、月の重力に捕らえられ、月を周回する安定した軌道に入ります。
-* **なぜ必要か？**
-    もし減速しないと、探査機は月の重力でさらに加速し、月の横を通り過ぎてしまいます（スイングバイ）。安全に着陸準備を行うために、まずは月の「待機軌道」に入る必要があります。
+### Advanced Systems
+- `circularize.py` - Circularization burn optimization
+- `peg.py` - Powered Explicit Guidance (PEG) implementation
+- `config_flags.py` - Feature flag system for testing configurations
 
-## フェーズ6：降下と着陸 (Descent and Landing)
-* **何をするか？**
-    月周回軌道から着陸機を分離し、降下を開始します。逆噴射を断続的に行い、速度と高度を段階的に落としていきます。最終的にはセンサーで地面との距離を測りながら、垂直にゆっくりと軟着陸（ソフトランディング）します。
-* **なぜ必要か？**
-    月には**大気がほとんどないため、パラシュートを使った減速ができません。**そのため、全ての減速と姿勢制御をロケット噴射のみで行う必要があり、全フェーズの中で最も精密な制御が求められる、最難関のフェーズです。
+### Configuration
+- `saturn_v_config.json` - Saturn V rocket configuration
+- `mission_config.json` - Mission parameters and settings
+- `mission_flags.json` - Runtime feature flags
+
+### Visualization
+- `rocket_visualizer.py` - Real-time mission visualization
+- `trajectory_visualizer.py` - Trajectory plotting and analysis
+
+## Quick Start
+
+1. **Basic simulation run:**
+   ```bash
+   python3 rocket_simulation_main.py
+   ```
+
+2. **With verbose abort debugging:**
+   ```bash
+   python3 rocket_simulation_main.py --verbose-abort
+   ```
+
+3. **View trajectory:**
+   ```bash
+   python3 trajectory_visualizer.py
+   ```
+
+## Mission Phases
+
+The simulation models the complete mission profile:
+
+1. **LAUNCH** - Initial ascent from launch pad
+2. **GRAVITY_TURN** - Gradual pitch-over maneuver
+3. **STAGE_SEPARATION** - Multi-stage separation events
+4. **APOAPSIS_RAISE** - Raising apoapsis altitude
+5. **COAST_TO_APOAPSIS** - Coasting to optimal burn point
+6. **CIRCULARIZATION** - Circularization burn at apoapsis
+7. **LEO** - Low Earth Orbit achieved
+8. **TLI_BURN** - Trans-Lunar Injection (future)
+
+## Key Improvements (Actions A1, A2, A3)
+
+Recent enhancements based on professor feedback:
+
+- **A1: Enhanced Circularization Control** - Proper periapsis monitoring and success conditions
+- **A2: Precise Burn Timing** - Circularization burns triggered at exact apoapsis (γ ≈ 0°)
+- **A3: Optimal Thrust Vectoring** - Prograde thrust alignment for maximum efficiency
+
+## Output Files
+
+The simulation generates:
+- `mission_results.json` - Complete mission data
+- `mission_log.csv` - Timestamped telemetry data
+- Trajectory plots (PNG format)
+
+## Configuration
+
+### Vehicle Configuration (`saturn_v_config.json`)
+Modify rocket stages, propellant masses, and performance parameters.
+
+### Mission Settings (`mission_config.json`)
+Adjust launch parameters, target orbits, and simulation settings.
+
+### Feature Flags (`mission_flags.json`)
+Enable/disable experimental features and guidance modes.
+
+## Dependencies
+
+- Python 3.x
+- NumPy
+- Matplotlib (for visualization)
+- JSON (standard library)
+
+## Documentation
+
+- `usage_example.md` - Detailed usage examples
+- `Implementation_Report_A1_A2_A3.md` - Latest implementation report
+- `Feedback/` - Professor feedback and requirements
+
+## Development Notes
+
+The simulation uses:
+- **RK4 integration** for numerical accuracy
+- **Patched-conic approximation** for Earth-Moon gravity
+- **Realistic atmospheric models** with exponential density decay
+- **Feature flag system** for testing new capabilities
+
+## Status
+
+**Current Status**: LEO insertion logic complete and tested
+**Next Phase**: Vehicle performance optimization for stable orbit achievement
 
 ---
-### 全フェーズのまとめ
-1.  **打ち上げ**：地球の重力と大気から脱出する。
-2.  **地球待機軌道**：月へ向かうタイミングを調整する。
-3.  **月遷移軌道**：月へ向かう軌道に乗り、旅を開始する。
-4.  **慣性航行**：燃料を節約しながら月へ向かい、軌道を微修正する。
-5.  **月周回軌道**：月の重力に捕まり、着陸の準備をする。
-6.  **降下・着陸**：逆噴射だけで減速し、月面に降り立つ。
+
+**Note**: This simulation is designed for educational and research purposes, implementing realistic aerospace engineering principles for rocket flight dynamics and orbital mechanics.

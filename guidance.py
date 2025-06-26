@@ -33,31 +33,36 @@ def get_target_pitch_angle(altitude: float, velocity: float, time: float = 0) ->
         else:
             return FINAL_PITCH
     else:
-        # Professor v19: Improved standard gravity turn for better horizontal velocity
+        # Professor v22: Optimized gravity turn to reach 6 km/s horizontal at 100km
         if altitude < 500:  # Below 500m - stay vertical for clearance
             return 90.0
-        elif altitude < 2000:  # 500m-2km - start gravity turn more aggressively
-            return 90.0 - (altitude - 500) / 100  # 10° per km decrease (was 3°)
-        elif altitude < 15000:  # 2-15km - aggressive turn to build horizontal velocity
-            return max(30, 75.0 - (altitude - 2000) / 400)  # From 75° at 2km to 30° at 15km
-        elif altitude < 50000:  # 15-50km - continue toward horizontal
-            return max(15, 30.0 - (altitude - 15000) / 2500)  # From 30° at 15km to 15° at 50km
-        elif velocity < 3000:  # Low velocity - maintain some vertical component
-            return max(10, 25.0 - altitude / 4000)
-        elif velocity < 6000:  # Medium velocity - more horizontal
-            return max(5, 15.0 - altitude / 8000)
-        else:  # High velocity - nearly horizontal for orbital insertion
-            return max(2, 8.0 - altitude / 20000)
+        elif altitude < 1500:  # 500m-1.5km - gradual start
+            return 90.0 - (altitude - 500) / 200  # 5° per km decrease
+        elif altitude < 8000:  # 1.5-8km - aggressive turn for horizontal velocity
+            return max(45, 85.0 - (altitude - 1500) / 162.5)  # From 85° at 1.5km to 45° at 8km
+        elif altitude < 25000:  # 8-25km - continue building horizontal velocity
+            return max(20, 45.0 - (altitude - 8000) / 680)  # From 45° at 8km to 20° at 25km
+        elif altitude < 60000:  # 25-60km - approach horizontal for orbital velocity
+            return max(8, 20.0 - (altitude - 25000) / 2917)  # From 20° at 25km to 8° at 60km
+        elif velocity < 4000:  # Low velocity - maintain vertical component
+            return max(6, 12.0 - altitude / 8333)
+        elif velocity < 7000:  # Medium-high velocity - more horizontal
+            return max(3, 8.0 - altitude / 12500)
+        else:  # High velocity - nearly horizontal for LEO insertion
+            return max(1, 4.0 - altitude / 25000)
 
-def compute_thrust_direction(rocket, thrust_magnitude: float) -> Vector3:
+def compute_thrust_direction(mission, t: float, thrust_magnitude: float) -> Vector3:
     """
     Compute thrust direction vector based on current flight state
     Professor v17: Enhanced with PEG guidance integration
     Action A3: Added prograde thrust for circularization
     """
-    from rocket_simulation_main import MissionPhase
+    from vehicle import MissionPhase
     
-    if not rocket.is_thrusting:
+    rocket = mission.rocket
+    altitude = mission.get_altitude()
+
+    if not rocket.is_thrusting(t, altitude):
         return Vector3(0, 0)
     
     # Action A3: Add dedicated logic for circularization phase
@@ -72,8 +77,8 @@ def compute_thrust_direction(rocket, thrust_magnitude: float) -> Vector3:
             return Vector3(0, 0, 0)
 
     # --- Existing Guidance Logic for other phases ---
-    altitude = rocket.get_altitude()
     velocity = rocket.velocity.magnitude()
+    stage_elapsed_time = t - rocket.stage_start_time
     
     # Use PEG guidance for orbital insertion phases
     if (is_enabled("PEG_GAMMA_DAMPING") and 
@@ -108,7 +113,7 @@ def compute_thrust_direction(rocket, thrust_magnitude: float) -> Vector3:
             pitch_deg = get_target_pitch_angle(altitude, velocity, rocket.stage_burn_time)
     else:
         # Standard guidance for early flight
-        pitch_deg = get_target_pitch_angle(altitude, velocity, rocket.stage_burn_time)
+        pitch_deg = get_target_pitch_angle(altitude, velocity, stage_elapsed_time)
     
     # Convert to radians and calculate thrust vector
     pitch_rad = np.radians(pitch_deg)

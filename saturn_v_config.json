@@ -13,28 +13,28 @@
     {
       "name": "S-II (2nd Stage)",
       "dry_mass": 40000,
-      "propellant_mass": 540000,
+      "propellant_mass": 900000,
       "thrust_sea_level": 4400000,
       "thrust_vacuum": 5000000,
       "specific_impulse_sea_level": 395,
       "specific_impulse_vacuum": 421,
-      "burn_time": 480
+      "burn_time": 800
     },
     {
       "name": "S-IVB (3rd Stage)",
       "dry_mass": 13494,
-      "propellant_mass": 193536,
+      "propellant_mass": 280000,
       "thrust_sea_level": 825000,
       "thrust_vacuum": 1000000,
       "specific_impulse_sea_level": 441,
       "specific_impulse_vacuum": 461,
-      "burn_time": 1090
+      "burn_time": 1400
     }
   ],
   "rocket": {
     "name": "Saturn V",
     "payload_mass": 45000,
-    "drag_coefficient": 0.3,
+    "drag_coefficient": 0.25,
     "cross_sectional_area": 80.0
   },
   "simulation": {

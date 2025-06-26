@@ -3,7 +3,7 @@
   "launch_site": "Kennedy Space Center",
   "launch_latitude": 28.573,
   "launch_azimuth": 72,
-  "target_parking_orbit": 185000,
+  "target_parking_orbit": 200000,
   "gravity_turn_altitude": 1500,
   "simulation_duration": 14400,
   "time_step": 0.1,

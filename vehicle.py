@@ -120,6 +120,17 @@ class RocketStage:
         isp = self.get_specific_impulse(altitude)
         return thrust / (isp * STANDARD_GRAVITY)
 
+    def get_mass_at_time(self, burn_duration: float, altitude: float) -> float:
+        """Gets the mass of the stage after a given burn duration."""
+        if burn_duration <= 0:
+            return self.total_mass
+        if burn_duration >= self.burn_time:
+            return self.dry_mass
+        
+        mass_flow = self.get_mass_flow_rate(altitude)
+        propellant_consumed = mass_flow * burn_duration
+        return self.total_mass - propellant_consumed
+
 
 @dataclass
 class Rocket:
@@ -134,10 +145,10 @@ class Rocket:
     @property
     def total_mass(self) -> float:
         """Calculate total rocket mass including all remaining stages and payload"""
-        remaining_mass = self.payload_mass
-        for i in range(self.current_stage, len(self.stages)):
-            remaining_mass += self.stages[i].total_mass
-        return remaining_mass
+        # This property should not be used for time-dependent mass calculations
+        # during the simulation. It is primarily for initialization.
+        # The time-dependent mass is calculated in the Mission class.
+        return self.payload_mass + sum(s.total_mass for s in self.stages)
     
     @property
     def current_stage_obj(self) -> Optional[RocketStage]:
@@ -156,33 +167,17 @@ class Rocket:
     def get_mass_flow_rate(self, altitude: float) -> float:
         """Get current mass flow rate [kg/s]"""
         stage = self.current_stage_obj
-        if stage and stage.propellant_mass > 0:
+        if stage and self.is_thrusting(0, altitude):
             return stage.get_mass_flow_rate(altitude)
         return 0.0
-    
-    def is_stage_complete(self, current_time: float, dynamic_pressure: float = 0, altitude: float = 0) -> bool:
-        """
-        Check if current stage burn is complete
-        Professor v15: Stage-1 cutoff requires altitude > 45km AND dynamic pressure < 50 kPa
-        """
+
+    def is_thrusting(self, current_time: float, altitude: float) -> bool:
         stage = self.current_stage_obj
         if not stage:
-            return True
+            return False
         
         stage_elapsed_time = current_time - self.stage_start_time
-        propellant_remaining_pct = stage.propellant_mass / (stage.propellant_mass + 1e-6) * 100
-        
-        # Professor v15: Stage-1 specific logic with altitude requirement
-        if self.current_stage == 0:  # Stage 1 (S-IC)
-            # Stage-1 cutoff when: (dynamic pressure < 50 kPa AND altitude > 45km AND time > 120s) OR propellant < 1%
-            altitude_condition = altitude > 45000  # Professor v15: Must reach 45km altitude
-            dynamic_pressure_condition = (dynamic_pressure < 50000 and stage_elapsed_time > 120 and altitude_condition)
-            propellant_condition = (propellant_remaining_pct < 1.0 or stage.propellant_mass <= 0.1)
-            return dynamic_pressure_condition or propellant_condition
-        else:
-            # Other stages: conventional logic
-            return (stage.propellant_mass <= 0.1 or 
-                   stage_elapsed_time >= stage.burn_time)
+        return stage_elapsed_time < stage.burn_time and stage.propellant_mass > 0
     
     def separate_stage(self, current_time: float) -> bool:
         """Separate current stage and activate next stage"""

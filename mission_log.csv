@@ -1,2 +1,1 @@
-time,altitude,velocity,mass,delta_v,phase,stage,apoapsis,periapsis,eccentricity,flight_path_angle,pitch_angle,remaining_propellant
-0.0,0.0,406.9,3472030.0,0.0,launch,0,0.0,-6362.6,0.997,-0.00,90.00,2150.0
+time,altitude,velocity,mass,delta_v,phase,stage,apoapsis,periapsis,eccentricity,flight_path_angle,pitch_angle,remaining_propellant,dynamic_pressure,max_dynamic_pressure

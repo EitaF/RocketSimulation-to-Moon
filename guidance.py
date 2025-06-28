@@ -1,16 +1,75 @@
 """
 Guidance and Control Module for Saturn V Simulation
 Professor v17: Enhanced guidance with feature flag support
+Professor v23: Added pitch rate limiting for Max-Q protection
 """
 
 import numpy as np
 from vehicle import Vector3
 from config_flags import is_enabled
 
+# Global state for pitch rate limiting
+_last_pitch_angle = None
+_last_time = None
+MAX_PITCH_RATE = 0.7  # degrees per second (Professor v23 requirement)
+
+# Professor v23: Global guidance timing offset for Monte Carlo variation
+_guidance_timing_offset = 0.0
+
+def set_guidance_timing_offset(offset: float):
+    """Set guidance timing offset for Monte Carlo variation"""
+    global _guidance_timing_offset
+    _guidance_timing_offset = offset
+
+def reset_guidance_state():
+    """Reset guidance state for new simulation"""
+    global _last_pitch_angle, _last_time, _guidance_timing_offset
+    _last_pitch_angle = None
+    _last_time = None
+    _guidance_timing_offset = 0.0
+
+def apply_pitch_rate_limiting(target_pitch: float, current_time: float, altitude: float) -> float:
+    """
+    Apply pitch rate limiting to prevent aggressive maneuvers during Max-Q
+    Professor v23: Limit pitch rate to 0.7°/s below 20km altitude
+    """
+    global _last_pitch_angle, _last_time
+    
+    # Initialize on first call
+    if _last_pitch_angle is None or _last_time is None:
+        _last_pitch_angle = target_pitch
+        _last_time = current_time
+        return target_pitch
+    
+    dt = current_time - _last_time
+    if dt <= 0:
+        return _last_pitch_angle
+    
+    # Calculate maximum allowed pitch change
+    max_pitch_change = MAX_PITCH_RATE * dt
+    
+    # Apply stricter limiting below 20km (Max-Q region)
+    if altitude < 20000:
+        max_pitch_change *= 0.5  # Even more conservative in thick atmosphere
+    
+    # Limit the pitch change
+    pitch_change = target_pitch - _last_pitch_angle
+    if abs(pitch_change) > max_pitch_change:
+        limited_pitch = _last_pitch_angle + np.sign(pitch_change) * max_pitch_change
+    else:
+        limited_pitch = target_pitch
+    
+    # Update state
+    _last_pitch_angle = limited_pitch
+    _last_time = current_time
+    
+    return limited_pitch
+
 def get_target_pitch_angle(altitude: float, velocity: float, time: float = 0) -> float:
     """
     Calculate target pitch angle based on flight phase
     Professor v17: Enhanced with optimized pitch schedule
+    Professor v23: Smoothed profile to reduce Max-Q loads
     """
     if is_enabled("PITCH_OPTIMIZATION"):
         # Use optimized pitch schedule from LHS sweep results
@@ -33,15 +92,15 @@ def get_target_pitch_angle(altitude: float, velocity: float, time: float = 0) ->
         else:
             return FINAL_PITCH
     else:
-        # Professor v22: Optimized gravity turn to reach 6 km/s horizontal at 100km
+        # Professor v23: Smoothed gravity turn to prevent Max-Q violations
         if altitude < 500:  # Below 500m - stay vertical for clearance
             return 90.0
-        elif altitude < 1500:  # 500m-1.5km - gradual start
-            return 90.0 - (altitude - 500) / 200  # 5° per km decrease
-        elif altitude < 8000:  # 1.5-8km - aggressive turn for horizontal velocity
-            return max(45, 85.0 - (altitude - 1500) / 162.5)  # From 85° at 1.5km to 45° at 8km
-        elif altitude < 25000:  # 8-25km - continue building horizontal velocity
-            return max(20, 45.0 - (altitude - 8000) / 680)  # From 45° at 8km to 20° at 25km
+        elif altitude < 2000:  # 500m-2km - very gradual start to avoid Max-Q spike
+            return 90.0 - (altitude - 500) / 300  # 3.33° per km decrease (gentler)
+        elif altitude < 12000:  # 2-12km - delayed turn past Max-Q region
+            return max(45, 85.0 - (altitude - 2000) / 250)  # From 85° at 2km to 45° at 12km
+        elif altitude < 25000:  # 12-25km - continue building horizontal velocity
+            return max(20, 45.0 - (altitude - 12000) / 520)  # From 45° at 12km to 20° at 25km
         elif altitude < 60000:  # 25-60km - approach horizontal for orbital velocity
             return max(8, 20.0 - (altitude - 25000) / 2917)  # From 20° at 25km to 8° at 60km
         elif velocity < 4000:  # Low velocity - maintain vertical component
@@ -113,7 +172,12 @@ def compute_thrust_direction(mission, t: float, thrust_magnitude: float) -> Vect
             pitch_deg = get_target_pitch_angle(altitude, velocity, rocket.stage_burn_time)
     else:
         # Standard guidance for early flight
-        pitch_deg = get_target_pitch_angle(altitude, velocity, stage_elapsed_time)
+        # Professor v23: Apply guidance timing offset for Monte Carlo variation
+        adjusted_stage_time = stage_elapsed_time + _guidance_timing_offset
+        pitch_deg = get_target_pitch_angle(altitude, velocity, adjusted_stage_time)
+    
+    # Professor v23: Apply pitch rate limiting to prevent Max-Q violations
+    pitch_deg = apply_pitch_rate_limiting(pitch_deg, t, altitude)
     
     # Convert to radians and calculate thrust vector
     pitch_rad = np.radians(pitch_deg)

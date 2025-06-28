@@ -1,6 +1,7 @@
 """
 Monte Carlo Simulation for LEO Success Rate Validation
 Professor v22: 500-case simulation for ≥95% LEO success validation
+Professor v23: Extended to 1000 samples with guidance timing variation
 """
 
 import numpy as np
@@ -20,7 +21,7 @@ class MonteCarloResults:
     failed_runs: List[Dict]
     performance_stats: Dict
 
-def run_monte_carlo_simulation(num_runs: int = 500) -> MonteCarloResults:
+def run_monte_carlo_simulation(num_runs: int = 1000) -> MonteCarloResults:
     """
     Run Monte Carlo simulation with parameter variations
     Vary initial conditions within realistic bounds
@@ -38,13 +39,15 @@ def run_monte_carlo_simulation(num_runs: int = 500) -> MonteCarloResults:
     }
     
     # Parameter variation ranges (±5% for most parameters)
+    # Professor v23: Added guidance timing variation
     variations = {
         'launch_azimuth_range': (-2, 2),  # ±2 degrees
         'propellant_mass_variation': (0.98, 1.02),  # ±2%
         'thrust_variation': (0.97, 1.03),  # ±3%
         'drag_coefficient_variation': (0.95, 1.05),  # ±5%
         'atmospheric_density_variation': (0.9, 1.1),  # ±10%
-        'initial_mass_variation': (0.99, 1.01)  # ±1%
+        'initial_mass_variation': (0.99, 1.01),  # ±1%
+        'guidance_timing_variation': (-0.5, 0.5)  # ±0.5 seconds
     }
     
     for run_id in range(num_runs):
@@ -75,6 +78,9 @@ def run_monte_carlo_simulation(num_runs: int = 500) -> MonteCarloResults:
             # Apply drag coefficient variation
             saturn_config['rocket']['drag_coefficient'] *= drag_factor
             
+            # Professor v23: Apply guidance timing variation
+            guidance_timing_offset = np.random.uniform(*variations['guidance_timing_variation'])
+            
             # Save modified configs temporarily
             with open("temp_mission_config.json", "w") as f:
                 json.dump(config, f, indent=2)
@@ -83,6 +89,11 @@ def run_monte_carlo_simulation(num_runs: int = 500) -> MonteCarloResults:
             
             # Create rocket with modified config
             rocket = create_saturn_v_rocket("temp_saturn_config.json")
+            
+            # Professor v23: Apply guidance timing offset
+            import guidance
+            guidance.reset_guidance_state()
+            guidance.set_guidance_timing_offset(guidance_timing_offset)
             
             # Run simulation
             mission = rocket_simulation_main.Mission(rocket, config)

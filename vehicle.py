@@ -6,7 +6,7 @@ Professor v13: Remove duplicate definitions across modules
 
 import numpy as np
 import json
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import List, Optional
 from enum import Enum
 
@@ -141,6 +141,9 @@ class Rocket:
     cross_sectional_area: float  # [m^2]
     current_stage: int = 0
     stage_start_time: float = 0.0
+    phase: MissionPhase = MissionPhase.PRE_LAUNCH
+    position: Vector3 = field(default_factory=lambda: Vector3(0, 0, 0))
+    velocity: Vector3 = field(default_factory=lambda: Vector3(0, 0, 0))
     
     @property
     def total_mass(self) -> float:
@@ -186,6 +189,26 @@ class Rocket:
             self.stage_start_time = current_time
             return True
         return False
+    
+    def update_stage(self, dt: float):
+        """
+        Update stage burn time and handle automatic stage separation
+        Called every simulation time step to manage stage transitions
+        """
+        if not hasattr(self, 'stage_burn_time'):
+            self.stage_burn_time = 0.0
+        
+        # Update burn time for current stage
+        stage = self.current_stage_obj
+        if stage and self.is_thrusting(self.stage_burn_time + self.stage_start_time, 0):
+            self.stage_burn_time += dt
+            
+            # Check if stage should separate (burn time exceeded)
+            if self.stage_burn_time >= stage.burn_time:
+                if self.current_stage < len(self.stages) - 1:
+                    # Auto-separate to next stage
+                    self.separate_stage(self.stage_burn_time + self.stage_start_time)
+                    self.stage_burn_time = 0.0
 
 
 def calculate_burn_time(propellant_mass: float, thrust_vacuum: float, isp_vacuum: float) -> float:

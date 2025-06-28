@@ -121,7 +121,7 @@ class Mission:
         # CSVログ設定
         self.csv_file = open("mission_log.csv", "w", newline="")
         self.csv_writer = csv.writer(self.csv_file)
-        self.csv_writer.writerow(["time", "altitude", "velocity", "mass", "delta_v", "phase", "stage", "apoapsis", "periapsis", "eccentricity", "flight_path_angle", "pitch_angle", "remaining_propellant"])
+        self.csv_writer.writerow(["time", "altitude", "velocity", "mass", "delta_v", "phase", "stage", "apoapsis", "periapsis", "eccentricity", "flight_path_angle", "pitch_angle", "remaining_propellant", "dynamic_pressure", "max_dynamic_pressure"])
         
         # ロガー設定
         logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -505,8 +505,8 @@ class Mission:
 
         elif current_phase == MissionPhase.COAST_TO_APOAPSIS:
             # Action A2: Refine Burn Initiation Timing
-            flight_path_angle_deg = np.degrees(self.rocket.get_flight_path_angle())
-            apoapsis, periapsis, _ = self.rocket.get_orbital_elements()
+            flight_path_angle_deg = np.degrees(self.get_flight_path_angle())
+            apoapsis, periapsis, _ = self.get_orbital_elements()
 
             # The most efficient time to burn is exactly at apoapsis,
             # where the flight path angle is zero.
@@ -519,7 +519,7 @@ class Mission:
             if is_at_apoapsis and can_circularize:
                 self.rocket.phase = MissionPhase.CIRCULARIZATION
                 self.logger.info(f"APOAPSIS PASS. Initiating circularization burn.")
-                self.logger.info(f" -> Flight Path Angle: {flight_path_angle_deg:.3f} deg, Altitude: {self.rocket.get_altitude()/1000:.1f} km")
+                self.logger.info(f" -> Flight Path Angle: {flight_path_angle_deg:.3f} deg, Altitude: {self.get_altitude()/1000:.1f} km")
             elif not stage3_has_fuel and periapsis < (R_EARTH + 120e3):
                 # Out of fuel but still suborbital
                 self.rocket.phase = MissionPhase.FAILED
@@ -618,7 +618,7 @@ class Mission:
         # Professor v19: Verbose abort debugging
         if hasattr(self, 'config') and self.config.get("verbose_abort", False):
             velocity = self.rocket.velocity.magnitude()
-            flight_path_angle = np.degrees(self.rocket.get_flight_path_angle())
+            flight_path_angle = np.degrees(self.get_flight_path_angle())
             thrust_mag = self.rocket.get_thrust_vector().magnitude()
             
             # Propellant info
@@ -653,7 +653,7 @@ class Mission:
             # Professor v19: Enhanced abort reason logging
             if hasattr(self, 'config') and self.config.get("verbose_abort", False):
                 velocity = self.rocket.velocity.magnitude()
-                flight_path_angle = np.degrees(self.rocket.get_flight_path_angle())
+                flight_path_angle = np.degrees(self.get_flight_path_angle())
                 apoapsis, periapsis, eccentricity = self.get_orbital_elements()
                 self.logger.error(f"ABORT_REASON: Earth impact - altitude {altitude:.1f}m")
                 self.logger.error(f"ABORT_STATE: v={velocity:.1f}m/s, γ={flight_path_angle:.1f}°, "
@@ -825,6 +825,27 @@ class Mission:
                         # Continue simulation to allow normal stage separation logic to run
                         # Don't return here - let the normal separation process handle it
                     
+                    # Professor v23: Max-Q Monitor - check dynamic pressure limits
+                    # Calculate velocity relative to atmosphere (subtract Earth rotation)
+                    earth_rotation_velocity = 2 * np.pi * R_EARTH * np.cos(np.radians(28.573)) / EARTH_ROTATION_PERIOD
+                    relative_velocity = max(0, self.rocket.velocity.magnitude() - earth_rotation_velocity)
+                    density = self._calculate_atmospheric_density(altitude)
+                    dynamic_pressure = 0.5 * density * relative_velocity**2  # Pa
+                    
+                    # Track maximum dynamic pressure encountered
+                    if not hasattr(self, 'max_dynamic_pressure'):
+                        self.max_dynamic_pressure = 0.0
+                    self.max_dynamic_pressure = max(self.max_dynamic_pressure, dynamic_pressure)
+                    
+                    # Max-Q abort check (3.5 kPa = 3500 Pa)
+                    # Only check after launch (t > 1s) to avoid initial Earth rotation velocity
+                    if dynamic_pressure > 3500.0 and t > 1.0:
+                        self.rocket.phase = MissionPhase.FAILED
+                        self.logger.error(f"ABORT: Dynamic pressure exceeded 3.5 kPa at t={t:.1f}s")
+                        self.logger.error(f"Max-Q violation: {dynamic_pressure:.1f} Pa at altitude {altitude/1000:.1f}km, velocity {velocity:.1f}m/s")
+                        self.logger.error(f"Maximum encountered: {self.max_dynamic_pressure:.1f} Pa")
+                        return False
+                    
                     # Log detailed telemetry every 1 second (5 * 0.2s)
                     if steps % 10 == 0:
                         flight_path_angle_deg = np.degrees(self.get_flight_path_angle())
@@ -858,6 +879,12 @@ class Mission:
                 else:
                     remaining_propellant = 0
                 
+                # Calculate dynamic pressure for CSV logging
+                csv_velocity = self.rocket.velocity.magnitude()
+                csv_density = self._calculate_atmospheric_density(altitude)
+                csv_dynamic_pressure = 0.5 * csv_density * csv_velocity**2  # Pa
+                csv_max_dynamic_pressure = getattr(self, 'max_dynamic_pressure', 0.0)
+                
                 self.csv_writer.writerow([
                     f"{t:.1f}",
                     f"{altitude:.1f}",
@@ -871,7 +898,9 @@ class Mission:
                     f"{eccentricity:.3f}",
                     f"{flight_path_angle_deg:.2f}",
                     f"{pitch_angle_deg:.2f}",
-                    f"{remaining_propellant/1000:.1f}"
+                    f"{remaining_propellant/1000:.1f}",
+                    f"{csv_dynamic_pressure:.1f}",
+                    f"{csv_max_dynamic_pressure:.1f}"
                 ])
                 self.csv_file.flush()
             
@@ -922,7 +951,7 @@ class Mission:
             
             # 定期的な状態出力（1000秒ごと） - Professor v7: enhanced logging
             if steps % 10000 == 0:
-                flight_path_angle_deg = np.degrees(self.rocket.get_flight_path_angle())
+                flight_path_angle_deg = np.degrees(self.get_flight_path_angle())
                 import guidance
                 pitch_angle_deg = guidance.get_target_pitch_angle(altitude, velocity)
                 
@@ -935,7 +964,7 @@ class Mission:
         self.time_history.append(t)
         self.position_history.append(self.rocket.position)
         self.velocity_history.append(self.rocket.velocity)
-        self.altitude_history.append(self.rocket.get_altitude())
+        self.altitude_history.append(self.get_altitude())
         self.mass_history.append(self.rocket.current_mass)
         self.phase_history.append(self.rocket.phase)
         

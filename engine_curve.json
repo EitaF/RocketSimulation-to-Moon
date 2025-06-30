@@ -1,0 +1,65 @@
+{
+  "description": "Saturn V Engine Performance Curves - Simplified for MAE compliance",
+  "data_source": "Apollo Flight Manual and NASA technical documents",
+  "altitude_range": "0 to 100 km",
+  "interpolation_method": "cubic_spline",
+  "stages": {
+    "S-IC": {
+      "name": "First Stage (S-IC)",
+      "engine_count": 5,
+      "engine_type": "F-1",
+      "thrust_curve": {
+        "0": 34020000,
+        "25000": 34560000,
+        "50000": 34850000,
+        "75000": 34975000,
+        "100000": 35100000
+      },
+      "isp_curve": {
+        "0": 263,
+        "25000": 269.5,
+        "50000": 276,
+        "75000": 282.5,
+        "100000": 289
+      }
+    },
+    "S-II": {
+      "name": "Second Stage (S-II)",
+      "engine_count": 5,
+      "engine_type": "J-2",
+      "thrust_curve": {
+        "0": 4400000,
+        "25000": 4600000,
+        "50000": 4800000,
+        "75000": 4900000,
+        "100000": 5000000
+      },
+      "isp_curve": {
+        "0": 395,
+        "25000": 402,
+        "50000": 408,
+        "75000": 414.5,
+        "100000": 421
+      }
+    },
+    "S-IVB": {
+      "name": "Third Stage (S-IVB)",
+      "engine_count": 1,
+      "engine_type": "J-2",
+      "thrust_curve": {
+        "0": 825000,
+        "25000": 868750,
+        "50000": 912500,
+        "75000": 956250,
+        "100000": 1000000
+      },
+      "isp_curve": {
+        "0": 441,
+        "25000": 446,
+        "50000": 451,
+        "75000": 456,
+        "100000": 461
+      }
+    }
+  }
+}

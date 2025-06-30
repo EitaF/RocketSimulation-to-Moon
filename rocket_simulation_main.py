@@ -234,7 +234,24 @@ class Mission:
         self.moon.velocity = Vector3(vx, vy)
     
     def _calculate_atmospheric_density(self, altitude: float) -> float:
-        """高度に応じた大気密度を計算（改良版 - より現実的なモデル）"""
+        """Calculate atmospheric density using enhanced model with NRLMSISE-00 support"""
+        try:
+            # Try to use enhanced atmospheric model
+            from atmosphere import get_atmosphere_model
+            atm_model = get_atmosphere_model()
+            
+            # Get density at current position
+            # Use mission configuration for latitude/longitude if available
+            latitude = getattr(self.config, 'launch_latitude', 28.573)
+            longitude = getattr(self.config, 'launch_longitude', -80.649)
+            
+            return atm_model.get_density(altitude, latitude, longitude)
+            
+        except (ImportError, Exception) as e:
+            # Fallback to legacy atmospheric model
+            self.logger.debug(f"Enhanced atmosphere model not available: {e}")
+            
+        # Legacy atmospheric model (fallback)
         if altitude < 0:
             return SEA_LEVEL_DENSITY
         elif altitude <= 11e3:

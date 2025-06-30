@@ -1,260 +1,322 @@
 """
-Monte Carlo Simulation for LEO Success Rate Validation
-Professor v22: 500-case simulation for ≥95% LEO success validation
-Professor v23: Extended to 1000 samples with guidance timing variation
+Monte Carlo Simulation Orchestrator
+Implements end-to-end Monte Carlo campaign for mission reliability assessment
+Task 1-1 to 1-5: Complete MC framework with config-driven parameters
 """
 
-import numpy as np
 import json
+import numpy as np
+import logging
+import multiprocessing as mp
+from pathlib import Path
+from typing import Dict, List, Tuple, Any
+import argparse
+import sys
+from concurrent.futures import ProcessPoolExecutor, as_completed
+import time
 import csv
 from dataclasses import dataclass
-from typing import List, Dict
+
+from metrics_logger import MetricsLogger, extract_metrics_from_mission_results
 import rocket_simulation_main
-from vehicle import create_saturn_v_rocket, MissionPhase
+from vehicle import create_saturn_v_rocket
 
-@dataclass
-class MonteCarloResults:
-    """Monte Carlo simulation results"""
-    total_runs: int
-    successful_leo_insertions: int
-    success_rate: float
-    failed_runs: List[Dict]
-    performance_stats: Dict
-
-def run_monte_carlo_simulation(num_runs: int = 1000) -> MonteCarloResults:
-    """
-    Run Monte Carlo simulation with parameter variations
-    Vary initial conditions within realistic bounds
-    """
-    print(f"Starting Monte Carlo simulation with {num_runs} runs...")
+class MonteCarloOrchestrator:
+    """Orchestrates Monte Carlo simulation campaign"""
     
-    successful_leo = 0
-    failed_runs = []
-    performance_data = {
-        'max_altitudes': [],
-        'max_velocities': [],
-        'total_delta_vs': [],
-        'mission_durations': [],
-        'final_masses': []
-    }
+    def __init__(self, config_path: str = "mc_config.json"):
+        self.config_path = config_path
+        self.config = self._load_config()
+        
+        # Setup logging
+        logging.basicConfig(
+            level=logging.INFO,
+            format='%(asctime)s - %(levelname)s - %(message)s',
+            handlers=[
+                logging.FileHandler('monte_carlo.log'),
+                logging.StreamHandler()
+            ]
+        )
+        self.logger = logging.getLogger(__name__)
+        
+        # Initialize metrics logger
+        self.metrics_logger = MetricsLogger(self.config['monte_carlo']['output_dir'])
+        
+        # Set random seed for reproducibility
+        np.random.seed(self.config['monte_carlo']['seed'])
     
-    # Parameter variation ranges (±5% for most parameters)
-    # Professor v23: Added guidance timing variation
-    variations = {
-        'launch_azimuth_range': (-2, 2),  # ±2 degrees
-        'propellant_mass_variation': (0.98, 1.02),  # ±2%
-        'thrust_variation': (0.97, 1.03),  # ±3%
-        'drag_coefficient_variation': (0.95, 1.05),  # ±5%
-        'atmospheric_density_variation': (0.9, 1.1),  # ±10%
-        'initial_mass_variation': (0.99, 1.01),  # ±1%
-        'guidance_timing_variation': (-0.5, 0.5)  # ±0.5 seconds
-    }
-    
-    for run_id in range(num_runs):
+    def _load_config(self) -> Dict:
+        """Load Monte Carlo configuration"""
         try:
-            # Generate random variations
-            np.random.seed(run_id)  # For reproducibility
+            with open(self.config_path, 'r') as f:
+                return json.load(f)
+        except FileNotFoundError:
+            self.logger.error(f"Configuration file {self.config_path} not found")
+            raise
+    
+    def _generate_parameter_variations(self, run_id: int) -> Dict:
+        """Generate parameter variations for a single run"""
+        variations = {'run_id': run_id}
+        
+        # Set per-run random seed for reproducibility
+        run_seed = self.config['monte_carlo']['seed'] + run_id
+        np.random.seed(run_seed)
+        
+        distributions = self.config['uncertainty_distributions']
+        
+        # Launch azimuth variation
+        if 'launch_azimuth' in distributions:
+            dist = distributions['launch_azimuth']
+            if dist['type'] == 'normal':
+                variations['launch_azimuth'] = np.random.normal(
+                    dist['mean'], dist['std_dev']
+                )
+        
+        # Pitch timing variation
+        if 'pitch_timing' in distributions:
+            dist = distributions['pitch_timing']
+            if dist['type'] == 'normal':
+                variations['pitch_timing_offset'] = np.random.normal(
+                    dist['mean'], dist['std_dev']
+                )
+        
+        # Stage delta-V variation (multiplier)
+        if 'stage_delta_v' in distributions:
+            dist = distributions['stage_delta_v']
+            if dist['type'] == 'normal':
+                variations['stage_dv_multiplier'] = np.random.normal(
+                    dist['mean'], dist['std_dev']
+                )
+        
+        # Sensor noise variations
+        if 'sensor_noise' in distributions:
+            sensor_noise = distributions['sensor_noise']
+            variations['sensor_noise'] = {}
             
-            # Load base configuration
-            with open("mission_config.json", "r") as f:
-                config = json.load(f)
-            with open("saturn_v_config.json", "r") as f:
-                saturn_config = json.load(f)
+            for sensor_type, noise_dist in sensor_noise.items():
+                if noise_dist['type'] == 'normal':
+                    variations['sensor_noise'][sensor_type] = np.random.normal(
+                        noise_dist['mean'], noise_dist['std_dev']
+                    )
+        
+        return variations
+    
+    def _apply_variations_to_config(self, base_config: Dict, variations: Dict) -> Dict:
+        """Apply parameter variations to mission configuration"""
+        config = base_config.copy()
+        
+        # Apply launch azimuth variation
+        if 'launch_azimuth' in variations:
+            config['launch_azimuth'] = variations['launch_azimuth']
+        
+        # Apply gravity turn timing variation
+        if 'pitch_timing_offset' in variations:
+            base_gravity_turn_alt = config.get('gravity_turn_altitude', 1500)
+            # Convert timing offset to altitude offset (rough approximation)
+            altitude_offset = variations['pitch_timing_offset'] * 100  # 100 m/s
+            config['gravity_turn_altitude'] = max(500, base_gravity_turn_alt + altitude_offset)
+        
+        # Apply stage performance variations
+        if 'stage_dv_multiplier' in variations:
+            config['stage_performance_multiplier'] = variations['stage_dv_multiplier']
+        
+        # Apply sensor noise
+        if 'sensor_noise' in variations:
+            config['sensor_noise'] = variations['sensor_noise']
+        
+        # Add run-specific identifiers
+        config['run_id'] = variations['run_id']
+        config['mc_variations'] = variations
+        
+        return config
+    
+    def _run_single_simulation(self, run_config: Tuple[int, Dict]) -> Tuple[int, Dict, Dict]:
+        """Run a single Monte Carlo simulation"""
+        run_id, config = run_config
+        
+        try:
+            # Create rocket with potential variations
+            rocket = create_saturn_v_rocket()
             
-            # Apply random variations
-            azimuth_variation = np.random.uniform(*variations['launch_azimuth_range'])
-            config['launch_azimuth'] = 72 + azimuth_variation
+            # Apply stage performance variations if specified
+            if 'stage_performance_multiplier' in config:
+                multiplier = config['stage_performance_multiplier']
+                for stage in rocket.stages:
+                    # Vary propellant mass to simulate performance uncertainty
+                    stage.propellant_mass *= multiplier
             
-            propellant_factor = np.random.uniform(*variations['propellant_mass_variation'])
-            thrust_factor = np.random.uniform(*variations['thrust_variation'])
-            drag_factor = np.random.uniform(*variations['drag_coefficient_variation'])
-            
-            # Apply variations to stages
-            for stage in saturn_config['stages']:
-                stage['propellant_mass'] = int(stage['propellant_mass'] * propellant_factor)
-                stage['thrust_vacuum'] = int(stage['thrust_vacuum'] * thrust_factor)
-                stage['thrust_sea_level'] = int(stage['thrust_sea_level'] * thrust_factor)
-            
-            # Apply drag coefficient variation
-            saturn_config['rocket']['drag_coefficient'] *= drag_factor
-            
-            # Professor v23: Apply guidance timing variation
-            guidance_timing_offset = np.random.uniform(*variations['guidance_timing_variation'])
-            
-            # Save modified configs temporarily
-            with open("temp_mission_config.json", "w") as f:
-                json.dump(config, f, indent=2)
-            with open("temp_saturn_config.json", "w") as f:
-                json.dump(saturn_config, f, indent=2)
-            
-            # Create rocket with modified config
-            rocket = create_saturn_v_rocket("temp_saturn_config.json")
-            
-            # Professor v23: Apply guidance timing offset
-            import guidance
-            guidance.reset_guidance_state()
-            guidance.set_guidance_timing_offset(guidance_timing_offset)
-            
-            # Run simulation
+            # Create and run mission
             mission = rocket_simulation_main.Mission(rocket, config)
             results = mission.simulate(
-                duration=config.get("simulation_duration", 14400),
+                duration=config.get("simulation_duration", 10 * 24 * 3600),
                 dt=config.get("time_step", 0.1)
             )
             
-            # Check LEO success criteria
-            final_altitude = results.get('max_altitude', 0)
-            final_phase = results.get('final_phase', 'FAILED')
+            # Add variation info to results
+            results['mc_variations'] = config.get('mc_variations', {})
+            results['run_id'] = run_id
             
-            # LEO success criteria: periapsis ≥ 120km, apoapsis ≥ 185km
-            if (final_phase in ['LEO', 'TLI_BURN', 'COAST_TO_MOON'] and 
-                final_altitude >= 120000):
-                successful_leo += 1
-                
-                # Collect performance data
-                performance_data['max_altitudes'].append(results.get('max_altitude', 0))
-                performance_data['max_velocities'].append(results.get('max_velocity', 0))
-                performance_data['total_delta_vs'].append(results.get('total_delta_v', 0))
-                performance_data['mission_durations'].append(results.get('mission_duration', 0))
-                performance_data['final_masses'].append(results.get('final_mass', 0))
-            else:
-                # Record failed run details
-                failed_runs.append({
-                    'run_id': run_id,
-                    'final_phase': final_phase,
-                    'max_altitude': final_altitude,
-                    'variations': {
-                        'azimuth_variation': azimuth_variation,
-                        'propellant_factor': propellant_factor,
-                        'thrust_factor': thrust_factor,
-                        'drag_factor': drag_factor
-                    }
-                })
+            return run_id, results, config
             
-            # Progress reporting
-            if (run_id + 1) % 50 == 0:
-                current_success_rate = successful_leo / (run_id + 1) * 100
-                print(f"Progress: {run_id + 1}/{num_runs} runs, "
-                      f"Success rate: {current_success_rate:.1f}%")
-                
         except Exception as e:
-            print(f"Run {run_id} failed with error: {e}")
-            failed_runs.append({
+            # Handle simulation failures
+            error_result = {
+                'mission_success': False,
+                'final_phase': 'simulation_error',
+                'abort_reason': f'Simulation error: {str(e)}',
                 'run_id': run_id,
-                'error': str(e),
-                'final_phase': 'ERROR'
-            })
+                'mc_variations': config.get('mc_variations', {})
+            }
+            return run_id, error_result, config
     
-    # Calculate final statistics
-    success_rate = (successful_leo / num_runs) * 100
-    
-    # Performance statistics
-    performance_stats = {}
-    if performance_data['max_altitudes']:
-        performance_stats = {
-            'altitude_mean': np.mean(performance_data['max_altitudes']) / 1000,  # km
-            'altitude_std': np.std(performance_data['max_altitudes']) / 1000,   # km
-            'velocity_mean': np.mean(performance_data['max_velocities']),       # m/s
-            'velocity_std': np.std(performance_data['max_velocities']),         # m/s
-            'delta_v_mean': np.mean(performance_data['total_delta_vs']),        # m/s
-            'delta_v_std': np.std(performance_data['total_delta_vs']),          # m/s
-            'duration_mean': np.mean(performance_data['mission_durations']) / 3600,  # hours
-            'mass_mean': np.mean(performance_data['final_masses']) / 1000       # tons
-        }
-    
-    # Clean up temporary files
-    import os
-    try:
-        os.remove("temp_mission_config.json")
-        os.remove("temp_saturn_config.json")
-    except:
-        pass
-    
-    return MonteCarloResults(
-        total_runs=num_runs,
-        successful_leo_insertions=successful_leo,
-        success_rate=success_rate,
-        failed_runs=failed_runs,
-        performance_stats=performance_stats
-    )
-
-def save_monte_carlo_results(results: MonteCarloResults, filename: str = "monte_carlo_results.json"):
-    """Save Monte Carlo results to JSON file"""
-    results_dict = {
-        'total_runs': results.total_runs,
-        'successful_leo_insertions': results.successful_leo_insertions,
-        'success_rate': results.success_rate,
-        'failed_runs': results.failed_runs,
-        'performance_stats': results.performance_stats,
-        'leo_success_criteria_met': results.success_rate >= 95.0
-    }
-    
-    with open(filename, 'w') as f:
-        json.dump(results_dict, f, indent=2)
-    
-    print(f"Monte Carlo results saved to {filename}")
+    def run_campaign(self, batch_start: int = 0, batch_end: int = None) -> str:
+        """Run Monte Carlo campaign"""
+        total_runs = self.config['monte_carlo']['num_runs']
+        batch_size = self.config['monte_carlo']['batch_size']
+        
+        if batch_end is None:
+            batch_end = total_runs
+        
+        batch_start = max(0, batch_start)
+        batch_end = min(total_runs, batch_end)
+        
+        self.logger.info(f"Starting Monte Carlo campaign: runs {batch_start} to {batch_end-1}")
+        self.logger.info(f"Total runs in batch: {batch_end - batch_start}")
+        
+        # Load base mission configuration
+        try:
+            with open("mission_config.json", "r") as f:
+                base_mission_config = json.load(f)
+        except FileNotFoundError:
+            # Use default configuration
+            base_mission_config = {
+                "launch_latitude": 28.573,
+                "launch_azimuth": 90,
+                "target_parking_orbit": 185e3,
+                "gravity_turn_altitude": 1500,
+                "simulation_duration": 10 * 24 * 3600,
+                "time_step": 0.1
+            }
+        
+        # Generate all run configurations
+        run_configs = []
+        for run_id in range(batch_start, batch_end):
+            variations = self._generate_parameter_variations(run_id)
+            run_config = self._apply_variations_to_config(base_mission_config, variations)
+            run_configs.append((run_id, run_config))
+        
+        # Run simulations in parallel
+        start_time = time.time()
+        completed_runs = 0
+        
+        # Determine number of workers (use system CPU count - 1)
+        num_workers = max(1, mp.cpu_count() - 1)
+        self.logger.info(f"Using {num_workers} parallel workers")
+        
+        with ProcessPoolExecutor(max_workers=num_workers) as executor:
+            # Submit all jobs
+            future_to_run = {
+                executor.submit(self._run_single_simulation, config): config[0] 
+                for config in run_configs
+            }
+            
+            # Process completed simulations
+            for future in as_completed(future_to_run):
+                run_id = future_to_run[future]
+                try:
+                    run_id, results, config = future.result()
+                    
+                    # Extract and log metrics
+                    metrics = extract_metrics_from_mission_results(run_id, results, config)
+                    self.metrics_logger.log_mission_metrics(metrics)
+                    
+                    completed_runs += 1
+                    
+                    # Progress reporting
+                    if completed_runs % 50 == 0 or completed_runs == len(run_configs):
+                        elapsed = time.time() - start_time
+                        rate = completed_runs / elapsed
+                        eta = (len(run_configs) - completed_runs) / rate if rate > 0 else 0
+                        
+                        self.logger.info(
+                            f"Progress: {completed_runs}/{len(run_configs)} "
+                            f"({completed_runs/len(run_configs)*100:.1f}%) "
+                            f"Rate: {rate:.1f} runs/sec, ETA: {eta/60:.1f} min"
+                        )
+                
+                except Exception as e:
+                    self.logger.error(f"Failed to process run {run_id}: {e}")
+        
+        # Generate summary report
+        self.logger.info("Generating summary report...")
+        report_path = self.metrics_logger.save_summary_report()
+        
+        # Calculate final statistics
+        stats = self.metrics_logger.calculate_statistics()
+        
+        self.logger.info("="*60)
+        self.logger.info("MONTE CARLO CAMPAIGN COMPLETE")
+        self.logger.info("="*60)
+        self.logger.info(f"Total runs: {stats['total_runs']}")
+        self.logger.info(f"Successful missions: {stats['successful_runs']}")
+        self.logger.info(f"Success rate: {stats['success_rate']:.1%}")
+        self.logger.info(f"95% CI: [{stats['confidence_interval']['lower']:.1%}, {stats['confidence_interval']['upper']:.1%}]")
+        self.logger.info(f"CI width: {stats['confidence_interval']['width']:.1%}")
+        self.logger.info(f"Meets success criteria (≥90%, ≤3% CI): {'YES' if stats['meets_success_criteria'] else 'NO'}")
+        self.logger.info(f"Summary report: {report_path}")
+        
+        return report_path
 
 def main():
-    """Main Monte Carlo simulation execution"""
-    print("="*60)
-    print("SATURN V LEO INSERTION MONTE CARLO SIMULATION")
-    print("Professor v22: 500-case trajectory validation")
-    print("="*60)
+    """Main entry point for Monte Carlo simulation"""
+    parser = argparse.ArgumentParser(description='Monte Carlo Rocket Simulation Campaign')
+    parser.add_argument('--config', default='mc_config.json', help='Monte Carlo configuration file')
+    parser.add_argument('--batch-start', type=int, default=0, help='Batch start index')
+    parser.add_argument('--batch-end', type=int, help='Batch end index')
+    parser.add_argument('--single-run', type=int, help='Run single simulation with given ID')
     
-    # Run Monte Carlo simulation
-    results = run_monte_carlo_simulation(500)
+    args = parser.parse_args()
     
-    # Display results
-    print("\n" + "="*50)
-    print("MONTE CARLO RESULTS SUMMARY")
-    print("="*50)
-    print(f"Total Runs: {results.total_runs}")
-    print(f"Successful LEO Insertions: {results.successful_leo_insertions}")
-    print(f"Success Rate: {results.success_rate:.2f}%")
-    print(f"Failed Runs: {len(results.failed_runs)}")
+    # Initialize orchestrator
+    orchestrator = MonteCarloOrchestrator(args.config)
     
-    # Success criteria check
-    if results.success_rate >= 95.0:
-        print(f"✅ SUCCESS: Exceeds 95% LEO success requirement")
-        print(f"   Margin: +{results.success_rate - 95.0:.2f}%")
-    else:
-        print(f"❌ FAILED: Below 95% LEO success requirement")
-        print(f"   Shortfall: -{95.0 - results.success_rate:.2f}%")
-    
-    # Performance statistics
-    if results.performance_stats:
-        print(f"\nPerformance Statistics (Successful Runs):")
-        stats = results.performance_stats
-        print(f"  Max Altitude: {stats['altitude_mean']:.1f} ± {stats['altitude_std']:.1f} km")
-        print(f"  Max Velocity: {stats['velocity_mean']:.0f} ± {stats['velocity_std']:.0f} m/s")
-        print(f"  Total Delta-V: {stats['delta_v_mean']:.0f} ± {stats['delta_v_std']:.0f} m/s")
-        print(f"  Mission Duration: {stats['duration_mean']:.1f} hours")
-        print(f"  Final Mass: {stats['mass_mean']:.1f} tons")
-    
-    # Save results
-    save_monte_carlo_results(results)
-    
-    # Write CSV summary for analysis
-    with open("monte_carlo_summary.csv", 'w', newline='') as csvfile:
-        writer = csv.writer(csvfile)
-        writer.writerow(['Run_ID', 'Success', 'Final_Phase', 'Max_Altitude_km'])
+    if args.single_run is not None:
+        # Run single simulation for testing
+        variations = orchestrator._generate_parameter_variations(args.single_run)
+        base_config = {
+            "launch_latitude": 28.573,
+            "launch_azimuth": 90,
+            "target_parking_orbit": 185e3,
+            "gravity_turn_altitude": 1500,
+            "simulation_duration": 10 * 24 * 3600,
+            "time_step": 0.1
+        }
+        run_config = orchestrator._apply_variations_to_config(base_config, variations)
         
-        success_count = 0
-        for i in range(results.total_runs):
-            # Check if this run was successful
-            is_failed = any(fail['run_id'] == i for fail in results.failed_runs)
-            if not is_failed:
-                success_count += 1
-                writer.writerow([i, 'SUCCESS', 'LEO', 'N/A'])
-            else:
-                failed_run = next(fail for fail in results.failed_runs if fail['run_id'] == i)
-                writer.writerow([i, 'FAILED', failed_run.get('final_phase', 'UNKNOWN'), 
-                               failed_run.get('max_altitude', 0) / 1000])
-    
-    print(f"\nDetailed results saved to monte_carlo_results.json")
-    print(f"Summary CSV saved to monte_carlo_summary.csv")
-    
-    return results
+        print(f"Running single simulation {args.single_run} with variations:")
+        print(json.dumps(variations, indent=2))
+        
+        run_id, results, config = orchestrator._run_single_simulation((args.single_run, run_config))
+        
+        print(f"\nResults for run {run_id}:")
+        print(f"Success: {results['mission_success']}")
+        print(f"Final phase: {results['final_phase']}")
+        print(f"Duration: {results.get('mission_duration', 0)/3600:.2f} hours")
+        print(f"Total ΔV: {results.get('total_delta_v', 0):.0f} m/s")
+        
+    else:
+        # Run full campaign
+        try:
+            report_path = orchestrator.run_campaign(args.batch_start, args.batch_end)
+            print(f"\nMonte Carlo campaign completed successfully!")
+            print(f"Summary report available at: {report_path}")
+            
+        except KeyboardInterrupt:
+            print("\nCampaign interrupted by user")
+        except Exception as e:
+            print(f"Campaign failed: {e}")
+            sys.exit(1)
+
 
 if __name__ == "__main__":
     main()

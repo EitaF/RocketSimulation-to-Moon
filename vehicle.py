@@ -92,19 +92,49 @@ class RocketStage:
     def total_mass(self) -> float:
         return self.dry_mass + self.propellant_mass
     
-    def get_thrust(self, altitude: float) -> float:
-        """Get thrust based on altitude"""
+    def get_thrust(self, altitude: float, throttle: float = 1.0) -> float:
+        """Get thrust based on altitude using enhanced engine model if available"""
+        try:
+            # Try to use enhanced engine model
+            from engine import get_engine_model
+            engine_model = get_engine_model()
+            
+            # Map stage name to engine model stage identifier
+            stage_id = self._get_stage_identifier()
+            if stage_id:
+                return engine_model.get_thrust(stage_id, altitude, throttle)
+        except (ImportError, Exception):
+            # Fallback to linear interpolation
+            pass
+        
+        # Fallback linear interpolation
         if altitude < 0:
-            return self.thrust_sea_level
+            base_thrust = self.thrust_sea_level
         elif altitude > 100e3:  # Above 100km is vacuum
-            return self.thrust_vacuum
+            base_thrust = self.thrust_vacuum
         else:
             # Linear interpolation between 0-100km
             factor = altitude / 100e3
-            return self.thrust_sea_level * (1 - factor) + self.thrust_vacuum * factor
+            base_thrust = self.thrust_sea_level * (1 - factor) + self.thrust_vacuum * factor
+        
+        return base_thrust * throttle
     
     def get_specific_impulse(self, altitude: float) -> float:
-        """Get specific impulse based on altitude"""
+        """Get specific impulse based on altitude using enhanced engine model if available"""
+        try:
+            # Try to use enhanced engine model
+            from engine import get_engine_model
+            engine_model = get_engine_model()
+            
+            # Map stage name to engine model stage identifier
+            stage_id = self._get_stage_identifier()
+            if stage_id:
+                return engine_model.get_specific_impulse(stage_id, altitude)
+        except (ImportError, Exception):
+            # Fallback to linear interpolation
+            pass
+        
+        # Fallback linear interpolation
         if altitude < 0:
             return self.specific_impulse_sea_level
         elif altitude > 100e3:  # Above 100km is vacuum
@@ -113,6 +143,17 @@ class RocketStage:
             # Linear interpolation between 0-100km
             factor = altitude / 100e3
             return self.specific_impulse_sea_level * (1 - factor) + self.specific_impulse_vacuum * factor
+    
+    def _get_stage_identifier(self) -> str:
+        """Map stage name to engine model identifier"""
+        name_lower = self.name.lower()
+        if 's-ic' in name_lower or '1st' in name_lower or 'first' in name_lower:
+            return 'S-IC'
+        elif 's-ii' in name_lower or '2nd' in name_lower or 'second' in name_lower:
+            return 'S-II'
+        elif 's-ivb' in name_lower or '3rd' in name_lower or 'third' in name_lower:
+            return 'S-IVB'
+        return None
     
     def get_mass_flow_rate(self, altitude: float) -> float:
         """Get mass flow rate [kg/s] based on altitude"""

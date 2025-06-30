@@ -1,0 +1,54 @@
+{
+  "monte_carlo": {
+    "num_runs": 1000,
+    "seed": 12345,
+    "output_dir": "mc_results",
+    "batch_size": 50
+  },
+  "uncertainty_distributions": {
+    "launch_azimuth": {
+      "type": "normal",
+      "mean": 90.0,
+      "std_dev": 0.25,
+      "unit": "degrees"
+    },
+    "pitch_timing": {
+      "type": "normal", 
+      "mean": 0.0,
+      "std_dev": 0.5,
+      "unit": "seconds"
+    },
+    "stage_delta_v": {
+      "type": "normal",
+      "mean": 1.0,
+      "std_dev": 0.02,
+      "unit": "multiplier",
+      "description": "Stage delta-V uncertainty ±2%"
+    },
+    "sensor_noise": {
+      "altitude": {
+        "type": "normal",
+        "mean": 0.0,
+        "std_dev": 10.0,
+        "unit": "meters"
+      },
+      "velocity": {
+        "type": "normal", 
+        "mean": 0.0,
+        "std_dev": 1.0,
+        "unit": "m/s"
+      },
+      "attitude": {
+        "type": "normal",
+        "mean": 0.0,
+        "std_dev": 0.1,
+        "unit": "degrees"
+      }
+    }
+  },
+  "success_criteria": {
+    "target_success_rate": 0.90,
+    "confidence_interval": 0.95,
+    "max_ci_width": 0.03
+  }
+}

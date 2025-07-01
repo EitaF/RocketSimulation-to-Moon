@@ -37,8 +37,14 @@ class AtmosphereModel:
             self.pymsis = pymsis
             self.logger.info("NRLMSISE-00 atmospheric model loaded successfully")
             return True
-        except ImportError:
-            self.logger.warning("pymsis not available, using fallback atmospheric model")
+        except ImportError as e:
+            self.logger.warning(
+                "pymsis library not found. For enhanced atmospheric modeling, please install it:\n"
+                "  pip install pymsis\n"
+                "or install all dependencies with:\n"
+                "  pip install -r requirements.txt\n"
+                "Falling back to enhanced ISA atmospheric model."
+            )
             return False
     
     def get_density(self, altitude: float, latitude: float = 28.573, 

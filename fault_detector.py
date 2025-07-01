@@ -16,6 +16,7 @@ class FaultType(Enum):
     THRUST_DEFICIT = "thrust_deficit"
     ATTITUDE_DEVIATION = "attitude_deviation"
     SENSOR_DROPOUT = "sensor_dropout"
+    STUCK_SENSOR = "stuck_sensor"
     PROPELLANT_DEPLETION = "propellant_depletion"
     STRUCTURAL_FAILURE = "structural_failure"
     GUIDANCE_FAILURE = "guidance_failure"
@@ -61,6 +62,21 @@ class FaultDetector:
         self.attitude_history = deque(maxlen=self.history_size)
         self.sensor_history = deque(maxlen=self.history_size)
         self.propellant_history = deque(maxlen=self.history_size)
+        
+        # Raw sensor value tracking for stuck sensor detection
+        self.stuck_sensor_check_size = self.config.get('stuck_sensor_check_size', 10)
+        self.sensor_raw_values = {
+            'altitude': deque(maxlen=self.stuck_sensor_check_size),
+            'velocity_x': deque(maxlen=self.stuck_sensor_check_size),
+            'velocity_y': deque(maxlen=self.stuck_sensor_check_size),
+            'velocity_z': deque(maxlen=self.stuck_sensor_check_size),
+            'acceleration_x': deque(maxlen=self.stuck_sensor_check_size),
+            'acceleration_y': deque(maxlen=self.stuck_sensor_check_size),
+            'acceleration_z': deque(maxlen=self.stuck_sensor_check_size),
+            'pitch_angle': deque(maxlen=self.stuck_sensor_check_size),
+            'yaw_angle': deque(maxlen=self.stuck_sensor_check_size),
+            'roll_angle': deque(maxlen=self.stuck_sensor_check_size)
+        }
         
         # Fault state tracking
         self.active_faults: List[FaultEvent] = []
@@ -115,6 +131,7 @@ class FaultDetector:
         faults.extend(self._check_thrust_deficit(telemetry, current_time))
         faults.extend(self._check_attitude_deviation(telemetry, current_time))
         faults.extend(self._check_sensor_dropout(telemetry, current_time))
+        faults.extend(self._check_stuck_sensors(telemetry, current_time))
         faults.extend(self._check_propellant_depletion(telemetry, current_time))
         faults.extend(self._check_structural_limits(telemetry, current_time))
         faults.extend(self._check_guidance_errors(telemetry, current_time))
@@ -182,6 +199,9 @@ class FaultDetector:
             'mass_flow_rate': telemetry.get('mass_flow_rate', 0)
         }
         self.propellant_history.append(propellant_data)
+        
+        # Update raw sensor values for stuck sensor detection
+        self._update_raw_sensor_values(telemetry, current_time)
         
         self.last_sensor_update = current_time
     
@@ -305,6 +325,67 @@ class FaultDetector:
                     recommended_action=f"Switch to backup {sensor_name} sensor"
                 )
                 faults.append(fault)
+        
+        return faults
+    
+    def _update_raw_sensor_values(self, telemetry: Dict, current_time: float):
+        """Update raw sensor value history for stuck sensor detection"""
+        # Track critical sensor values
+        sensor_mapping = {
+            'altitude': 'altitude',
+            'velocity_x': 'velocity_x',
+            'velocity_y': 'velocity_y', 
+            'velocity_z': 'velocity_z',
+            'acceleration_x': 'acceleration_x',
+            'acceleration_y': 'acceleration_y',
+            'acceleration_z': 'acceleration_z',
+            'pitch_angle': 'pitch_angle',
+            'yaw_angle': 'yaw_angle',
+            'roll_angle': 'roll_angle'
+        }
+        
+        for sensor_name, telemetry_key in sensor_mapping.items():
+            if telemetry_key in telemetry:
+                value = telemetry[telemetry_key]
+                self.sensor_raw_values[sensor_name].append({
+                    'time': current_time,
+                    'value': float(value)
+                })
+    
+    def _check_stuck_sensors(self, telemetry: Dict, current_time: float) -> List[FaultEvent]:
+        """Detect stuck sensor conditions (sensor reporting identical values)"""
+        faults = []
+        
+        # Check each sensor for stuck-at failures
+        for sensor_name, value_history in self.sensor_raw_values.items():
+            if len(value_history) >= self.stuck_sensor_check_size:
+                # Get the last N values
+                recent_values = [entry['value'] for entry in list(value_history)]
+                
+                # Check if all values are identical
+                if len(set(recent_values)) == 1:  # All values are the same
+                    # Additional validation: ensure the time span is reasonable
+                    time_span = value_history[-1]['time'] - value_history[0]['time']
+                    
+                    # Only flag as stuck if values were identical for at least 5 seconds
+                    if time_span >= 5.0:
+                        confidence = min(1.0, time_span / 10.0)  # Higher confidence with longer duration
+                        
+                        fault = FaultEvent(
+                            fault_type=FaultType.STUCK_SENSOR,
+                            severity=FaultSeverity.MEDIUM,
+                            detection_time=current_time,
+                            description=f"{sensor_name} sensor stuck at {recent_values[0]:.6f} for {time_span:.1f}s",
+                            confidence=confidence,
+                            parameters={
+                                'sensor_name': sensor_name,
+                                'stuck_value': recent_values[0],
+                                'duration': time_span,
+                                'sample_count': len(recent_values)
+                            },
+                            recommended_action=f"Switch to backup {sensor_name} sensor or enter safe mode"
+                        )
+                        faults.append(fault)
         
         return faults
     
@@ -478,6 +559,17 @@ class FaultDetector:
             # Assume resolved if we're still getting telemetry
             return fault_age > 10.0  # Auto-resolve after 10 seconds
         
+        elif fault.fault_type == FaultType.STUCK_SENSOR:
+            # Check if the sensor is no longer stuck
+            sensor_name = fault.parameters.get('sensor_name')
+            if sensor_name and sensor_name in self.sensor_raw_values:
+                recent_values = [entry['value'] for entry in list(self.sensor_raw_values[sensor_name])[-5:]]
+                # Resolved if we have varying values in the last 5 readings
+                if len(recent_values) >= 5 and len(set(recent_values)) > 1:
+                    return True
+            # Auto-resolve after 30 seconds if no evidence of recovery
+            return fault_age > 30.0
+        
         return False
     
     def get_active_faults(self) -> List[FaultEvent]:
@@ -509,6 +601,10 @@ class FaultDetector:
         self.attitude_history.clear()
         self.sensor_history.clear()
         self.propellant_history.clear()
+        
+        # Clear raw sensor value tracking
+        for sensor_name in self.sensor_raw_values:
+            self.sensor_raw_values[sensor_name].clear()
         
         self.detection_stats = {
             'total_checks': 0,
@@ -568,7 +664,23 @@ def main():
             'altitude_sensor_valid': False,
             'propellant_mass': 70000,
             'initial_propellant_mass': 200000,
-            'total_acceleration': 30.0
+            'total_acceleration': 30.0,
+            'altitude': 15000,
+            'velocity_x': 250,
+            'pitch_angle': 45.0
+        },
+        # Stuck sensor (same values repeated)
+        {
+            'actual_thrust': 5000000,
+            'expected_thrust': 5000000,
+            'attitude_error': 1.0,
+            'altitude_sensor_valid': True,
+            'propellant_mass': 60000,
+            'initial_propellant_mass': 200000,
+            'total_acceleration': 30.0,
+            'altitude': 15000,  # Same as previous
+            'velocity_x': 250,  # Same as previous
+            'pitch_angle': 45.0  # Same as previous
         }
     ]
     

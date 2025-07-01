@@ -42,6 +42,11 @@ class MonteCarloOrchestrator:
         # Initialize metrics logger
         self.metrics_logger = MetricsLogger(self.config['monte_carlo']['output_dir'])
         
+        # Campaign state management
+        self.output_dir = Path(self.config['monte_carlo']['output_dir'])
+        self.state_file = self.output_dir / 'campaign_state.json'
+        self.save_interval = self.config['monte_carlo'].get('state_save_interval', 10)
+        
         # Set random seed for reproducibility
         np.random.seed(self.config['monte_carlo']['seed'])
     
@@ -53,6 +58,55 @@ class MonteCarloOrchestrator:
         except FileNotFoundError:
             self.logger.error(f"Configuration file {self.config_path} not found")
             raise
+    
+    def _save_campaign_state(self, completed_runs: int) -> None:
+        """Save campaign state for resumption"""
+        state = {
+            'completed_runs': completed_runs,
+            'random_state': np.random.get_state(),
+            'timestamp': time.time(),
+            'config_path': self.config_path
+        }
+        
+        # Convert numpy arrays to lists for JSON serialization
+        random_state = list(state['random_state'])
+        random_state[1] = random_state[1].tolist()  # Convert numpy array to list
+        state['random_state'] = random_state
+        
+        try:
+            self.output_dir.mkdir(parents=True, exist_ok=True)
+            with open(self.state_file, 'w') as f:
+                json.dump(state, f, indent=2)
+            self.logger.debug(f"Campaign state saved: {completed_runs} runs completed")
+        except Exception as e:
+            self.logger.warning(f"Failed to save campaign state: {e}")
+    
+    def _load_campaign_state(self) -> Dict:
+        """Load campaign state for resumption"""
+        try:
+            with open(self.state_file, 'r') as f:
+                state = json.load(f)
+            
+            # Convert lists back to numpy format
+            random_state = state['random_state']
+            random_state[1] = np.array(random_state[1], dtype=np.uint32)
+            state['random_state'] = tuple(random_state)
+            
+            return state
+        except FileNotFoundError:
+            return None
+        except Exception as e:
+            self.logger.error(f"Failed to load campaign state: {e}")
+            return None
+    
+    def _clear_campaign_state(self) -> None:
+        """Clear campaign state file"""
+        try:
+            if self.state_file.exists():
+                self.state_file.unlink()
+                self.logger.debug("Campaign state file cleared")
+        except Exception as e:
+            self.logger.warning(f"Failed to clear campaign state: {e}")
     
     def _generate_parameter_variations(self, run_id: int) -> Dict:
         """Generate parameter variations for a single run"""
@@ -169,7 +223,7 @@ class MonteCarloOrchestrator:
             }
             return run_id, error_result, config
     
-    def run_campaign(self, batch_start: int = 0, batch_end: int = None) -> str:
+    def run_campaign(self, batch_start: int = 0, batch_end: int = None, resume: bool = False) -> str:
         """Run Monte Carlo campaign"""
         total_runs = self.config['monte_carlo']['num_runs']
         batch_size = self.config['monte_carlo']['batch_size']
@@ -177,8 +231,23 @@ class MonteCarloOrchestrator:
         if batch_end is None:
             batch_end = total_runs
         
+        # Handle campaign resumption
+        if resume:
+            state = self._load_campaign_state()
+            if state:
+                batch_start = state['completed_runs']
+                np.random.set_state(state['random_state'])
+                self.logger.info(f"Resuming campaign from run {batch_start}")
+            else:
+                self.logger.warning("No campaign state found, starting from beginning")
+                resume = False
+        
         batch_start = max(0, batch_start)
         batch_end = min(total_runs, batch_end)
+        
+        if batch_start >= batch_end:
+            self.logger.info("Campaign already completed")
+            return self.metrics_logger.save_summary_report()
         
         self.logger.info(f"Starting Monte Carlo campaign: runs {batch_start} to {batch_end-1}")
         self.logger.info(f"Total runs in batch: {batch_end - batch_start}")
@@ -231,6 +300,11 @@ class MonteCarloOrchestrator:
                     self.metrics_logger.log_mission_metrics(metrics)
                     
                     completed_runs += 1
+                    total_completed = batch_start + completed_runs
+                    
+                    # Save campaign state periodically
+                    if completed_runs % self.save_interval == 0:
+                        self._save_campaign_state(total_completed)
                     
                     # Progress reporting
                     if completed_runs % 50 == 0 or completed_runs == len(run_configs):
@@ -241,11 +315,20 @@ class MonteCarloOrchestrator:
                         self.logger.info(
                             f"Progress: {completed_runs}/{len(run_configs)} "
                             f"({completed_runs/len(run_configs)*100:.1f}%) "
+                            f"Total: {total_completed}/{total_runs} "
                             f"Rate: {rate:.1f} runs/sec, ETA: {eta/60:.1f} min"
                         )
                 
                 except Exception as e:
                     self.logger.error(f"Failed to process run {run_id}: {e}")
+        
+        # Save final state and clear state file if campaign is complete
+        final_completed = batch_start + completed_runs
+        if final_completed >= total_runs:
+            self._clear_campaign_state()
+            self.logger.info("Campaign completed - state file cleared")
+        else:
+            self._save_campaign_state(final_completed)
         
         # Generate summary report
         self.logger.info("Generating summary report...")
@@ -274,6 +357,7 @@ def main():
     parser.add_argument('--batch-start', type=int, default=0, help='Batch start index')
     parser.add_argument('--batch-end', type=int, help='Batch end index')
     parser.add_argument('--single-run', type=int, help='Run single simulation with given ID')
+    parser.add_argument('--resume', action='store_true', help='Resume interrupted campaign from saved state')
     
     args = parser.parse_args()
     
@@ -307,7 +391,7 @@ def main():
     else:
         # Run full campaign
         try:
-            report_path = orchestrator.run_campaign(args.batch_start, args.batch_end)
+            report_path = orchestrator.run_campaign(args.batch_start, args.batch_end, args.resume)
             print(f"\nMonte Carlo campaign completed successfully!")
             print(f"Summary report available at: {report_path}")
             

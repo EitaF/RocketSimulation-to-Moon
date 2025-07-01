@@ -236,6 +236,36 @@ class TestEnginePerformanceModel:
             finally:
                 os.chdir(old_cwd)
     
+    def test_throttle_dependent_isp(self, engine_model):
+        """Test throttle-dependent Isp functionality"""
+        altitude = 50000  # Test at 50 km
+        throttle_levels = [1.0, 0.8, 0.6]
+        
+        for stage_name in ['S-IC', 'S-II', 'S-IVB']:
+            isp_values = []
+            
+            for throttle in throttle_levels:
+                isp = engine_model.get_specific_impulse(stage_name, altitude, throttle)
+                isp_values.append(isp)
+                
+                # Ensure Isp is reasonable
+                assert isp > 100, f"{stage_name} Isp should be positive at throttle {throttle}"
+            
+            # Verify that Isp values are different for different throttle levels
+            # (unless using legacy 1D data with throttle penalty)
+            full_throttle_isp = isp_values[0]  # throttle = 1.0
+            reduced_throttle_isp = isp_values[2]  # throttle = 0.6
+            
+            # Isp should decrease with reduced throttle
+            assert reduced_throttle_isp <= full_throttle_isp, \
+                f"{stage_name} Isp should decrease with reduced throttle: "\
+                f"{full_throttle_isp:.1f}s (100%) vs {reduced_throttle_isp:.1f}s (60%)"
+            
+            # Check that the difference is reasonable (not too extreme)
+            relative_change = (full_throttle_isp - reduced_throttle_isp) / full_throttle_isp
+            assert relative_change <= 0.15, \
+                f"{stage_name} throttle Isp change too extreme: {relative_change:.2%}"
+    
     def test_mae_requirement(self, engine_model, reference_data):
         """Test that Mean Absolute Error is ≤2% as specified in requirements"""
         test_altitudes = np.linspace(0, 100000, 21)  # Test at 21 points
@@ -335,6 +365,9 @@ if __name__ == "__main__":
         
         test_instance.test_interpolation_smoothness(engine_model)
         print("✅ Interpolation smoothness test passed")
+        
+        test_instance.test_throttle_dependent_isp(engine_model)
+        print("✅ Throttle-dependent Isp test passed")
         
         print("\n🎉 All engine tests passed successfully!")
         

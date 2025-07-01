@@ -5,7 +5,7 @@ Task 2-1 to 2-5: Altitude-dependent thrust and Isp curves with cubic spline inte
 
 import json
 import numpy as np
-from scipy.interpolate import CubicSpline
+from scipy.interpolate import CubicSpline, RectBivariateSpline
 from typing import Dict, Tuple, Optional
 import logging
 from pathlib import Path
@@ -37,15 +37,21 @@ class EnginePerformanceModel:
             "stages": {
                 "S-IC": {
                     "thrust_curve": {"0": 34020000, "100000": 35100000},
-                    "isp_curve": {"0": 263, "100000": 289}
+                    "isp_curve": {
+                        "1.0": {"0": 263, "100000": 289}
+                    }
                 },
                 "S-II": {
                     "thrust_curve": {"0": 4400000, "100000": 5000000},
-                    "isp_curve": {"0": 395, "100000": 421}
+                    "isp_curve": {
+                        "1.0": {"0": 395, "100000": 421}
+                    }
                 },
                 "S-IVB": {
                     "thrust_curve": {"0": 825000, "100000": 1000000},
-                    "isp_curve": {"0": 441, "100000": 461}
+                    "isp_curve": {
+                        "1.0": {"0": 441, "100000": 461}
+                    }
                 }
             }
         }
@@ -59,35 +65,72 @@ class EnginePerformanceModel:
             thrust_data = stage_data["thrust_curve"]
             isp_data = stage_data["isp_curve"]
             
-            # Convert to numpy arrays for interpolation
+            # Handle thrust curve (1D)
             altitudes = np.array([float(alt) for alt in thrust_data.keys()])
             thrust_values = np.array([float(thrust) for thrust in thrust_data.values()])
-            isp_values = np.array([float(isp) for isp in isp_data.values()])
             
             # Sort by altitude (required for interpolation)
             sort_indices = np.argsort(altitudes)
             altitudes = altitudes[sort_indices]
             thrust_values = thrust_values[sort_indices]
-            isp_values = isp_values[sort_indices]
             
-            # Create cubic spline interpolators
-            # Use boundary conditions to prevent oscillations
+            # Create thrust spline interpolator
             thrust_spline = CubicSpline(altitudes, thrust_values, 
-                                      bc_type='natural',  # Natural boundary conditions
-                                      extrapolate=True)   # Allow extrapolation
+                                      bc_type='natural',
+                                      extrapolate=True)
             
-            isp_spline = CubicSpline(altitudes, isp_values,
-                                   bc_type='natural',
-                                   extrapolate=True)
-            
-            interpolators[stage_name] = {
-                'thrust': thrust_spline,
-                'isp': isp_spline,
-                'altitude_range': (altitudes.min(), altitudes.max())
-            }
+            # Handle Isp curve (check if 2D or legacy 1D format)
+            if isinstance(list(isp_data.values())[0], dict):
+                # New 2D format: throttle -> altitude -> Isp
+                throttle_levels = sorted([float(t) for t in isp_data.keys()])
+                
+                # Build 2D grid for interpolation
+                isp_grid = []
+                for throttle in throttle_levels:
+                    throttle_str = str(throttle)
+                    if throttle_str in isp_data:
+                        alt_isp_data = isp_data[throttle_str]
+                        alt_points = sorted([float(alt) for alt in alt_isp_data.keys()])
+                        isp_values = [float(alt_isp_data[str(alt)]) for alt in alt_points]
+                        isp_grid.append(isp_values)
+                
+                # Create 2D interpolator
+                isp_grid = np.array(isp_grid)
+                alt_points = sorted([float(alt) for alt in isp_data[str(throttle_levels[0])].keys()])
+                
+                # RectBivariateSpline expects (x, y, z) where z[i,j] = f(x[i], y[j])
+                isp_spline = RectBivariateSpline(throttle_levels, alt_points, isp_grid, 
+                                               bbox=[0.5, 1.1, 0, 200000],  # throttle: 0.5-1.1, alt: 0-200km
+                                               kx=min(3, len(throttle_levels)-1), 
+                                               ky=min(3, len(alt_points)-1))
+                
+                interpolators[stage_name] = {
+                    'thrust': thrust_spline,
+                    'isp': isp_spline,
+                    'isp_2d': True,
+                    'altitude_range': (altitudes.min(), altitudes.max()),
+                    'throttle_range': (min(throttle_levels), max(throttle_levels))
+                }
+                
+            else:
+                # Legacy 1D format: altitude -> Isp
+                isp_values = np.array([float(isp) for isp in isp_data.values()])
+                isp_values = isp_values[sort_indices]
+                
+                isp_spline = CubicSpline(altitudes, isp_values,
+                                       bc_type='natural',
+                                       extrapolate=True)
+                
+                interpolators[stage_name] = {
+                    'thrust': thrust_spline,
+                    'isp': isp_spline,
+                    'isp_2d': False,
+                    'altitude_range': (altitudes.min(), altitudes.max())
+                }
             
             self.logger.info(f"Built interpolators for {stage_name}: "
-                           f"altitude range {altitudes.min():.0f}-{altitudes.max():.0f}m")
+                           f"altitude range {altitudes.min():.0f}-{altitudes.max():.0f}m, "
+                           f"2D Isp: {interpolators[stage_name]['isp_2d']}")
         
         return interpolators
     
@@ -120,13 +163,14 @@ class EnginePerformanceModel:
         # Ensure positive thrust
         return max(0, thrust)
     
-    def get_specific_impulse(self, stage_name: str, altitude: float) -> float:
+    def get_specific_impulse(self, stage_name: str, altitude: float, throttle: float = 1.0) -> float:
         """
-        Get specific impulse for a specific stage at given altitude
+        Get specific impulse for a specific stage at given altitude and throttle
         
         Args:
             stage_name: Stage identifier ('S-IC', 'S-II', 'S-IVB')
             altitude: Altitude in meters
+            throttle: Throttle setting (0.0 to 1.0)
             
         Returns:
             Specific impulse in seconds
@@ -135,12 +179,23 @@ class EnginePerformanceModel:
             self.logger.warning(f"Unknown stage {stage_name}, using fallback")
             return self._get_fallback_isp(stage_name, altitude)
         
-        # Constrain altitude to reasonable bounds
+        # Constrain inputs to reasonable bounds
         altitude = max(0, min(altitude, 150000))  # 0 to 150 km
+        throttle = max(0.5, min(throttle, 1.0))   # 50% to 100% throttle
         
-        # Get interpolated Isp
-        isp_interpolator = self.interpolators[stage_name]['isp']
-        isp = float(isp_interpolator(altitude))
+        stage_data = self.interpolators[stage_name]
+        
+        if stage_data['isp_2d']:
+            # Use 2D interpolation for throttle-dependent Isp
+            isp_interpolator = stage_data['isp']
+            isp = float(isp_interpolator(throttle, altitude)[0, 0])
+        else:
+            # Use 1D interpolation (legacy format)
+            isp_interpolator = stage_data['isp']
+            isp = float(isp_interpolator(altitude))
+            # Apply throttle penalty for legacy data (approximate)
+            throttle_factor = 0.95 + 0.05 * throttle  # 95-100% efficiency
+            isp *= throttle_factor
         
         # Ensure reasonable Isp values
         return max(100, isp)  # Minimum 100 seconds Isp
@@ -159,7 +214,7 @@ class EnginePerformanceModel:
             Mass flow rate in kg/s
         """
         thrust = self.get_thrust(stage_name, altitude, throttle)
-        isp = self.get_specific_impulse(stage_name, altitude)
+        isp = self.get_specific_impulse(stage_name, altitude, throttle)
         
         # Standard gravity constant
         g0 = 9.80665  # m/s²

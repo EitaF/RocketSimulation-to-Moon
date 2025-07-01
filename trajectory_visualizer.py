@@ -5,7 +5,7 @@ Shows the progress of Professor v15 improvements
 
 import numpy as np
 import matplotlib.pyplot as plt
-from rocket_simulation_clean import RocketSimulation
+import rocket_simulation_main
 import time
 
 def run_trajectory_analysis():

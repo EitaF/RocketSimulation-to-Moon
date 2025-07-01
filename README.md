@@ -32,6 +32,18 @@ A physics-accurate rocket flight simulation implementing multi-stage rocket dyna
 - `rocket_visualizer.py` - Real-time mission visualization
 - `trajectory_visualizer.py` - Trajectory plotting and analysis
 
+## Setup
+
+1. **Install dependencies:**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+2. **Verify installation:**
+   ```bash
+   python monte_carlo_simulation.py --single-run 1
+   ```
+
 ## Quick Start
 
 1. **Basic simulation run:**
@@ -44,7 +56,17 @@ A physics-accurate rocket flight simulation implementing multi-stage rocket dyna
    python3 rocket_simulation_main.py --verbose-abort
    ```
 
-3. **View trajectory:**
+3. **Run Monte Carlo campaign:**
+   ```bash
+   python monte_carlo_simulation.py
+   ```
+
+4. **Resume interrupted campaign:**
+   ```bash
+   python monte_carlo_simulation.py --resume
+   ```
+
+5. **View trajectory:**
    ```bash
    python3 trajectory_visualizer.py
    ```
@@ -90,10 +112,18 @@ Enable/disable experimental features and guidance modes.
 
 ## Dependencies
 
-- Python 3.x
-- NumPy
-- Matplotlib (for visualization)
-- JSON (standard library)
+### Core Dependencies
+- Python 3.8+
+- NumPy ≥1.21.0
+- SciPy ≥1.7.0
+- pymsis ≥0.7.0 (advanced atmospheric modeling)
+
+### Optional Dependencies
+- Matplotlib ≥3.5.0 (visualization)
+- pytest ≥7.0.0 (testing)
+- pandas ≥1.3.0 (data analysis)
+
+See `requirements.txt` for complete dependency list.
 
 ## Documentation
 

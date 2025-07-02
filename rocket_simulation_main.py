@@ -20,6 +20,9 @@ import logging
 import guidance
 from config_flags import get_flag, is_enabled  # Professor v17: Feature flag support
 from vehicle import Vector3, Rocket, RocketStage, MissionPhase, create_saturn_v_rocket
+from orbital_monitor import OrbitalMonitor, create_orbital_monitor
+from guidance_strategy import GuidanceContext, GuidanceFactory, VehicleState
+from circularize import create_circularization_burn
 
 # 物理定数
 G = 6.67430e-11  # 万有引力定数 [m^3/kg/s^2]
@@ -126,6 +129,51 @@ class Mission:
         # ロガー設定
         logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
         self.logger = logging.getLogger(__name__)
+        
+        # Professor v27: Initialize orbital monitor and guidance system
+        self.orbital_monitor = create_orbital_monitor(update_interval=0.1)
+        self.guidance_context = GuidanceFactory.create_context(config)
+        self.circularization_burn = create_circularization_burn(self.orbital_monitor)
+        
+        # LEO mission success criteria
+        self.leo_target_altitude = 200000  # 200 km target
+        self.leo_success_tolerance = 5000   # 5 km tolerance
+        self.mission_success = False
+        
+        self.logger.info("Professor v27: Orbital monitor and PEG guidance system initialized")
+    
+    def check_leo_success(self) -> bool:
+        """
+        Check if LEO mission success criteria are met
+        Professor v27: Stable circular orbit within 5km tolerance
+        """
+        if not self.orbital_monitor.current_state:
+            return False
+        
+        orbital_state = self.orbital_monitor.current_state
+        
+        # Success criteria:
+        # 1. Circular orbit (eccentricity < 0.01)
+        # 2. Apoapsis and periapsis within 5km of each other
+        # 3. Altitude around 200km target
+        
+        is_circular = self.orbital_monitor.is_orbit_circular(tolerance_km=5.0)
+        altitude_km = orbital_state.altitude / 1000
+        altitude_ok = 180 <= altitude_km <= 220  # 200 ± 20km range
+        
+        success = is_circular and altitude_ok
+        
+        if success and not self.mission_success:
+            self.mission_success = True
+            apoapsis_km = (orbital_state.apoapsis - R_EARTH) / 1000
+            periapsis_km = (orbital_state.periapsis - R_EARTH) / 1000
+            self.logger.info(f"🎉 LEO MISSION SUCCESS! Stable circular orbit achieved:")
+            self.logger.info(f"   Apoapsis: {apoapsis_km:.1f} km")
+            self.logger.info(f"   Periapsis: {periapsis_km:.1f} km") 
+            self.logger.info(f"   Eccentricity: {orbital_state.eccentricity:.4f}")
+            self.logger.info(f"   Altitude difference: {abs(apoapsis_km - periapsis_km):.1f} km")
+        
+        return success
     
     def _initialize_moon(self) -> CelestialBody:
         """月の初期位置を設定（影響圏設定含む）"""
@@ -205,7 +253,10 @@ class Mission:
             return 8.0   # 第4段 着陸機: 最小
 
     def get_thrust_vector(self, t: float) -> Vector3:
-        """推力ベクトルを取得（ガイダンスモジュール使用）"""
+        """
+        推力ベクトルを取得（Professor v27: New guidance system）
+        Uses strategy pattern guidance instead of legacy guidance module
+        """
         altitude = self.get_altitude()
         if not self.rocket.is_thrusting(t, altitude):
             return Vector3(0, 0)
@@ -213,8 +264,38 @@ class Mission:
         stage = self.rocket.stages[self.rocket.current_stage]
         thrust_magnitude = stage.get_thrust(altitude)
         
-        # ガイダンスモジュールに委託
-        return guidance.compute_thrust_direction(self, t, thrust_magnitude)
+        # Professor v27: Use new strategy-based guidance system
+        try:
+            # Create vehicle state for guidance
+            vehicle_state = VehicleState(
+                position=self.rocket.position,
+                velocity=self.rocket.velocity,
+                altitude=altitude,
+                mass=self.rocket.total_mass,
+                mission_phase=self.rocket.phase,
+                time=t
+            )
+            
+            # Target state (for LEO mission)
+            target_state = {
+                'target_apoapsis': self.leo_target_altitude + R_EARTH,
+                'target_altitude': self.leo_target_altitude
+            }
+            
+            # Compute guidance command
+            guidance_command = self.guidance_context.compute_guidance(vehicle_state, target_state)
+            
+            # Apply thrust magnitude to guidance direction
+            thrust_direction = guidance_command.thrust_direction
+            actual_thrust_magnitude = thrust_magnitude * guidance_command.thrust_magnitude
+            
+            return thrust_direction * actual_thrust_magnitude
+            
+        except Exception as e:
+            self.logger.warning(f"Guidance system error: {e}, falling back to legacy guidance")
+            # Fallback to legacy guidance
+            import guidance
+            return guidance.compute_thrust_direction(self, t, thrust_magnitude)
     
     def _update_moon_position(self, dt: float):
         """月の位置を更新"""
@@ -956,6 +1037,12 @@ class Mission:
             self.rocket.velocity = orig_vel + (k1_v + k2_v * 2 + k3_v * 2 + k4_v) * (dt/6)
             self.rocket.position = orig_pos + (k1_r + k2_r * 2 + k3_r * 2 + k4_r) * (dt/6)
             
+            # Professor v27: Update orbital monitor with new state
+            self.orbital_monitor.update_state(self.rocket.position, self.rocket.velocity, t)
+            
+            # Professor v27: Check LEO mission success
+            self.check_leo_success()
+            
             # その他の更新
             self._update_moon_position(dt)
             self.rocket.update_stage(dt)
@@ -982,7 +1069,7 @@ class Mission:
         self.position_history.append(self.rocket.position)
         self.velocity_history.append(self.rocket.velocity)
         self.altitude_history.append(self.get_altitude())
-        self.mass_history.append(self.rocket.current_mass)
+        self.mass_history.append(self.rocket.total_mass)
         self.phase_history.append(self.rocket.phase)
         
         # CSVファイルを閉じる

@@ -10,12 +10,16 @@ from typing import Dict, Tuple, Optional, List
 from dataclasses import dataclass
 from enum import Enum
 from vehicle import Vector3, MissionPhase
+from peg import PEGGuidance
+from circularize import CircularizationBurn
 
 
 class GuidancePhase(Enum):
     """Guidance phases for mission"""
+    PEG = "peg"           # Powered Explicit Guidance (Professor v27)
     GRAVITY_TURN = "gravity_turn"
     COAST = "coast"
+    CIRCULARIZATION = "circularization"  # Professor v27: Apoapsis circularization burn
     TLI = "tli"           # Trans-Lunar Injection
     LOI = "loi"           # Lunar Orbit Insertion
     PDI = "pdi"           # Powered Descent Initiation
@@ -183,6 +187,126 @@ class GravityTurnStrategy(IGuidanceStrategy):
         return GuidancePhase.GRAVITY_TURN
 
 
+class PEGStrategy(IGuidanceStrategy):
+    """
+    Powered Explicit Guidance strategy for precise orbital insertion
+    Professor v27: Closed-loop guidance system to replace open-loop gravity turn
+    """
+    
+    def __init__(self, target_altitude_km: float = 200, thrust_deficit: float = 0.0):
+        self.logger = logging.getLogger(__name__)
+        self.peg_guidance = PEGGuidance(target_altitude=target_altitude_km * 1000)
+        self.thrust_deficit = thrust_deficit  # For testing with engine underperformance
+        self.meco_triggered = False
+        self.last_guidance_time = 0.0
+        self.cached_pitch = 90.0  # Start vertical
+        self.cached_thrust_direction = Vector3(0, 1, 0)  # Start vertical
+        
+        self.logger.info(f"PEG Strategy initialized - Target: {target_altitude_km}km, "
+                        f"Thrust deficit: {thrust_deficit*100:.1f}%")
+    
+    def compute_guidance(self, vehicle_state: VehicleState, 
+                        target_state: Dict, config: Dict) -> GuidanceCommand:
+        """Compute PEG guidance for closed-loop control"""
+        
+        # Professor v27: Vertical ascent for first 1500m, then PEG guidance
+        if vehicle_state.altitude < 1500:  # Below gravity turn altitude
+            # Thrust vertically upward
+            radial_unit = vehicle_state.position.normalized()
+            thrust_direction = radial_unit  # Point away from Earth center
+            pitch_deg = 90.0  # Vertical
+            thrust_magnitude = 1.0  # Full thrust
+            
+            return GuidanceCommand(
+                thrust_direction=thrust_direction,
+                thrust_magnitude=thrust_magnitude,
+                guidance_phase=GuidancePhase.PEG,
+                target_pitch=pitch_deg,
+                target_yaw=0.0,
+                estimated_error=0.0
+            )
+        
+        # Estimate remaining burn time (simplified)
+        remaining_burn_time = max(10.0, 300.0 - vehicle_state.time)  # Rough estimate
+        
+        # Compute PEG guidance
+        guidance_result = self.peg_guidance.compute_peg_guidance(
+            vehicle_state.position, 
+            vehicle_state.velocity, 
+            vehicle_state.time,
+            remaining_burn_time,
+            self.thrust_deficit
+        )
+        
+        if guidance_result[0] is not None:  # New guidance available
+            pitch_deg, thrust_direction, meco_condition = guidance_result
+            self.cached_pitch = pitch_deg
+            self.cached_thrust_direction = thrust_direction
+            self.meco_triggered = meco_condition
+            self.last_guidance_time = vehicle_state.time
+        else:
+            # Use cached values
+            pitch_deg = self.cached_pitch
+            thrust_direction = self.cached_thrust_direction
+        
+        # Thrust magnitude - full thrust until MECO
+        thrust_magnitude = 0.0 if self.meco_triggered else 1.0
+        
+        # Calculate guidance error (difference from target trajectory)
+        orbital_status = self.peg_guidance.get_guidance_status(
+            vehicle_state.position, vehicle_state.velocity
+        )
+        guidance_error = orbital_status.get('delta_v_needed', 0)
+        
+        # Determine next phase trigger
+        next_phase_trigger = None
+        if self.meco_triggered:
+            next_phase_trigger = "MECO_triggered"
+        
+        return GuidanceCommand(
+            thrust_direction=thrust_direction,
+            thrust_magnitude=thrust_magnitude,
+            guidance_phase=GuidancePhase.PEG,
+            target_pitch=pitch_deg,
+            target_yaw=0.0,
+            estimated_error=guidance_error,
+            next_phase_trigger=next_phase_trigger
+        )
+    
+    def is_phase_complete(self, vehicle_state: VehicleState, target_state: Dict) -> bool:
+        """Check if PEG phase is complete (MECO condition met)"""
+        return self.meco_triggered or not self.peg_guidance.is_guidance_needed(
+            vehicle_state.position, vehicle_state.velocity
+        )
+    
+    def get_phase_name(self) -> GuidancePhase:
+        return GuidancePhase.PEG
+    
+    def reset_meco(self):
+        """Reset MECO condition for testing"""
+        self.meco_triggered = False
+    
+    def set_thrust_deficit(self, deficit: float):
+        """Set thrust deficit for testing"""
+        self.thrust_deficit = deficit
+        self.logger.info(f"Thrust deficit set to {deficit*100:.1f}%")
+    
+    def get_guidance_status(self, vehicle_state: VehicleState) -> Dict:
+        """Get detailed guidance status for monitoring"""
+        orbital_status = self.peg_guidance.get_guidance_status(
+            vehicle_state.position, vehicle_state.velocity
+        )
+        
+        return {
+            **orbital_status,
+            'thrust_deficit_percent': self.thrust_deficit * 100,
+            'meco_triggered': self.meco_triggered,
+            'guidance_active': not self.meco_triggered,
+            'fallback_to_tangent': self.peg_guidance.fallback_to_tangent,
+            'convergence_failures': self.peg_guidance.convergence_failures
+        }
+
+
 class CoastStrategy(IGuidanceStrategy):
     """Coast phase guidance strategy"""
     
@@ -206,6 +330,101 @@ class CoastStrategy(IGuidanceStrategy):
     
     def get_phase_name(self) -> GuidancePhase:
         return GuidancePhase.COAST
+
+
+class CircularizationStrategy(IGuidanceStrategy):
+    """
+    Circularization burn strategy for orbital insertion
+    Professor v27: Precise circularization at apoapsis for stable LEO
+    """
+    
+    def __init__(self, orbital_monitor=None):
+        self.logger = logging.getLogger(__name__)
+        self.circularization_burn = CircularizationBurn(orbital_monitor)
+        self.burn_started = False
+        
+        self.logger.info("Circularization strategy initialized")
+    
+    def compute_guidance(self, vehicle_state: VehicleState, 
+                        target_state: Dict, config: Dict) -> GuidanceCommand:
+        """Compute circularization burn guidance"""
+        
+        # Check if we should start the burn
+        should_start = self.circularization_burn.should_start_burn(
+            vehicle_state.position, vehicle_state.velocity, vehicle_state.time
+        )
+        
+        if should_start and not self.burn_started:
+            # Calculate burn parameters
+            burn_params = self.circularization_burn.calculate_burn_parameters(
+                vehicle_state.position, vehicle_state.velocity
+            )
+            
+            if burn_params['is_valid']:
+                # Start the burn
+                self.circularization_burn.start_burn(
+                    vehicle_state.time, burn_params['delta_v_needed']
+                )
+                self.burn_started = True
+                thrust_direction = burn_params['burn_direction']
+                thrust_magnitude = 1.0  # Full thrust
+            else:
+                # Invalid burn parameters
+                thrust_direction = Vector3(0, 0, 0)
+                thrust_magnitude = 0.0
+        elif self.burn_started:
+            # Continue burn or check if it should stop
+            should_stop = self.circularization_burn.should_stop_burn(
+                vehicle_state.position, vehicle_state.velocity
+            )
+            
+            if should_stop:
+                self.circularization_burn.stop_burn(vehicle_state.time)
+                thrust_direction = Vector3(0, 0, 0)
+                thrust_magnitude = 0.0
+            else:
+                # Continue burning prograde
+                thrust_direction = vehicle_state.velocity.normalized() if vehicle_state.velocity.magnitude() > 0 else Vector3(1, 0, 0)
+                thrust_magnitude = 1.0
+                
+                # Update burn progress (simplified)
+                self.circularization_burn.update_burn(vehicle_state.time, 10.0)  # Assume 10 m/s delta-v per update
+        else:
+            # Not time to burn yet
+            thrust_direction = Vector3(0, 0, 0)
+            thrust_magnitude = 0.0
+        
+        # Calculate estimated error
+        burn_status = self.circularization_burn.get_burn_status()
+        guidance_error = burn_status.get('target_delta_v', 0) - burn_status.get('accumulated_delta_v', 0)
+        
+        return GuidanceCommand(
+            thrust_direction=thrust_direction,
+            thrust_magnitude=thrust_magnitude,
+            guidance_phase=GuidancePhase.CIRCULARIZATION,
+            target_pitch=0.0,  # Prograde burn
+            target_yaw=0.0,
+            estimated_error=abs(guidance_error)
+        )
+    
+    def is_phase_complete(self, vehicle_state: VehicleState, target_state: Dict) -> bool:
+        """Check if circularization is complete"""
+        if not self.burn_started:
+            return False
+        
+        # Check if burn is complete and orbit is circular
+        validation = self.circularization_burn.validate_circular_orbit(
+            vehicle_state.position, vehicle_state.velocity
+        )
+        
+        return validation.get('success', False)
+    
+    def get_phase_name(self) -> GuidancePhase:
+        return GuidancePhase.CIRCULARIZATION
+    
+    def get_circularization_status(self) -> Dict:
+        """Get detailed circularization status"""
+        return self.circularization_burn.get_burn_status()
 
 
 class TLIStrategy(IGuidanceStrategy):
@@ -335,8 +554,10 @@ class GuidanceContext:
         
         # Initialize strategies
         self.strategies = {
+            GuidancePhase.PEG: PEGStrategy(),  # Professor v27: Primary ascent guidance
             GuidancePhase.GRAVITY_TURN: GravityTurnStrategy(),
             GuidancePhase.COAST: CoastStrategy(),
+            GuidancePhase.CIRCULARIZATION: CircularizationStrategy(),  # Professor v27: Orbital insertion
             GuidancePhase.TLI: TLIStrategy(),
             GuidancePhase.LOI: LOIStrategy(),
             GuidancePhase.PDI: PDIStrategy()
@@ -344,7 +565,7 @@ class GuidanceContext:
         
         # Current strategy
         self.current_strategy: Optional[IGuidanceStrategy] = None
-        self.current_phase = GuidancePhase.GRAVITY_TURN
+        self.current_phase = GuidancePhase.PEG  # Professor v27: Start with PEG
         
         # Strategy switching history
         self.strategy_history: List[Dict] = []
@@ -373,7 +594,7 @@ class GuidanceContext:
                         target_state: Dict) -> GuidanceCommand:
         """Compute guidance using current strategy"""
         if self.current_strategy is None:
-            self.set_strategy(GuidancePhase.GRAVITY_TURN, vehicle_state.time)
+            self.set_strategy(GuidancePhase.PEG, vehicle_state.time)  # Professor v27: Default to PEG
         
         # Check if current phase is complete and auto-switch if needed
         if self.current_strategy.is_phase_complete(vehicle_state, target_state):
@@ -391,14 +612,20 @@ class GuidanceContext:
         """Determine next guidance phase based on mission state"""
         
         # Phase transition logic based on mission requirements
-        if current_phase == GuidancePhase.GRAVITY_TURN:
+        if current_phase == GuidancePhase.PEG:
+            # After PEG (MECO), coast to apoapsis
+            return GuidancePhase.COAST
+        elif current_phase == GuidancePhase.GRAVITY_TURN:
             # After gravity turn, coast to apoapsis
             return GuidancePhase.COAST
         elif current_phase == GuidancePhase.COAST:
-            # After coast, check if ready for TLI
+            # After coast, start circularization burn at apoapsis
+            return GuidancePhase.CIRCULARIZATION
+        elif current_phase == GuidancePhase.CIRCULARIZATION:
+            # After circularization, check if ready for TLI or stay in LEO
             if vehicle_state.mission_phase == MissionPhase.TLI_BURN:
                 return GuidancePhase.TLI
-            return GuidancePhase.COAST  # Stay in coast
+            return GuidancePhase.COAST  # Stay in LEO
         elif current_phase == GuidancePhase.TLI:
             # After TLI, coast to moon
             return GuidancePhase.COAST
@@ -427,7 +654,7 @@ class GuidanceContext:
     def reset(self):
         """Reset guidance context to initial state"""
         self.current_strategy = None
-        self.current_phase = GuidancePhase.GRAVITY_TURN
+        self.current_phase = GuidancePhase.PEG  # Professor v27: Default to PEG
         self.strategy_history.clear()
         self.logger.info("Guidance context reset")
 
@@ -439,8 +666,10 @@ class GuidanceFactory:
     def create_strategy(phase: GuidancePhase) -> IGuidanceStrategy:
         """Create a strategy instance for the given phase"""
         strategy_map = {
+            GuidancePhase.PEG: PEGStrategy,  # Professor v27: Primary guidance
             GuidancePhase.GRAVITY_TURN: GravityTurnStrategy,
             GuidancePhase.COAST: CoastStrategy,
+            GuidancePhase.CIRCULARIZATION: CircularizationStrategy,  # Professor v27: Orbital insertion
             GuidancePhase.TLI: TLIStrategy,
             GuidancePhase.LOI: LOIStrategy,
             GuidancePhase.PDI: PDIStrategy

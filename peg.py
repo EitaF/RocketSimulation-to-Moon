@@ -140,31 +140,32 @@ class PEGGuidance:
         
         return delta_v_mag, delta_v_vector
     
-    def compute_peg_pitch(self, position: Vector3, velocity: Vector3, time: float, 
-                         remaining_burn_time: float) -> float:
+    def compute_peg_guidance(self, position: Vector3, velocity: Vector3, time: float, 
+                            remaining_burn_time: float, thrust_deficit: float = 0.0) -> Tuple[float, Vector3, bool]:
         """
-        Compute optimal pitch angle using enhanced PEG algorithm
-        Professor v17: Added γ derivative damping and fallback logic
+        Compute optimal guidance using enhanced closed-loop PEG algorithm
+        Professor v27: Enhanced for closed-loop control with thrust deficit handling
         
         Args:
             position: Current position vector
             velocity: Current velocity vector  
             time: Current mission time
             remaining_burn_time: Estimated remaining burn time for current stage
+            thrust_deficit: Thrust deficit factor (0.0 = normal, 0.05 = 5% deficit)
             
         Returns:
-            Optimal pitch angle in degrees
+            Tuple of (pitch_angle_degrees, thrust_direction_vector, meco_condition_met)
         """
         if not self.should_update(time):
-            return None  # Use previous guidance
+            return None, Vector3(0, 0, 0), False  # Use previous guidance
         
         self.last_update_time = time
         
         # Calculate current orbital state
         apoapsis, periapsis, eccentricity = self.calculate_orbital_elements(position, velocity)
         
-        # Calculate required ΔV
-        delta_v_needed, delta_v_vector = self.calculate_required_delta_v(position, velocity)
+        # Calculate V_go vector (velocity-to-be-gained)
+        v_go_vector, v_go_magnitude = self._calculate_v_go_vector(position, velocity, thrust_deficit)
         
         # Current state
         r = position.magnitude()
@@ -195,21 +196,164 @@ class PEGGuidance:
         else:
             self.convergence_failures = max(0, self.convergence_failures - 1)
         
-        # Fallback to Tangent Guidance if PEG fails to converge
+        # Determine MECO condition
+        meco_condition = self._check_meco_condition(position, velocity, v_go_magnitude)
+        
+        # Calculate thrust direction and pitch
         if self.convergence_failures >= 3 or avg_gamma_derivative > 0.01:  # rad/s threshold
             self.fallback_to_tangent = True
             pitch_deg = self._tangent_guidance_fallback(altitude, v, flight_path_angle)
+            thrust_direction = self._pitch_to_thrust_vector(pitch_deg, position, velocity)
         else:
             self.fallback_to_tangent = False
-            pitch_deg = self._standard_peg_logic(altitude, v, flight_path_angle, delta_v_needed, 
-                                               periapsis, apoapsis, gamma_derivative)
+            thrust_direction = v_go_vector.normalized() if v_go_magnitude > 0.1 else velocity.normalized()
+            pitch_deg = self._thrust_vector_to_pitch(thrust_direction, position)
         
         self.last_flight_path_angle = flight_path_angle
         
         # Ensure reasonable bounds
         pitch_deg = max(0, min(90, pitch_deg))
         
-        return pitch_deg
+        return pitch_deg, thrust_direction, meco_condition
+    
+    def _calculate_v_go_vector(self, position: Vector3, velocity: Vector3, thrust_deficit: float) -> Tuple[Vector3, float]:
+        """
+        Calculate velocity-to-be-gained (V_go) vector for closed-loop guidance
+        Professor v27: Core PEG algorithm implementation
+        """
+        r = position.magnitude()
+        v = velocity.magnitude()
+        
+        # Target orbital velocity at current radius for circular orbit
+        v_circular_current = np.sqrt(MU_EARTH / r)
+        
+        # Target orbital velocity at target radius
+        v_circular_target = np.sqrt(MU_EARTH / self.target_radius)
+        
+        # Current specific energy
+        current_energy = 0.5 * v**2 - MU_EARTH / r
+        
+        # Target specific energy for circular orbit
+        target_energy = -MU_EARTH / (2 * self.target_radius)
+        
+        # Required velocity change magnitude
+        if r < self.target_radius:  # Below target altitude
+            # Need to gain energy to reach target
+            delta_v_needed = np.sqrt(2 * (target_energy + MU_EARTH / r)) - v
+            
+            # Compensate for thrust deficit
+            if thrust_deficit > 0:
+                delta_v_needed *= (1 + thrust_deficit * 2)  # Increase required delta-v
+            
+            # Direction: blend prograde and radial based on altitude
+            prograde_component = velocity.normalized()
+            radial_component = position.normalized()
+            
+            # More radial at lower altitudes, more prograde at higher altitudes
+            altitude_factor = min(1.0, (r - R_EARTH) / 100000)  # 0 at surface, 1 at 100km
+            
+            # Weighted direction
+            v_go_direction = (prograde_component * (0.7 + 0.3 * altitude_factor) + 
+                            radial_component * (0.3 - 0.3 * altitude_factor))
+            v_go_direction = v_go_direction.normalized()
+            
+        else:  # At or above target altitude
+            # Fine-tune for circular orbit
+            delta_v_needed = v_circular_current - v
+            v_go_direction = velocity.normalized()  # Prograde for circularization
+        
+        v_go_magnitude = max(0, delta_v_needed)
+        v_go_vector = v_go_direction * v_go_magnitude
+        
+        return v_go_vector, v_go_magnitude
+    
+    def _check_meco_condition(self, position: Vector3, velocity: Vector3, v_go_magnitude: float) -> bool:
+        """
+        Check if Main Engine Cutoff (MECO) condition is met
+        Professor v27: Precise MECO logic for orbital insertion
+        """
+        r = position.magnitude()
+        v = velocity.magnitude()
+        
+        # Calculate predicted apoapsis with current trajectory
+        current_energy = 0.5 * v**2 - MU_EARTH / r
+        
+        if current_energy >= 0:
+            return True  # Escape trajectory, cut engines
+        
+        # Semi-major axis
+        a = -MU_EARTH / (2 * current_energy)
+        
+        # Angular momentum
+        h_vec = Vector3(
+            position.y * velocity.z - position.z * velocity.y,
+            position.z * velocity.x - position.x * velocity.z,
+            position.x * velocity.y - position.y * velocity.x
+        )
+        h = h_vec.magnitude()
+        
+        # Eccentricity
+        if h > 0:
+            e = np.sqrt(1 + 2 * current_energy * h**2 / (MU_EARTH**2))
+            predicted_apoapsis = a * (1 + e)
+        else:
+            predicted_apoapsis = r
+        
+        # MECO when apoapsis is within tolerance of target
+        apoapsis_error = abs(predicted_apoapsis - self.target_radius)
+        meco_tolerance = 5000  # 5 km tolerance
+        
+        # Also consider velocity-to-go magnitude
+        v_go_small = v_go_magnitude < 50  # Less than 50 m/s remaining
+        
+        return apoapsis_error < meco_tolerance or v_go_small
+    
+    def _pitch_to_thrust_vector(self, pitch_deg: float, position: Vector3, velocity: Vector3) -> Vector3:
+        """Convert pitch angle to thrust direction vector"""
+        pitch_rad = np.radians(pitch_deg)
+        
+        # Local coordinate system
+        radial_unit = position.normalized()
+        
+        # Tangential direction (perpendicular to radial, in orbital plane)
+        if velocity.magnitude() > 0:
+            vel_unit = velocity.normalized()
+            # Cross product to get normal to orbital plane
+            normal = Vector3(
+                radial_unit.y * vel_unit.z - radial_unit.z * vel_unit.y,
+                radial_unit.z * vel_unit.x - radial_unit.x * vel_unit.z,
+                radial_unit.x * vel_unit.y - radial_unit.y * vel_unit.x
+            )
+            if normal.magnitude() > 0:
+                normal = normal.normalized()
+                # Tangential direction
+                tangent = Vector3(
+                    normal.y * radial_unit.z - normal.z * radial_unit.y,
+                    normal.z * radial_unit.x - normal.x * radial_unit.z,
+                    normal.x * radial_unit.y - normal.y * radial_unit.x
+                )
+                tangent = tangent.normalized()
+            else:
+                # Fallback: assume tangent is in xy-plane
+                tangent = Vector3(-radial_unit.y, radial_unit.x, 0).normalized()
+        else:
+            # Fallback for zero velocity
+            tangent = Vector3(-radial_unit.y, radial_unit.x, 0).normalized()
+        
+        # Thrust vector: pitch angle from vertical (radial)
+        thrust_vector = radial_unit * np.cos(pitch_rad) + tangent * np.sin(pitch_rad)
+        return thrust_vector.normalized()
+    
+    def _thrust_vector_to_pitch(self, thrust_vector: Vector3, position: Vector3) -> float:
+        """Convert thrust direction vector to pitch angle"""
+        radial_unit = position.normalized()
+        
+        # Dot product to get cosine of angle from vertical
+        cos_pitch = radial_unit.data @ thrust_vector.data
+        cos_pitch = np.clip(cos_pitch, -1, 1)
+        
+        pitch_rad = np.arccos(cos_pitch)
+        return np.degrees(pitch_rad)
     
     def _standard_peg_logic(self, altitude: float, velocity: float, flight_path_angle: float,
                            delta_v_needed: float, periapsis: float, apoapsis: float, 

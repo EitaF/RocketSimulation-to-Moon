@@ -194,6 +194,38 @@ class Rocket:
         # The time-dependent mass is calculated in the Mission class.
         return self.payload_mass + sum(s.total_mass for s in self.stages)
     
+    def get_current_mass(self, current_time: float, altitude: float) -> float:
+        """
+        Calculate current total mass accounting for propellant consumption
+        
+        Args:
+            current_time: Current simulation time [s]
+            altitude: Current altitude [m] for calculating mass flow rate
+            
+        Returns:
+            Current total mass [kg] including consumed propellant
+        """
+        total_mass = self.payload_mass
+        
+        # Add mass from all stages after current stage (not yet used)
+        for i in range(self.current_stage + 1, len(self.stages)):
+            total_mass += self.stages[i].total_mass
+        
+        # Add mass from current stage, accounting for propellant consumption
+        if self.current_stage < len(self.stages):
+            current_stage = self.stages[self.current_stage]
+            stage_elapsed_time = current_time - self.stage_start_time
+            
+            # Calculate current stage mass using get_mass_at_time
+            current_stage_mass = current_stage.get_mass_at_time(stage_elapsed_time, altitude)
+            total_mass += current_stage_mass
+        
+        # Add dry mass from all previous stages (already consumed)
+        for i in range(self.current_stage):
+            total_mass += self.stages[i].dry_mass
+        
+        return total_mass
+    
     @property
     def current_stage_obj(self) -> Optional[RocketStage]:
         """Get current active stage object"""

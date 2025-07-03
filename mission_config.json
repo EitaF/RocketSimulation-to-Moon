@@ -4,7 +4,7 @@
   "launch_latitude": 28.573,
   "launch_azimuth": 72,
   "target_parking_orbit": 200000,
-  "gravity_turn_altitude": 1500,
+  "gravity_turn_altitude": 8000,
   "simulation_duration": 14400,
   "time_step": 0.1,
   "visualization": {

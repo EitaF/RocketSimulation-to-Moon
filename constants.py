@@ -141,6 +141,7 @@ MACH_1 = SPEED_OF_SOUND_SEA_LEVEL
 # Dynamic pressure limits
 MAX_Q_STRUCTURAL = 35000            # Pa (typical structural limit)
 MAX_Q_APOLLO = 33000                # Pa (Apollo program limit)
+MAX_Q_OPERATIONAL = 33000           # Pa (operational abort threshold for mission safety - Apollo level)
 
 # Flight envelope
 KARMAN_LINE = 100e3                 # m (space boundary)

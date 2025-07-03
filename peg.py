@@ -19,7 +19,7 @@ class PEGGuidance:
     Professor v17: Added γ derivative damping and fallback logic
     """
     
-    def __init__(self, target_altitude: float = 200000, target_eccentricity: float = 0.001):
+    def __init__(self, target_altitude: float = 185000, target_eccentricity: float = 0.001):
         """
         Initialize PEG guidance
         
@@ -306,7 +306,7 @@ class PEGGuidance:
         # Also consider velocity-to-go magnitude
         v_go_small = v_go_magnitude < 50  # Less than 50 m/s remaining
         
-        return apoapsis_error < meco_tolerance or v_go_small
+        return v_go_small
     
     def _pitch_to_thrust_vector(self, pitch_deg: float, position: Vector3, velocity: Vector3) -> Vector3:
         """Convert pitch angle to thrust direction vector"""

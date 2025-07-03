@@ -3,7 +3,7 @@
     {
       "name": "S-IC (1st Stage)",
       "dry_mass": 130000,
-      "propellant_mass": 2150000,
+      "propellant_mass": 2000000,
       "thrust_sea_level": 34020000,
       "thrust_vacuum": 35100000,
       "specific_impulse_sea_level": 263,
@@ -13,12 +13,12 @@
     {
       "name": "S-II (2nd Stage)",
       "dry_mass": 40000,
-      "propellant_mass": 900000,
+      "propellant_mass": 450000,
       "thrust_sea_level": 4400000,
       "thrust_vacuum": 5000000,
       "specific_impulse_sea_level": 395,
       "specific_impulse_vacuum": 421,
-      "burn_time": 800
+      "burn_time": 390
     },
     {
       "name": "S-IVB (3rd Stage)",

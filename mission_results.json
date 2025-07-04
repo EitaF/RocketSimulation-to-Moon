@@ -5,6 +5,10 @@
   "max_altitude": 289766.63635245897,
   "max_velocity": 4681.587087729671,
   "total_delta_v": 8339.023522227286,
+  "max_c3_energy": -110225249.42825775,
+  "final_c3_energy": -110225249.42825775,
+  "final_eccentricity": 0.8135382448585929,
+  "final_apogee": 186996.0551953474,
   "final_mass": 306680.7200276389,
   "propellant_used": 2450000,
   "time_history": [

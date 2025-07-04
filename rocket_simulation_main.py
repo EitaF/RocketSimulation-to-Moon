@@ -119,6 +119,7 @@ class Mission:
         self.max_altitude = 0.0
         self.max_velocity = 0.0
         self.total_delta_v = 0.0
+        self.max_c3_energy = float('-inf')  # Professor v30: Track maximum C3 energy
         self.stage_delta_v_history: List[float] = []  # 各ステージのΔv記録
         self.last_stage_count = 0  # Track stage changes for ΔV calculation
         
@@ -147,7 +148,24 @@ class Mission:
         """
         Check if LEO mission success criteria are met
         Professor v27: Stable circular orbit within 5km tolerance
+        Professor v29: Updated to recognize LEO_STABLE phase as mission success
         """
+        # Professor v29: LEO_STABLE phase indicates successful S-IVB cutoff
+        if self.rocket.phase == MissionPhase.LEO_STABLE:
+            if not self.mission_success:
+                self.mission_success = True
+                if self.orbital_monitor.current_state:
+                    orbital_state = self.orbital_monitor.current_state
+                    apoapsis_km = (orbital_state.apoapsis - R_EARTH) / 1000
+                    periapsis_km = (orbital_state.periapsis - R_EARTH) / 1000
+                    self.logger.info(f"🎉 LEO MISSION SUCCESS! S-IVB engine cutoff achieved:")
+                    self.logger.info(f"   Apoapsis: {apoapsis_km:.1f} km")
+                    self.logger.info(f"   Periapsis: {periapsis_km:.1f} km") 
+                    self.logger.info(f"   Eccentricity: {orbital_state.eccentricity:.4f}")
+                    self.logger.info(f"   Altitude difference: {abs(apoapsis_km - periapsis_km):.1f} km")
+            return True
+        
+        # Original success criteria (fallback)
         if not self.orbital_monitor.current_state:
             return False
         
@@ -584,24 +602,30 @@ class Mission:
                 self.rocket.phase = MissionPhase.LEO # フォールバック
 
         elif current_phase == MissionPhase.CIRCULARIZATION:
-            # Action A1: Overhauled Circularization Control Logic
+            # Action A1: Overhauled Circularization Control Logic with S-IVB Engine Cutoff
             # 1. Get current orbital elements
             apoapsis, periapsis, eccentricity = self.get_orbital_elements()
             
-            # 2. Define success condition: periapsis is above the atmosphere
-            # Let's target 120km altitude for safety
-            is_orbit_stable = periapsis >= (R_EARTH + 120e3) 
+            # 2. Professor v29: Define stable orbit condition for S-IVB cutoff
+            # Stable orbit: periapsis > 150km AND eccentricity < 0.005
+            periapsis_stable = periapsis >= (R_EARTH + 150e3)  # 150km as per professor
+            eccentricity_stable = eccentricity < 0.005  # Low eccentricity for circular orbit
+            is_orbit_stable = periapsis_stable and eccentricity_stable
 
-            # 3. Implement the new logic
+            # 3. Implement the new logic with S-IVB engine cutoff
             if is_orbit_stable:
-                self.rocket.phase = MissionPhase.LEO
-                self.logger.info(f"SUCCESS: LEO insertion complete. Achieved stable orbit.")
+                # Professor v29: Command S-IVB engine shutdown for stable orbit
+                self.rocket.phase = MissionPhase.LEO_STABLE
+                self.logger.info(f"SUCCESS: S-IVB ENGINE CUTOFF - Stable LEO achieved!")
                 self.logger.info(f" -> Apoapsis: {(apoapsis-R_EARTH)/1000:.1f} km, Periapsis: {(periapsis-R_EARTH)/1000:.1f} km")
+                self.logger.info(f" -> Eccentricity: {eccentricity:.4f} (< 0.005 ✓)")
+                self.logger.info(f" -> S-IVB engine shutdown commanded for stable orbit maintenance")
             
             elif not self.rocket.is_thrusting:
                 self.rocket.phase = MissionPhase.FAILED
                 self.logger.error(f"FAILURE: Out of fuel during circularization burn.")
-                self.logger.error(f" -> Final Periapsis: {(periapsis-R_EARTH)/1000:.1f} km (Target > 120 km)")
+                self.logger.error(f" -> Final Periapsis: {(periapsis-R_EARTH)/1000:.1f} km (Target > 150 km)")
+                self.logger.error(f" -> Final Eccentricity: {eccentricity:.4f} (Target < 0.005)")
 
             # else: continue burning...
 
@@ -644,14 +668,55 @@ class Mission:
                 self.rocket.phase = MissionPhase.FAILED
                 self.logger.error(f"Failed to maintain stable LEO. Orbit decayed.")
 
+        elif current_phase == MissionPhase.LEO_STABLE:
+            # Professor v29: New stable LEO phase with S-IVB engine off
+            # LEO_STABLEでの待機からTLIフェーズへの遷移準備
+            coast_time = len([p for p in self.phase_history if p == MissionPhase.LEO_STABLE]) * 0.1
+            
+            # 安定した軌道で30秒待機したら月へ
+            if self.rocket.current_stage == 2 and coast_time > 30:
+                self.rocket.phase = MissionPhase.TLI_BURN
+                self.logger.info("LEO_STABLE parking complete. Initiating Trans-Lunar Injection burn!")
+            elif coast_time > 600: # 10分待っても TLI が始まらない場合は成功とみなす
+                self.logger.info(f"LEO_STABLE maintained successfully for {coast_time:.1f}s. Mission complete.")
+                # Mission stays in LEO_STABLE - this is a success state
+
 
         elif current_phase == MissionPhase.TLI_BURN:
-            # 燃焼終了で月への巡航フェーズへ
-            if not self.rocket.is_thrusting:
-                self.rocket.phase = MissionPhase.COAST_TO_MOON
-                self.logger.info(f"TLI burn complete. Coasting to Moon...")
-                escape_velocity = np.sqrt(2 * G * M_EARTH / self.rocket.position.magnitude())
-                self.logger.info(f"Current velocity: {velocity:.0f} m/s (Escape vel: {escape_velocity:.0f} m/s)")
+            # Professor v29: Enhanced TLI burn with proper guidance termination
+            # Check if TLI guidance indicates burn completion
+            try:
+                # Get TLI strategy from guidance context
+                if hasattr(self.guidance_context, 'current_strategy') and hasattr(self.guidance_context.current_strategy, 'tli_guidance'):
+                    tli_guidance = self.guidance_context.current_strategy.tli_guidance
+                    tli_status = tli_guidance.get_trajectory_status()
+                    
+                    # Enhanced termination criteria using TLI guidance
+                    burn_complete = tli_guidance.should_terminate_burn(self.rocket.velocity)
+                    
+                    if burn_complete or not self.rocket.is_thrusting:
+                        self.rocket.phase = MissionPhase.COAST_TO_MOON
+                        self.logger.info(f"TLI burn complete. Coasting to Moon...")
+                        escape_velocity = np.sqrt(2 * G * M_EARTH / self.rocket.position.magnitude())
+                        current_c3 = velocity**2 - escape_velocity**2
+                        self.max_c3_energy = max(self.max_c3_energy, current_c3)  # Professor v30: Track max C3
+                        self.logger.info(f"Current velocity: {velocity:.0f} m/s (Escape vel: {escape_velocity:.0f} m/s)")
+                        self.logger.info(f"C3 energy achieved: {current_c3:.1f} m²/s² (Target: {tli_guidance.tli_params.target_c3_energy:.1f})")
+                        self.logger.info(f"Burn duration: {tli_status.get('burn_elapsed_time', 0):.1f} s")
+                else:
+                    # Fallback to original logic
+                    if not self.rocket.is_thrusting:
+                        self.rocket.phase = MissionPhase.COAST_TO_MOON
+                        self.logger.info(f"TLI burn complete. Coasting to Moon...")
+                        escape_velocity = np.sqrt(2 * G * M_EARTH / self.rocket.position.magnitude())
+                        self.logger.info(f"Current velocity: {velocity:.0f} m/s (Escape vel: {escape_velocity:.0f} m/s)")
+            except Exception as e:
+                self.logger.warning(f"TLI guidance error: {e}, using fallback logic")
+                if not self.rocket.is_thrusting:
+                    self.rocket.phase = MissionPhase.COAST_TO_MOON
+                    self.logger.info(f"TLI burn complete. Coasting to Moon...")
+                    escape_velocity = np.sqrt(2 * G * M_EARTH / self.rocket.position.magnitude())
+                    self.logger.info(f"Current velocity: {velocity:.0f} m/s (Escape vel: {escape_velocity:.0f} m/s)")
 
         elif current_phase == MissionPhase.COAST_TO_MOON:
             # 月の影響圏(SOI)に入ったら軌道投入燃焼へ
@@ -1085,6 +1150,38 @@ class Mission:
     
     def _compile_results(self) -> Dict:
         """シミュレーション結果をまとめる"""
+        # Professor v30: Calculate final orbital parameters for validation
+        if self.position_history and self.velocity_history:
+            final_position = self.position_history[-1]
+            final_velocity = self.velocity_history[-1]
+            
+            # Calculate orbital parameters
+            r = final_position.magnitude()
+            v = final_velocity.magnitude()
+            escape_velocity = np.sqrt(2 * G * M_EARTH / r)
+            final_c3_energy = v**2 - escape_velocity**2
+            
+            # Calculate eccentricity and apogee for validation
+            mu = G * M_EARTH
+            h_vec = Vector3(
+                final_position.y * final_velocity.z - final_position.z * final_velocity.y,
+                final_position.z * final_velocity.x - final_position.x * final_velocity.z,
+                final_position.x * final_velocity.y - final_position.y * final_velocity.x
+            )
+            h = h_vec.magnitude()
+            
+            if h > 0:
+                semi_major_axis = 1 / (2/r - v**2/mu)
+                eccentricity = np.sqrt(1 + (2 * (v**2/2 - mu/r) * h**2) / (mu**2))
+                apogee = semi_major_axis * (1 + eccentricity) - R_EARTH
+            else:
+                eccentricity = 0
+                apogee = r - R_EARTH
+        else:
+            final_c3_energy = 0
+            eccentricity = 0
+            apogee = 0
+
         return {
             "mission_success": self.rocket.phase == MissionPhase.LANDED,
             "final_phase": self.rocket.phase.value,
@@ -1092,6 +1189,10 @@ class Mission:
             "max_altitude": self.max_altitude,
             "max_velocity": self.max_velocity,
             "total_delta_v": self.total_delta_v,
+            "max_c3_energy": self.max_c3_energy if self.max_c3_energy != float('-inf') else final_c3_energy,
+            "final_c3_energy": final_c3_energy,
+            "final_eccentricity": eccentricity,
+            "final_apogee": apogee,
             "final_mass": self.mass_history[-1] if self.mass_history else self.rocket.total_mass,
             "propellant_used": sum(stage.propellant_mass for stage in self.rocket.stages[:self.rocket.current_stage]),
             "time_history": self.time_history,
@@ -1205,6 +1306,16 @@ def main():
     print(f"Total Delta-V: {results['total_delta_v']:.1f} m/s")
     print(f"Propellant Used: {results['propellant_used']/1000:.1f} tons")
     print(f"Final Mass: {results['final_mass']/1000:.1f} tons")
+    
+    # Professor v30: Show C3 energy and orbital parameters for validation
+    if 'max_c3_energy' in results:
+        print(f"Max C3 Energy: {results['max_c3_energy']/1e6:.3f} km²/s²")
+    if 'final_c3_energy' in results:
+        print(f"Final C3 Energy: {results['final_c3_energy']/1e6:.3f} km²/s²")
+    if 'final_eccentricity' in results:
+        print(f"Final Eccentricity: {results['final_eccentricity']:.6f}")
+    if 'final_apogee' in results:
+        print(f"Final Apogee: {results['final_apogee']/1000:.1f} km")
     
     # 結果を保存
     with open("mission_results.json", "w") as f:

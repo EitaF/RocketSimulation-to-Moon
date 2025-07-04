@@ -428,18 +428,32 @@ class CircularizationStrategy(IGuidanceStrategy):
 
 
 class TLIStrategy(IGuidanceStrategy):
-    """Trans-Lunar Injection strategy"""
+    """Trans-Lunar Injection strategy - Professor v29 enhanced with TLI guidance module"""
+    
+    def __init__(self):
+        # Import TLI guidance module
+        from tli_guidance import create_tli_guidance
+        self.tli_guidance = create_tli_guidance(185000)  # 185km parking orbit
+        self.burn_started = False
     
     def compute_guidance(self, vehicle_state: VehicleState, 
                         target_state: Dict, config: Dict) -> GuidanceCommand:
-        """TLI burn guidance"""
+        """TLI burn guidance using dedicated TLI guidance module"""
         
-        # Point prograde for TLI burn
-        velocity_direction = vehicle_state.velocity.normalized()
+        # Get guidance from TLI module
+        thrust_direction, thrust_magnitude = self.tli_guidance.get_guidance_command(
+            vehicle_state.position, 
+            vehicle_state.velocity, 
+            vehicle_state.time
+        )
+        
+        # Update burn state
+        if hasattr(vehicle_state, 'dt'):
+            self.tli_guidance.update_burn_state(vehicle_state.dt, vehicle_state.velocity)
         
         return GuidanceCommand(
-            thrust_direction=velocity_direction,
-            thrust_magnitude=1.0,  # Full thrust
+            thrust_direction=thrust_direction,
+            thrust_magnitude=thrust_magnitude,
             guidance_phase=GuidancePhase.TLI,
             target_pitch=0.0,  # Prograde
             target_yaw=0.0,
@@ -447,14 +461,9 @@ class TLIStrategy(IGuidanceStrategy):
         )
     
     def is_phase_complete(self, vehicle_state: VehicleState, target_state: Dict) -> bool:
-        """Check if TLI is complete"""
-        # TLI complete when we achieve escape velocity
-        mu_earth = 3.986e14
-        r = vehicle_state.position.magnitude()
-        v = vehicle_state.velocity.magnitude()
-        
-        escape_velocity = np.sqrt(2 * mu_earth / r)
-        return v >= escape_velocity * 0.95  # 95% of escape velocity
+        """Check if TLI is complete using TLI guidance module"""
+        # Use TLI guidance module to determine burn completion
+        return self.tli_guidance.should_terminate_burn(vehicle_state.velocity)
     
     def get_phase_name(self) -> GuidancePhase:
         return GuidancePhase.TLI

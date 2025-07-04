@@ -24,6 +24,7 @@ class MissionPhase(Enum):
     COAST_TO_APOAPSIS = "coast_to_apoapsis"
     CIRCULARIZATION = "circularization"
     LEO = "leo"
+    LEO_STABLE = "leo_stable"
     TLI_BURN = "tli_burn"
     COAST_TO_MOON = "coast_to_moon"
     MID_COURSE_CORRECTION = "mid_course_correction"
@@ -248,6 +249,19 @@ class Rocket:
         return 0.0
 
     def is_thrusting(self, current_time: float, altitude: float) -> bool:
+        # Professor v29: S-IVB engine cutoff for LEO_STABLE phase
+        if self.phase == MissionPhase.LEO_STABLE:
+            return False  # Engine is shut down in stable LEO
+        
+        # Professor v29: Allow thrusting during TLI_BURN phase
+        if self.phase == MissionPhase.TLI_BURN:
+            stage = self.current_stage_obj
+            if not stage:
+                return False
+            # For TLI, check if we have propellant (guidance will handle cutoff)
+            stage_elapsed_time = current_time - self.stage_start_time
+            return stage_elapsed_time < stage.burn_time and stage.propellant_mass > 0
+        
         stage = self.current_stage_obj
         if not stage:
             return False

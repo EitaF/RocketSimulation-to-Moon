@@ -24,6 +24,7 @@ from vehicle import Vector3, Rocket, RocketStage, MissionPhase, create_saturn_v_
 from orbital_monitor import OrbitalMonitor, create_orbital_monitor
 from guidance_strategy import GuidanceContext, GuidanceFactory, VehicleState
 from circularize import create_circularization_burn
+from patched_conic_solver import check_soi_transition, convert_to_lunar_frame
 
 # 物理定数
 G = 6.67430e-11  # 万有引力定数 [m^3/kg/s^2]
@@ -720,9 +721,20 @@ class Mission:
 
         elif current_phase == MissionPhase.COAST_TO_MOON:
             # 月の影響圏(SOI)に入ったら軌道投入燃焼へ
-            if self.moon.is_in_soi(self.rocket.position):
+            # Enhanced SOI transition using patched conic solver
+            spacecraft_pos_km = self.rocket.position * 1e-3  # Convert to km
+            moon_pos_km = self.moon.position * 1e-3  # Convert to km
+            
+            if check_soi_transition(spacecraft_pos_km, moon_pos_km):
+                # Convert to lunar frame for trajectory analysis
+                spacecraft_state = (spacecraft_pos_km, self.rocket.velocity * 1e-3)
+                moon_state = (moon_pos_km, self.moon.velocity * 1e-3)
+                pos_lci, vel_lci = convert_to_lunar_frame(spacecraft_state, moon_state)
+                
                 self.rocket.phase = MissionPhase.LOI_BURN
-                self.logger.info(f"Entered Moon's Sphere of Influence. Preparing for LOI.")
+                self.logger.info(f"Entered Moon's Sphere of Influence using patched conic solver.")
+                self.logger.info(f"Lunar-centered position: {np.linalg.norm(pos_lci):.1f} km")
+                self.logger.info(f"Lunar-centered velocity: {np.linalg.norm(vel_lci):.3f} km/s")
             elif len([p for p in self.phase_history if p == current_phase]) * 0.1 > 5 * 24 * 3600: # 5日以上かかったら失敗
                 self.rocket.phase = MissionPhase.FAILED
                 self.logger.error("Failed to reach Moon SOI within 5 days.")

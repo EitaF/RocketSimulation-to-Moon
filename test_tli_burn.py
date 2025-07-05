@@ -76,7 +76,7 @@ def test_tli_burn():
     
     # Simulation parameters
     dt = 0.1  # Time step [s]
-    max_time = 600.0  # Maximum simulation time [s]
+    max_time = 900.0  # Maximum simulation time [s]
     time = 0.0
     
     # Storage for results

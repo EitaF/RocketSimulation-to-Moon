@@ -96,7 +96,7 @@ class TLIGuidance:
         
         # Estimate burn duration (will be refined based on actual thrust)
         # This is a placeholder - actual duration depends on S-IVB thrust
-        self.tli_params.burn_duration = 360.0  # Approximately 6 minutes
+        self.tli_params.burn_duration = 800.0  # Approximately 13 minutes
         
         # Calculate optimal burn timing
         self._calculate_optimal_burn_timing()

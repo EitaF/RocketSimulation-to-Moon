@@ -23,12 +23,12 @@
     {
       "name": "S-IVB (3rd Stage)",
       "dry_mass": 13494,
-      "propellant_mass": 106000,
+      "propellant_mass": 140000,
       "thrust_sea_level": 825000,
       "thrust_vacuum": 1000000,
       "specific_impulse_sea_level": 441,
       "specific_impulse_vacuum": 461,
-      "burn_time": 479
+      "burn_time": 785
     }
   ],
   "rocket": {

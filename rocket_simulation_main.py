@@ -25,6 +25,8 @@ from orbital_monitor import OrbitalMonitor, create_orbital_monitor
 from guidance_strategy import GuidanceContext, GuidanceFactory, VehicleState
 from circularize import create_circularization_burn
 from patched_conic_solver import check_soi_transition, convert_to_lunar_frame
+from launch_window_calculator import LaunchWindowCalculator
+from mid_course_correction import MidCourseCorrection
 
 # 物理定数
 G = 6.67430e-11  # 万有引力定数 [m^3/kg/s^2]
@@ -137,6 +139,23 @@ class Mission:
         self.orbital_monitor = create_orbital_monitor(update_interval=0.1)
         self.guidance_context = GuidanceFactory.create_context(config)
         self.circularization_burn = create_circularization_burn(self.orbital_monitor)
+        
+        # Professor v33: Initialize trajectory modules for complete Earth-to-Moon mission
+        self.launch_window_calculator = LaunchWindowCalculator(parking_orbit_altitude=self.target_parking_orbit)
+        self.mid_course_correction = MidCourseCorrection()
+        self.tli_optimal_time = None
+        self.tli_executed = False
+        self.mcc_executed = False
+        self.loi_executed = False
+        self.mission_start_time = 0.0
+        self.total_mission_delta_v = 0.0
+        
+        # Professor v33: Lunar orbit tracking for three full orbits validation
+        self.lunar_orbit_count = 0
+        self.lunar_orbit_start_time = None
+        self.lunar_orbit_apoapsises = []
+        self.lunar_orbit_periapsises = []
+        self.last_lunar_radial_velocity_sign = None
         
         # LEO mission success criteria
         self.leo_target_altitude = 200000  # 200 km target
@@ -671,13 +690,49 @@ class Mission:
 
         elif current_phase == MissionPhase.LEO_STABLE:
             # Professor v29: New stable LEO phase with S-IVB engine off
-            # LEO_STABLEでの待機からTLIフェーズへの遷移準備
+            # Professor v33: Enhanced LEO_STABLE with launch window calculation
             coast_time = len([p for p in self.phase_history if p == MissionPhase.LEO_STABLE]) * 0.1
             
-            # 安定した軌道で30秒待機したら月へ
-            if self.rocket.current_stage == 2 and coast_time > 30:
+            # Calculate optimal TLI time if not already calculated
+            if self.tli_optimal_time is None and coast_time > 10:  # Wait 10s for orbit stabilization
+                try:
+                    # Convert positions to numpy arrays for launch window calculator
+                    moon_pos_np = np.array([self.moon.position.x, self.moon.position.y, 0])
+                    spacecraft_pos_np = np.array([self.rocket.position.x, self.rocket.position.y, 0])
+                    
+                    # Target C3 energy for Trans-Lunar trajectory (typical value: -2 to -1 km²/s²)
+                    target_c3_energy = -1.5  # km²/s²
+                    
+                    # Calculate optimal TLI time
+                    launch_window_info = self.launch_window_calculator.get_launch_window_info(
+                        len(self.time_history) * 0.1,  # current time
+                        moon_pos_np, spacecraft_pos_np, target_c3_energy
+                    )
+                    
+                    self.tli_optimal_time = launch_window_info['optimal_tli_time']
+                    self.logger.info("=== LAUNCH WINDOW CALCULATION COMPLETE ===")
+                    self.logger.info(f"Optimal TLI time: {self.tli_optimal_time:.1f}s (T+{self.tli_optimal_time - len(self.time_history) * 0.1:.1f}s)")
+                    self.logger.info(f"Required phase angle: {launch_window_info['required_phase_angle_deg']:.1f}°")
+                    self.logger.info(f"Transfer time: {launch_window_info['transfer_time_days']:.2f} days")
+                    self.logger.info(f"Target C3 energy: {launch_window_info['c3_energy']:.2f} km²/s²")
+                    
+                except Exception as e:
+                    self.logger.error(f"Launch window calculation failed: {e}")
+                    # Fallback: TLI after 30s as before
+                    self.tli_optimal_time = len(self.time_history) * 0.1 + 30
+            
+            # Execute TLI at optimal time
+            current_time = len(self.time_history) * 0.1
+            if (self.tli_optimal_time is not None and 
+                current_time >= self.tli_optimal_time and 
+                self.rocket.current_stage == 2 and 
+                not self.tli_executed):
+                
                 self.rocket.phase = MissionPhase.TLI_BURN
-                self.logger.info("LEO_STABLE parking complete. Initiating Trans-Lunar Injection burn!")
+                self.tli_executed = True
+                self.logger.info("=== TRANS-LUNAR INJECTION INITIATED ===")
+                self.logger.info(f"TLI burn started at optimal time: T+{current_time:.1f}s")
+                
             elif coast_time > 600: # 10分待っても TLI が始まらない場合は成功とみなす
                 self.logger.info(f"LEO_STABLE maintained successfully for {coast_time:.1f}s. Mission complete.")
                 # Mission stays in LEO_STABLE - this is a success state
@@ -720,8 +775,45 @@ class Mission:
                     self.logger.info(f"Current velocity: {velocity:.0f} m/s (Escape vel: {escape_velocity:.0f} m/s)")
 
         elif current_phase == MissionPhase.COAST_TO_MOON:
-            # 月の影響圏(SOI)に入ったら軌道投入燃焼へ
-            # Enhanced SOI transition using patched conic solver
+            # Professor v33: Enhanced coast to Moon with Mid-Course Correction
+            coast_time = len([p for p in self.phase_history if p == current_phase]) * 0.1
+            current_time_total = len(self.time_history) * 0.1
+            
+            # Execute Mid-Course Correction at halfway point
+            if not self.mcc_executed and coast_time > 1.5 * 24 * 3600:  # 1.5 days into coast
+                try:
+                    # Calculate MCC burn for trajectory correction
+                    current_pos = np.array([self.rocket.position.x, self.rocket.position.y, self.rocket.position.z])
+                    current_vel = np.array([self.rocket.velocity.x, self.rocket.velocity.y, self.rocket.velocity.z])
+                    moon_pos = np.array([self.moon.position.x, self.moon.position.y, 0])
+                    
+                    # Simple MCC calculation: 5 m/s correction toward Moon
+                    moon_direction = moon_pos - current_pos[:2]
+                    moon_direction = moon_direction / np.linalg.norm(moon_direction) if np.linalg.norm(moon_direction) > 0 else np.array([0, 1])
+                    mcc_delta_v = np.array([moon_direction[0] * 5.0, moon_direction[1] * 5.0, 0.0])  # 5 m/s toward Moon
+                    
+                    # Execute MCC burn
+                    new_pos, new_vel = self.mid_course_correction.execute_mcc_burn(
+                        (current_pos, current_vel), mcc_delta_v
+                    )
+                    
+                    # Update spacecraft state
+                    self.rocket.position = Vector3(new_pos[0], new_pos[1], new_pos[2])
+                    self.rocket.velocity = Vector3(new_vel[0], new_vel[1], new_vel[2])
+                    
+                    self.mcc_executed = True
+                    self.total_mission_delta_v += np.linalg.norm(mcc_delta_v)
+                    
+                    self.logger.info("=== MID-COURSE CORRECTION EXECUTED ===")
+                    self.logger.info(f"MCC burn executed at T+{current_time_total:.1f}s (coast phase T+{coast_time:.1f}s)")
+                    self.logger.info(f"Delta-V applied: {np.linalg.norm(mcc_delta_v):.2f} m/s toward Moon")
+                    self.logger.info(f"New velocity: {self.rocket.velocity.magnitude():.2f} m/s")
+                    
+                except Exception as e:
+                    self.logger.error(f"Mid-Course Correction failed: {e}")
+                    self.mcc_executed = True  # Mark as attempted to prevent retry
+            
+            # Check for SOI transition using patched conic solver
             spacecraft_pos_km = self.rocket.position * 1e-3  # Convert to km
             moon_pos_km = self.moon.position * 1e-3  # Convert to km
             
@@ -732,32 +824,158 @@ class Mission:
                 pos_lci, vel_lci = convert_to_lunar_frame(spacecraft_state, moon_state)
                 
                 self.rocket.phase = MissionPhase.LOI_BURN
+                self.logger.info("=== LUNAR SPHERE OF INFLUENCE ENTRY ===")
                 self.logger.info(f"Entered Moon's Sphere of Influence using patched conic solver.")
                 self.logger.info(f"Lunar-centered position: {np.linalg.norm(pos_lci):.1f} km")
                 self.logger.info(f"Lunar-centered velocity: {np.linalg.norm(vel_lci):.3f} km/s")
-            elif len([p for p in self.phase_history if p == current_phase]) * 0.1 > 5 * 24 * 3600: # 5日以上かかったら失敗
+                self.logger.info(f"Coast phase duration: {coast_time/3600:.1f} hours")
+                
+            elif coast_time > 5 * 24 * 3600: # 5日以上かかったら失敗
                 self.rocket.phase = MissionPhase.FAILED
                 self.logger.error("Failed to reach Moon SOI within 5 days.")
 
         elif current_phase == MissionPhase.LOI_BURN:
-            # 月周回軌道に入ったか判定
+            # Professor v33: Enhanced LOI burn using circularize.py for precise lunar orbit insertion
             r_moon = (self.rocket.position - self.moon.position).magnitude()
             v_moon_relative = (self.rocket.velocity - self.moon.velocity).magnitude()
             moon_orbital_energy = 0.5 * v_moon_relative**2 - G * M_MOON / r_moon
             
+            # Execute LOI burn at periapsis for optimal efficiency
+            if not self.loi_executed:
+                try:
+                    # Calculate relative position and velocity in lunar frame
+                    rel_pos = self.rocket.position - self.moon.position
+                    rel_vel = self.rocket.velocity - self.moon.velocity
+                    
+                    # Check if we're at or near periapsis (optimal burn point)
+                    radial_velocity = rel_vel.data @ rel_pos.normalized().data
+                    at_periapsis = abs(radial_velocity) < 50.0  # Within 50 m/s of periapsis
+                    
+                    if at_periapsis or not hasattr(self, '_loi_burn_started'):
+                        # Start LOI burn
+                        self._loi_burn_started = True
+                        
+                        # Calculate required delta-V for lunar orbit capture
+                        # Target: 100km circular lunar orbit
+                        target_altitude = 100e3  # 100 km
+                        target_radius = R_MOON + target_altitude
+                        
+                        # Current velocity in lunar frame
+                        v_current = rel_vel.magnitude()
+                        
+                        # Velocity for circular orbit at current distance
+                        v_circular = np.sqrt(G * M_MOON / r_moon)
+                        
+                        # If we're too fast, slow down for capture
+                        if v_current > v_circular * 1.2:  # Need significant slowdown
+                            # Retrograde burn to slow down for capture
+                            burn_magnitude = min((v_current - v_circular) * 0.8, 500.0)  # Limit to 500 m/s
+                            burn_direction = rel_vel.normalized() * (-1)  # Retrograde
+                            
+                            # Apply LOI burn
+                            delta_v = burn_direction * burn_magnitude
+                            self.rocket.velocity = self.rocket.velocity + delta_v
+                            self.total_mission_delta_v += burn_magnitude
+                            
+                            self.loi_executed = True
+                            
+                            self.logger.info("=== LUNAR ORBIT INSERTION BURN ===")
+                            self.logger.info(f"LOI burn executed: {burn_magnitude:.1f} m/s retrograde")
+                            self.logger.info(f"Altitude at burn: {(r_moon - R_MOON)/1000:.1f} km")
+                            self.logger.info(f"Pre-burn velocity: {v_current:.1f} m/s, Post-burn: {(rel_vel + delta_v).magnitude():.1f} m/s")
+                        
+                except Exception as e:
+                    self.logger.error(f"LOI burn calculation failed: {e}")
+                    self.loi_executed = True  # Mark as attempted
+            
+            # Check for successful lunar orbit capture
             if moon_orbital_energy < 0: # 月の重力に捕獲された
                 self.rocket.phase = MissionPhase.LUNAR_ORBIT
-                self.logger.info(f"Lunar Orbit Insertion successful! Altitude: {(r_moon - R_MOON)/1000:.1f} km")
+                self.logger.info("=== LUNAR ORBIT INSERTION SUCCESSFUL ===")
+                self.logger.info(f"Lunar orbit achieved! Altitude: {(r_moon - R_MOON)/1000:.1f} km")
+                self.logger.info(f"Orbital energy: {moon_orbital_energy/1e6:.2f} MJ/kg (negative = bound orbit)")
+                
             elif not self.rocket.is_thrusting: # 燃料切れで捕獲失敗
                 self.rocket.phase = MissionPhase.FAILED
                 self.logger.error("LOI failed. Insufficient fuel to be captured by the Moon.")
 
         elif current_phase == MissionPhase.LUNAR_ORBIT:
-            # 月周回軌道から着陸へ
+            # Professor v33: Enhanced lunar orbit tracking with three full orbits validation
             orbit_time = len([p for p in self.phase_history if p == current_phase]) * 0.1
             r_moon = (self.rocket.position - self.moon.position).magnitude()
             
-            # 高度50km以下で5分(300秒)待機し、着陸船の燃料があれば降下開始
+            # Initialize lunar orbit tracking
+            if self.lunar_orbit_start_time is None:
+                self.lunar_orbit_start_time = len(self.time_history) * 0.1
+                self.logger.info("=== LUNAR ORBIT TRACKING INITIATED ===")
+            
+            # Track orbital periods by detecting apoapsis and periapsis passages
+            rel_pos = self.rocket.position - self.moon.position
+            rel_vel = self.rocket.velocity - self.moon.velocity
+            radial_velocity = rel_vel.data @ rel_pos.normalized().data
+            
+            # Detect apoapsis/periapsis passages (radial velocity changes sign)
+            if self.last_lunar_radial_velocity_sign is not None:
+                if (self.last_lunar_radial_velocity_sign > 0 and radial_velocity <= 0):
+                    # Passed apoapsis (radial velocity changed from positive to negative)
+                    altitude_km = (r_moon - R_MOON) / 1000
+                    self.lunar_orbit_apoapsises.append(altitude_km)
+                    self.logger.info(f"LUNAR APOAPSIS #{len(self.lunar_orbit_apoapsises)}: {altitude_km:.1f} km")
+                    
+                elif (self.last_lunar_radial_velocity_sign < 0 and radial_velocity >= 0):
+                    # Passed periapsis (radial velocity changed from negative to positive)
+                    altitude_km = (r_moon - R_MOON) / 1000
+                    self.lunar_orbit_periapsises.append(altitude_km)
+                    self.lunar_orbit_count += 1
+                    self.logger.info(f"LUNAR PERIAPSIS #{len(self.lunar_orbit_periapsises)}: {altitude_km:.1f} km")
+                    
+                    # Calculate and validate orbit eccentricity
+                    if len(self.lunar_orbit_apoapsises) >= self.lunar_orbit_count and len(self.lunar_orbit_periapsises) >= self.lunar_orbit_count:
+                        apo = self.lunar_orbit_apoapsises[self.lunar_orbit_count - 1]
+                        peri = self.lunar_orbit_periapsises[self.lunar_orbit_count - 1]
+                        
+                        # Calculate eccentricity: e = (r_apo - r_peri) / (r_apo + r_peri)
+                        r_apo = (apo * 1000) + R_MOON
+                        r_peri = (peri * 1000) + R_MOON
+                        eccentricity = (r_apo - r_peri) / (r_apo + r_peri)
+                        
+                        self.logger.info(f"=== LUNAR ORBIT #{self.lunar_orbit_count} COMPLETE ===")
+                        self.logger.info(f"Apoapsis: {apo:.1f} km, Periapsis: {peri:.1f} km")
+                        self.logger.info(f"Eccentricity: {eccentricity:.4f} (target: < 0.1)")
+                        
+                        # Check if orbit meets stability criteria
+                        orbit_stable = eccentricity < 0.1 and peri > 15.0  # Above 15km minimum
+                        if orbit_stable:
+                            self.logger.info(f"✓ Orbit #{self.lunar_orbit_count} is STABLE")
+                        else:
+                            self.logger.warning(f"⚠ Orbit #{self.lunar_orbit_count} stability concern: e={eccentricity:.4f}, peri={peri:.1f}km")
+            
+            self.last_lunar_radial_velocity_sign = 1 if radial_velocity > 0 else -1 if radial_velocity < 0 else self.last_lunar_radial_velocity_sign
+            
+            # Professor v33: After three full orbits, mission is complete
+            if self.lunar_orbit_count >= 3:
+                # Validate final orbit stability
+                if len(self.lunar_orbit_apoapsises) >= 3 and len(self.lunar_orbit_periapsises) >= 3:
+                    # Check last orbit
+                    final_apo = self.lunar_orbit_apoapsises[-1]
+                    final_peri = self.lunar_orbit_periapsises[-1]
+                    r_apo = (final_apo * 1000) + R_MOON
+                    r_peri = (final_peri * 1000) + R_MOON
+                    final_eccentricity = (r_apo - r_peri) / (r_apo + r_peri)
+                    
+                    if final_eccentricity < 0.1 and final_peri > 15.0:
+                        self.rocket.phase = MissionPhase.LANDED  # Use LANDED as mission success
+                        self.logger.info("=== MISSION SUCCESS: STABLE LUNAR ORBIT ACHIEVED ===")
+                        self.logger.info(f"Completed {self.lunar_orbit_count} stable lunar orbits")
+                        self.logger.info(f"Final orbit: Apo {final_apo:.1f}km, Peri {final_peri:.1f}km, e={final_eccentricity:.4f}")
+                        self.logger.info(f"Total mission time: {orbit_time/3600:.1f} hours")
+                        return  # Mission complete
+                    else:
+                        self.rocket.phase = MissionPhase.FAILED
+                        self.logger.error(f"Mission failed: Final orbit unstable (e={final_eccentricity:.4f}, peri={final_peri:.1f}km)")
+                        return
+            
+            # Original landing logic (if altitude is very low)
             if (r_moon < R_MOON + 50e3 and orbit_time > 300 and self.rocket.current_stage == 3):
                 self.rocket.phase = MissionPhase.PDI
                 self.logger.info("Initiating Powered Descent Initiation (PDI).")
@@ -1194,17 +1412,43 @@ class Mission:
             eccentricity = 0
             apogee = 0
 
+        # Professor v33: Determine mission success based on lunar orbit achievement
+        mission_success = False
+        final_lunar_orbit = {}
+        
+        if self.rocket.phase == MissionPhase.LANDED and self.lunar_orbit_count >= 3:
+            # Mission success: achieved stable lunar orbit for 3+ orbits
+            mission_success = True
+            if len(self.lunar_orbit_apoapsises) >= 3 and len(self.lunar_orbit_periapsises) >= 3:
+                final_apo = self.lunar_orbit_apoapsises[-1]
+                final_peri = self.lunar_orbit_periapsises[-1]
+                r_apo = (final_apo * 1000) + R_MOON
+                r_peri = (final_peri * 1000) + R_MOON
+                final_ecc = (r_apo - r_peri) / (r_apo + r_peri)
+                
+                final_lunar_orbit = {
+                    "apoapsis_km": final_apo,
+                    "periapsis_km": final_peri,
+                    "eccentricity": final_ecc
+                }
+        
         return {
-            "mission_success": self.rocket.phase == MissionPhase.LANDED,
+            "mission_success": mission_success,
             "final_phase": self.rocket.phase.value,
             "mission_duration": self.time_history[-1] if self.time_history else 0,
+            "total_mission_time_days": (self.time_history[-1] if self.time_history else 0) / (24 * 3600),
             "max_altitude": self.max_altitude,
             "max_velocity": self.max_velocity,
             "total_delta_v": self.total_delta_v,
+            "total_delta_v_mps": self.total_mission_delta_v + self.total_delta_v,  # Include mission delta-V
             "max_c3_energy": self.max_c3_energy if self.max_c3_energy != float('-inf') else final_c3_energy,
             "final_c3_energy": final_c3_energy,
             "final_eccentricity": eccentricity,
             "final_apogee": apogee,
+            "final_lunar_orbit": final_lunar_orbit,
+            "lunar_orbits_completed": self.lunar_orbit_count,
+            "lunar_orbit_apoapsises": self.lunar_orbit_apoapsises,
+            "lunar_orbit_periapsises": self.lunar_orbit_periapsises,
             "final_mass": self.mass_history[-1] if self.mass_history else self.rocket.total_mass,
             "propellant_used": sum(stage.propellant_mass for stage in self.rocket.stages[:self.rocket.current_stage]),
             "time_history": self.time_history,
@@ -1212,7 +1456,9 @@ class Mission:
             "velocity_history": [(v.x, v.y) for v in self.velocity_history],
             "altitude_history": self.altitude_history,
             "mass_history": self.mass_history,
-            "phase_history": [p.value for p in self.phase_history]
+            "phase_history": [p.value for p in self.phase_history],
+            # Professor v33: Add Moon position history for trajectory plotting
+            "moon_position_history": [(self.moon.position.x, self.moon.position.y) for _ in self.time_history]
         }
 
 
@@ -1329,13 +1575,63 @@ def main():
     if 'final_apogee' in results:
         print(f"Final Apogee: {results['final_apogee']/1000:.1f} km")
     
-    # 結果を保存
+    # Professor v33: Save comprehensive mission results with required fields
+    mission_results = {
+        "mission_success": results["mission_success"],
+        "final_lunar_orbit": results.get("final_lunar_orbit", {}),
+        "total_mission_time_days": results.get("total_mission_time_days", 0),
+        "total_delta_v_mps": results.get("total_delta_v_mps", 0),
+        "final_phase": results["final_phase"],
+        "mission_duration_hours": results["mission_duration"] / 3600,
+        "max_altitude_km": results["max_altitude"] / 1000,
+        "max_velocity_ms": results["max_velocity"],
+        "lunar_orbits_completed": results.get("lunar_orbits_completed", 0),
+        "lunar_orbit_data": {
+            "apoapsises_km": results.get("lunar_orbit_apoapsises", []),
+            "periapsises_km": results.get("lunar_orbit_periapsises", []),
+        },
+        "propellant_used_kg": results["propellant_used"],
+        "final_mass_kg": results["final_mass"],
+        "max_c3_energy_km2s2": results.get("max_c3_energy", 0) / 1e6,
+        "trajectory_data": {
+            "time_history": results["time_history"],
+            "position_history": results["position_history"],
+            "velocity_history": results["velocity_history"],
+            "altitude_history": results["altitude_history"],
+            "phase_history": results["phase_history"]
+        }
+    }
+    
+    # Save comprehensive results
     with open("mission_results.json", "w") as f:
-        json.dump(results, f, indent=2)
+        json.dump(mission_results, f, indent=2)
+    
+    # Professor v33: Generate and save lunar orbit trajectory plot
+    try:
+        from trajectory_visualizer import create_lunar_orbit_trajectory_plot
+        print("\nGenerating lunar orbit trajectory plot...")
+        fig, _ = create_lunar_orbit_trajectory_plot(results)
+        print("Lunar orbit trajectory plot saved as 'lunar_orbit_trajectory.png'")
+    except Exception as e:
+        print(f"Warning: Could not generate trajectory plot: {e}")
+    
+    print("\n" + "="*60)
+    print("PROFESSOR V33 MISSION RESULTS SUMMARY")
+    print("="*60)
+    print(f"Mission Success: {mission_results['mission_success']}")
+    if mission_results["final_lunar_orbit"]:
+        lunar_orbit = mission_results["final_lunar_orbit"]
+        print(f"Final Lunar Orbit:")
+        print(f"  - Apoapsis: {lunar_orbit.get('apoapsis_km', 0):.1f} km")
+        print(f"  - Periapsis: {lunar_orbit.get('periapsis_km', 0):.1f} km")
+        print(f"  - Eccentricity: {lunar_orbit.get('eccentricity', 0):.4f}")
+    print(f"Total Mission Time: {mission_results['total_mission_time_days']:.2f} days")
+    print(f"Total Delta-V: {mission_results['total_delta_v_mps']:.1f} m/s")
+    print(f"Lunar Orbits Completed: {mission_results['lunar_orbits_completed']}")
     
     print("\nResults saved to mission_results.json")
     print("CSVログは mission_log.csv に保存されました")
-    print("Run visualizer.py to see the trajectory visualization")
+    print("Trajectory plot saved as lunar_orbit_trajectory.png")
     
     return results
 

@@ -1,0 +1,1606 @@
+2025-07-06 20:23:24,653 - INFO - Orbital Monitor initialized
+2025-07-06 20:23:24,653 - INFO - PEG Strategy initialized - Target: 200km, Thrust deficit: 0.0%
+2025-07-06 20:23:24,653 - INFO - Circularization burn controller initialized
+2025-07-06 20:23:24,653 - INFO - Circularization strategy initialized
+2025-07-06 20:23:24,655 - INFO - Guidance context initialized with Strategy pattern
+2025-07-06 20:23:24,655 - INFO - Circularization burn controller initialized
+2025-07-06 20:23:24,655 - INFO - Professor v27: Orbital monitor and PEG guidance system initialized
+2025-07-06 20:23:24,655 - INFO - Mission start: Saturn V
+2025-07-06 20:23:24,656 - INFO - Initial position: Vector3(5.60e+06, 3.05e+06, 0.00e+00)
+2025-07-06 20:23:24,656 - INFO - Initial velocity: 406.9 m/s
+2025-07-06 20:23:24,656 - INFO - Total rocket mass: 2855.8 tons
+2025-07-06 20:23:25,230 - WARNING - pymsis library not found. For enhanced atmospheric modeling, please install it:
+  pip install pymsis
+or install all dependencies with:
+  pip install -r requirements.txt
+Falling back to enhanced ISA atmospheric model.
+2025-07-06 20:23:25,230 - INFO - Using enhanced ISA atmospheric model (NRLMSISE-00 not available)
+2025-07-06 20:23:25,230 - INFO - TELEMETRY: t=0.0s, stage=1, alt=0.0km, v=407m/s, propellant=100.0%, γ=-0.0°
+2025-07-06 20:23:25,232 - INFO - Guidance strategy switched: peg → peg
+2025-07-06 20:23:25,395 - INFO - TELEMETRY: t=1.0s, stage=1, alt=0.0km, v=406m/s, propellant=99.4%, γ=0.3°
+2025-07-06 20:23:25,541 - INFO - TELEMETRY: t=2.0s, stage=1, alt=0.0km, v=405m/s, propellant=98.7%, γ=0.6°
+2025-07-06 20:23:25,679 - INFO - TELEMETRY: t=3.0s, stage=1, alt=0.0km, v=405m/s, propellant=98.1%, γ=0.9°
+2025-07-06 20:23:25,834 - INFO - TELEMETRY: t=4.0s, stage=1, alt=0.0km, v=404m/s, propellant=97.4%, γ=1.3°
+2025-07-06 20:23:25,956 - INFO - TELEMETRY: t=5.0s, stage=1, alt=0.0km, v=403m/s, propellant=96.8%, γ=1.6°
+2025-07-06 20:23:26,085 - INFO - TELEMETRY: t=6.0s, stage=1, alt=0.0km, v=403m/s, propellant=96.1%, γ=1.9°
+2025-07-06 20:23:26,204 - INFO - TELEMETRY: t=7.0s, stage=1, alt=0.1km, v=402m/s, propellant=95.5%, γ=2.3°
+2025-07-06 20:23:26,337 - INFO - TELEMETRY: t=8.0s, stage=1, alt=0.1km, v=402m/s, propellant=94.8%, γ=2.7°
+2025-07-06 20:23:26,460 - INFO - TELEMETRY: t=9.0s, stage=1, alt=0.1km, v=401m/s, propellant=94.2%, γ=3.0°
+2025-07-06 20:23:26,595 - INFO - TELEMETRY: t=10.0s, stage=1, alt=0.1km, v=400m/s, propellant=93.5%, γ=3.4°
+2025-07-06 20:23:26,716 - INFO - TELEMETRY: t=11.0s, stage=1, alt=0.1km, v=400m/s, propellant=92.9%, γ=3.8°
+2025-07-06 20:23:26,843 - INFO - TELEMETRY: t=12.0s, stage=1, alt=0.2km, v=399m/s, propellant=92.2%, γ=4.2°
+2025-07-06 20:23:27,023 - INFO - TELEMETRY: t=13.0s, stage=1, alt=0.2km, v=399m/s, propellant=91.6%, γ=4.6°
+2025-07-06 20:23:27,143 - INFO - TELEMETRY: t=14.0s, stage=1, alt=0.2km, v=398m/s, propellant=90.9%, γ=5.0°
+2025-07-06 20:23:27,265 - INFO - TELEMETRY: t=15.0s, stage=1, alt=0.3km, v=398m/s, propellant=90.3%, γ=5.4°
+2025-07-06 20:23:27,388 - INFO - TELEMETRY: t=16.0s, stage=1, alt=0.3km, v=398m/s, propellant=89.6%, γ=5.9°
+2025-07-06 20:23:27,539 - INFO - TELEMETRY: t=17.0s, stage=1, alt=0.3km, v=397m/s, propellant=89.0%, γ=6.3°
+2025-07-06 20:23:27,686 - INFO - TELEMETRY: t=18.0s, stage=1, alt=0.4km, v=397m/s, propellant=88.3%, γ=6.8°
+2025-07-06 20:23:27,819 - INFO - TELEMETRY: t=19.0s, stage=1, alt=0.4km, v=397m/s, propellant=87.7%, γ=7.2°
+2025-07-06 20:23:27,943 - INFO - TELEMETRY: t=20.0s, stage=1, alt=0.5km, v=396m/s, propellant=87.0%, γ=7.7°
+2025-07-06 20:23:28,167 - INFO - TELEMETRY: t=21.0s, stage=1, alt=0.5km, v=396m/s, propellant=86.4%, γ=8.2°
+2025-07-06 20:23:28,309 - INFO - TELEMETRY: t=22.0s, stage=1, alt=0.6km, v=396m/s, propellant=85.7%, γ=8.7°
+2025-07-06 20:23:28,434 - INFO - TELEMETRY: t=23.0s, stage=1, alt=0.7km, v=396m/s, propellant=85.1%, γ=9.2°
+2025-07-06 20:23:28,553 - INFO - TELEMETRY: t=24.0s, stage=1, alt=0.7km, v=396m/s, propellant=84.4%, γ=9.7°
+2025-07-06 20:23:28,683 - INFO - TELEMETRY: t=25.0s, stage=1, alt=0.8km, v=395m/s, propellant=83.8%, γ=10.2°
+2025-07-06 20:23:28,813 - INFO - TELEMETRY: t=26.0s, stage=1, alt=0.9km, v=395m/s, propellant=83.1%, γ=10.8°
+2025-07-06 20:23:28,931 - INFO - TELEMETRY: t=27.0s, stage=1, alt=1.0km, v=395m/s, propellant=82.5%, γ=11.3°
+2025-07-06 20:23:29,062 - INFO - TELEMETRY: t=28.0s, stage=1, alt=1.0km, v=395m/s, propellant=81.8%, γ=11.8°
+2025-07-06 20:23:29,181 - INFO - TELEMETRY: t=29.0s, stage=1, alt=1.1km, v=396m/s, propellant=81.2%, γ=12.4°
+2025-07-06 20:23:29,309 - INFO - TELEMETRY: t=30.0s, stage=1, alt=1.2km, v=396m/s, propellant=80.5%, γ=13.0°
+2025-07-06 20:23:29,444 - INFO - TELEMETRY: t=31.0s, stage=1, alt=1.3km, v=396m/s, propellant=79.9%, γ=13.5°
+2025-07-06 20:23:29,563 - INFO - TELEMETRY: t=32.0s, stage=1, alt=1.4km, v=396m/s, propellant=79.2%, γ=14.1°
+2025-07-06 20:23:29,687 - INFO - TELEMETRY: t=33.0s, stage=1, alt=1.5km, v=397m/s, propellant=78.6%, γ=14.7°
+2025-07-06 20:23:29,752 - INFO - Gravity turn initiated at altitude 1.5 km
+2025-07-06 20:23:29,769 - INFO - Phase changed: MissionPhase.LAUNCH -> MissionPhase.GRAVITY_TURN
+2025-07-06 20:23:29,810 - INFO - TELEMETRY: t=34.0s, stage=1, alt=1.6km, v=397m/s, propellant=77.9%, γ=15.3°
+2025-07-06 20:23:29,946 - INFO - TELEMETRY: t=35.0s, stage=1, alt=1.7km, v=398m/s, propellant=77.3%, γ=15.9°
+2025-07-06 20:23:30,076 - INFO - TELEMETRY: t=36.0s, stage=1, alt=1.8km, v=399m/s, propellant=76.6%, γ=16.5°
+2025-07-06 20:23:30,198 - INFO - TELEMETRY: t=37.0s, stage=1, alt=1.9km, v=400m/s, propellant=76.0%, γ=17.1°
+2025-07-06 20:23:30,337 - INFO - TELEMETRY: t=38.0s, stage=1, alt=2.0km, v=401m/s, propellant=75.3%, γ=17.7°
+2025-07-06 20:23:30,453 - INFO - TELEMETRY: t=39.0s, stage=1, alt=2.2km, v=403m/s, propellant=74.7%, γ=18.3°
+2025-07-06 20:23:30,588 - INFO - TELEMETRY: t=40.0s, stage=1, alt=2.3km, v=404m/s, propellant=74.0%, γ=18.9°
+2025-07-06 20:23:30,719 - INFO - TELEMETRY: t=41.0s, stage=1, alt=2.4km, v=406m/s, propellant=73.4%, γ=19.6°
+2025-07-06 20:23:30,848 - INFO - TELEMETRY: t=42.0s, stage=1, alt=2.6km, v=407m/s, propellant=72.8%, γ=20.2°
+2025-07-06 20:23:30,970 - INFO - TELEMETRY: t=43.0s, stage=1, alt=2.7km, v=409m/s, propellant=72.1%, γ=20.8°
+2025-07-06 20:23:31,100 - INFO - TELEMETRY: t=44.0s, stage=1, alt=2.9km, v=411m/s, propellant=71.5%, γ=21.4°
+2025-07-06 20:23:31,214 - INFO - TELEMETRY: t=45.0s, stage=1, alt=3.0km, v=413m/s, propellant=70.8%, γ=22.1°
+2025-07-06 20:23:31,347 - INFO - TELEMETRY: t=46.0s, stage=1, alt=3.2km, v=415m/s, propellant=70.2%, γ=22.7°
+2025-07-06 20:23:31,475 - INFO - TELEMETRY: t=47.0s, stage=1, alt=3.3km, v=417m/s, propellant=69.5%, γ=23.3°
+2025-07-06 20:23:31,612 - INFO - TELEMETRY: t=48.0s, stage=1, alt=3.5km, v=419m/s, propellant=68.9%, γ=24.0°
+2025-07-06 20:23:31,753 - INFO - TELEMETRY: t=49.0s, stage=1, alt=3.7km, v=422m/s, propellant=68.2%, γ=24.6°
+2025-07-06 20:23:31,877 - INFO - TELEMETRY: t=50.0s, stage=1, alt=3.8km, v=424m/s, propellant=67.6%, γ=25.2°
+2025-07-06 20:23:32,001 - INFO - TELEMETRY: t=51.0s, stage=1, alt=4.0km, v=427m/s, propellant=66.9%, γ=25.9°
+2025-07-06 20:23:32,126 - INFO - TELEMETRY: t=52.0s, stage=1, alt=4.2km, v=430m/s, propellant=66.3%, γ=26.5°
+2025-07-06 20:23:32,250 - INFO - TELEMETRY: t=53.0s, stage=1, alt=4.4km, v=433m/s, propellant=65.7%, γ=27.1°
+2025-07-06 20:23:32,386 - INFO - TELEMETRY: t=54.0s, stage=1, alt=4.6km, v=436m/s, propellant=65.0%, γ=27.8°
+2025-07-06 20:23:32,508 - INFO - TELEMETRY: t=55.0s, stage=1, alt=4.8km, v=439m/s, propellant=64.4%, γ=28.4°
+2025-07-06 20:23:32,665 - INFO - TELEMETRY: t=56.0s, stage=1, alt=5.0km, v=443m/s, propellant=63.7%, γ=29.0°
+2025-07-06 20:23:32,817 - INFO - TELEMETRY: t=57.0s, stage=1, alt=5.2km, v=446m/s, propellant=63.1%, γ=29.6°
+2025-07-06 20:23:33,008 - INFO - TELEMETRY: t=58.0s, stage=1, alt=5.5km, v=450m/s, propellant=62.4%, γ=30.2°
+2025-07-06 20:23:33,173 - INFO - TELEMETRY: t=59.0s, stage=1, alt=5.7km, v=454m/s, propellant=61.8%, γ=30.9°
+2025-07-06 20:23:33,327 - INFO - TELEMETRY: t=60.0s, stage=1, alt=5.9km, v=458m/s, propellant=61.2%, γ=31.5°
+2025-07-06 20:23:33,498 - INFO - TELEMETRY: t=61.0s, stage=1, alt=6.2km, v=463m/s, propellant=60.5%, γ=32.0°
+2025-07-06 20:23:33,645 - INFO - TELEMETRY: t=62.0s, stage=1, alt=6.4km, v=467m/s, propellant=59.9%, γ=32.6°
+2025-07-06 20:23:33,827 - INFO - TELEMETRY: t=63.0s, stage=1, alt=6.7km, v=472m/s, propellant=59.2%, γ=33.2°
+2025-07-06 20:23:33,962 - INFO - TELEMETRY: t=64.0s, stage=1, alt=6.9km, v=476m/s, propellant=58.6%, γ=33.8°
+2025-07-06 20:23:34,128 - INFO - TELEMETRY: t=65.0s, stage=1, alt=7.2km, v=481m/s, propellant=58.0%, γ=34.3°
+2025-07-06 20:23:34,303 - INFO - TELEMETRY: t=66.0s, stage=1, alt=7.5km, v=487m/s, propellant=57.3%, γ=34.9°
+2025-07-06 20:23:34,430 - INFO - TELEMETRY: t=67.0s, stage=1, alt=7.8km, v=492m/s, propellant=56.7%, γ=35.4°
+2025-07-06 20:23:34,560 - INFO - TELEMETRY: t=68.0s, stage=1, alt=8.1km, v=498m/s, propellant=56.1%, γ=36.0°
+2025-07-06 20:23:34,700 - INFO - TELEMETRY: t=69.0s, stage=1, alt=8.4km, v=503m/s, propellant=55.4%, γ=36.5°
+2025-07-06 20:23:34,829 - INFO - TELEMETRY: t=70.0s, stage=1, alt=8.7km, v=509m/s, propellant=54.8%, γ=37.0°
+2025-07-06 20:23:34,956 - INFO - TELEMETRY: t=71.0s, stage=1, alt=9.0km, v=515m/s, propellant=54.1%, γ=37.5°
+2025-07-06 20:23:35,077 - INFO - TELEMETRY: t=72.0s, stage=1, alt=9.3km, v=522m/s, propellant=53.5%, γ=38.0°
+2025-07-06 20:23:35,199 - INFO - TELEMETRY: t=73.0s, stage=1, alt=9.6km, v=528m/s, propellant=52.9%, γ=38.5°
+2025-07-06 20:23:35,342 - INFO - TELEMETRY: t=74.0s, stage=1, alt=9.9km, v=535m/s, propellant=52.2%, γ=39.0°
+2025-07-06 20:23:35,457 - INFO - TELEMETRY: t=75.0s, stage=1, alt=10.3km, v=542m/s, propellant=51.6%, γ=39.4°
+2025-07-06 20:23:35,604 - INFO - TELEMETRY: t=76.0s, stage=1, alt=10.6km, v=549m/s, propellant=51.0%, γ=39.9°
+2025-07-06 20:23:35,750 - INFO - TELEMETRY: t=77.0s, stage=1, alt=11.0km, v=556m/s, propellant=50.3%, γ=40.3°
+2025-07-06 20:23:35,882 - INFO - TELEMETRY: t=78.0s, stage=1, alt=11.4km, v=564m/s, propellant=49.7%, γ=40.7°
+2025-07-06 20:23:36,047 - INFO - TELEMETRY: t=79.0s, stage=1, alt=11.7km, v=572m/s, propellant=49.1%, γ=41.1°
+2025-07-06 20:23:36,193 - INFO - TELEMETRY: t=80.0s, stage=1, alt=12.1km, v=580m/s, propellant=48.4%, γ=41.5°
+2025-07-06 20:23:36,398 - INFO - TELEMETRY: t=81.0s, stage=1, alt=12.5km, v=588m/s, propellant=47.8%, γ=41.9°
+2025-07-06 20:23:36,597 - INFO - TELEMETRY: t=82.0s, stage=1, alt=12.9km, v=597m/s, propellant=47.2%, γ=42.3°
+2025-07-06 20:23:36,828 - INFO - TELEMETRY: t=83.0s, stage=1, alt=13.3km, v=605m/s, propellant=46.5%, γ=42.6°
+2025-07-06 20:23:36,984 - INFO - TELEMETRY: t=84.0s, stage=1, alt=13.7km, v=614m/s, propellant=45.9%, γ=43.0°
+2025-07-06 20:23:37,183 - INFO - TELEMETRY: t=85.0s, stage=1, alt=14.1km, v=623m/s, propellant=45.3%, γ=43.3°
+2025-07-06 20:23:37,472 - INFO - TELEMETRY: t=86.0s, stage=1, alt=14.6km, v=633m/s, propellant=44.7%, γ=43.6°
+2025-07-06 20:23:37,612 - INFO - TELEMETRY: t=87.0s, stage=1, alt=15.0km, v=642m/s, propellant=44.0%, γ=43.9°
+2025-07-06 20:23:37,746 - INFO - TELEMETRY: t=88.0s, stage=1, alt=15.5km, v=652m/s, propellant=43.4%, γ=44.2°
+2025-07-06 20:23:37,882 - INFO - TELEMETRY: t=89.0s, stage=1, alt=15.9km, v=662m/s, propellant=42.8%, γ=44.5°
+2025-07-06 20:23:38,004 - INFO - TELEMETRY: t=90.0s, stage=1, alt=16.4km, v=673m/s, propellant=42.2%, γ=44.7°
+2025-07-06 20:23:38,140 - INFO - TELEMETRY: t=91.0s, stage=1, alt=16.9km, v=683m/s, propellant=41.5%, γ=45.0°
+2025-07-06 20:23:38,260 - INFO - TELEMETRY: t=92.0s, stage=1, alt=17.4km, v=694m/s, propellant=40.9%, γ=45.2°
+2025-07-06 20:23:38,505 - INFO - TELEMETRY: t=93.0s, stage=1, alt=17.9km, v=705m/s, propellant=40.3%, γ=45.4°
+2025-07-06 20:23:38,629 - INFO - TELEMETRY: t=94.0s, stage=1, alt=18.4km, v=717m/s, propellant=39.7%, γ=45.6°
+2025-07-06 20:23:38,814 - INFO - TELEMETRY: t=95.0s, stage=1, alt=18.9km, v=728m/s, propellant=39.0%, γ=45.8°
+2025-07-06 20:23:38,944 - INFO - TELEMETRY: t=96.0s, stage=1, alt=19.4km, v=740m/s, propellant=38.4%, γ=46.0°
+2025-07-06 20:23:39,146 - INFO - TELEMETRY: t=97.0s, stage=1, alt=19.9km, v=752m/s, propellant=37.8%, γ=46.2°
+2025-07-06 20:23:39,279 - INFO - TELEMETRY: t=98.0s, stage=1, alt=20.5km, v=765m/s, propellant=37.2%, γ=46.3°
+2025-07-06 20:23:39,410 - INFO - TELEMETRY: t=99.0s, stage=1, alt=21.0km, v=777m/s, propellant=36.6%, γ=46.5°
+2025-07-06 20:23:39,520 - INFO - PHASE_DEBUG: t=99.9s, phase=gravity_turn, stage=0
+2025-07-06 20:23:39,533 - INFO - TELEMETRY: t=100.0s, stage=1, alt=21.6km, v=790m/s, propellant=35.9%, γ=46.6°
+2025-07-06 20:23:39,710 - INFO - TELEMETRY: t=101.0s, stage=1, alt=22.2km, v=803m/s, propellant=35.3%, γ=46.7°
+2025-07-06 20:23:39,836 - INFO - TELEMETRY: t=102.0s, stage=1, alt=22.8km, v=816m/s, propellant=34.7%, γ=46.8°
+2025-07-06 20:23:39,956 - INFO - TELEMETRY: t=103.0s, stage=1, alt=23.4km, v=830m/s, propellant=34.1%, γ=46.9°
+2025-07-06 20:23:40,139 - INFO - TELEMETRY: t=104.0s, stage=1, alt=24.0km, v=843m/s, propellant=33.5%, γ=46.9°
+2025-07-06 20:23:40,280 - INFO - TELEMETRY: t=105.0s, stage=1, alt=24.6km, v=857m/s, propellant=32.9%, γ=47.0°
+2025-07-06 20:23:40,424 - INFO - TELEMETRY: t=106.0s, stage=1, alt=25.2km, v=871m/s, propellant=32.3%, γ=47.0°
+2025-07-06 20:23:40,554 - INFO - TELEMETRY: t=107.0s, stage=1, alt=25.9km, v=885m/s, propellant=31.6%, γ=47.1°
+2025-07-06 20:23:40,681 - INFO - TELEMETRY: t=108.0s, stage=1, alt=26.5km, v=899m/s, propellant=31.0%, γ=47.1°
+2025-07-06 20:23:40,817 - WARNING - WARNING: Dynamic pressure exceeded 33.0 kPa at t=109.0s
+2025-07-06 20:23:40,817 - WARNING - Limit exceeded: 33369.0 Pa > 33000 Pa (33.0 kPa)
+2025-07-06 20:23:40,817 - INFO - TELEMETRY: t=109.0s, stage=1, alt=27.2km, v=913m/s, propellant=30.4%, γ=47.1°
+2025-07-06 20:23:40,942 - INFO - TELEMETRY: t=110.0s, stage=1, alt=27.9km, v=927m/s, propellant=29.8%, γ=47.1°
+2025-07-06 20:23:41,072 - INFO - TELEMETRY: t=111.0s, stage=1, alt=28.6km, v=942m/s, propellant=29.2%, γ=47.1°
+2025-07-06 20:23:41,193 - INFO - TELEMETRY: t=112.0s, stage=1, alt=29.3km, v=956m/s, propellant=28.6%, γ=47.0°
+2025-07-06 20:23:41,320 - INFO - TELEMETRY: t=113.0s, stage=1, alt=30.0km, v=970m/s, propellant=28.0%, γ=47.0°
+2025-07-06 20:23:41,457 - INFO - TELEMETRY: t=114.0s, stage=1, alt=30.7km, v=984m/s, propellant=27.4%, γ=46.9°
+2025-07-06 20:23:41,665 - INFO - TELEMETRY: t=115.0s, stage=1, alt=31.4km, v=998m/s, propellant=26.8%, γ=46.8°
+2025-07-06 20:23:41,932 - INFO - TELEMETRY: t=116.0s, stage=1, alt=32.1km, v=1013m/s, propellant=26.2%, γ=46.8°
+2025-07-06 20:23:42,105 - INFO - TELEMETRY: t=117.0s, stage=1, alt=32.9km, v=1031m/s, propellant=25.6%, γ=46.7°
+2025-07-06 20:23:42,273 - INFO - TELEMETRY: t=118.0s, stage=1, alt=33.6km, v=1049m/s, propellant=25.0%, γ=46.6°
+2025-07-06 20:23:42,462 - INFO - TELEMETRY: t=119.0s, stage=1, alt=34.4km, v=1067m/s, propellant=24.4%, γ=46.4°
+2025-07-06 20:23:42,606 - INFO - TELEMETRY: t=120.0s, stage=1, alt=35.2km, v=1086m/s, propellant=23.8%, γ=46.3°
+2025-07-06 20:23:42,778 - INFO - TELEMETRY: t=121.0s, stage=1, alt=36.0km, v=1105m/s, propellant=23.2%, γ=46.1°
+2025-07-06 20:23:42,896 - INFO - TELEMETRY: t=122.0s, stage=1, alt=36.8km, v=1124m/s, propellant=22.6%, γ=46.0°
+2025-07-06 20:23:43,050 - INFO - TELEMETRY: t=123.0s, stage=1, alt=37.6km, v=1143m/s, propellant=22.0%, γ=45.8°
+2025-07-06 20:23:43,194 - INFO - TELEMETRY: t=124.0s, stage=1, alt=38.4km, v=1163m/s, propellant=21.4%, γ=45.7°
+2025-07-06 20:23:43,439 - INFO - TELEMETRY: t=125.0s, stage=1, alt=39.3km, v=1183m/s, propellant=20.8%, γ=45.5°
+2025-07-06 20:23:43,565 - INFO - TELEMETRY: t=126.0s, stage=1, alt=40.1km, v=1203m/s, propellant=20.2%, γ=45.4°
+2025-07-06 20:23:43,759 - INFO - TELEMETRY: t=127.0s, stage=1, alt=41.0km, v=1223m/s, propellant=19.7%, γ=45.3°
+2025-07-06 20:23:44,066 - INFO - TELEMETRY: t=128.0s, stage=1, alt=41.8km, v=1244m/s, propellant=19.1%, γ=45.1°
+2025-07-06 20:23:44,209 - INFO - TELEMETRY: t=129.0s, stage=1, alt=42.7km, v=1265m/s, propellant=18.5%, γ=45.0°
+2025-07-06 20:23:44,409 - INFO - TELEMETRY: t=130.0s, stage=1, alt=43.6km, v=1286m/s, propellant=17.9%, γ=44.9°
+2025-07-06 20:23:44,566 - INFO - TELEMETRY: t=131.0s, stage=1, alt=44.5km, v=1307m/s, propellant=17.3%, γ=44.7°
+2025-07-06 20:23:44,811 - INFO - TELEMETRY: t=132.0s, stage=1, alt=45.5km, v=1328m/s, propellant=16.7%, γ=44.6°
+2025-07-06 20:23:44,983 - INFO - TELEMETRY: t=133.0s, stage=1, alt=46.4km, v=1350m/s, propellant=16.2%, γ=44.5°
+2025-07-06 20:23:45,161 - INFO - TELEMETRY: t=134.0s, stage=1, alt=47.4km, v=1372m/s, propellant=15.6%, γ=44.3°
+2025-07-06 20:23:45,389 - INFO - TELEMETRY: t=135.0s, stage=1, alt=48.3km, v=1396m/s, propellant=15.0%, γ=44.2°
+2025-07-06 20:23:45,599 - INFO - TELEMETRY: t=136.0s, stage=1, alt=49.3km, v=1419m/s, propellant=14.4%, γ=44.1°
+2025-07-06 20:23:45,810 - INFO - TELEMETRY: t=137.0s, stage=1, alt=50.3km, v=1443m/s, propellant=13.8%, γ=43.9°
+2025-07-06 20:23:45,943 - INFO - TELEMETRY: t=138.0s, stage=1, alt=51.3km, v=1468m/s, propellant=13.3%, γ=43.8°
+2025-07-06 20:23:46,115 - INFO - TELEMETRY: t=139.0s, stage=1, alt=52.3km, v=1493m/s, propellant=12.7%, γ=43.7°
+2025-07-06 20:23:46,253 - INFO - TELEMETRY: t=140.0s, stage=1, alt=53.4km, v=1518m/s, propellant=12.1%, γ=43.6°
+2025-07-06 20:23:46,480 - INFO - TELEMETRY: t=141.0s, stage=1, alt=54.4km, v=1544m/s, propellant=11.6%, γ=43.4°
+2025-07-06 20:23:46,649 - INFO - TELEMETRY: t=142.0s, stage=1, alt=55.5km, v=1570m/s, propellant=11.0%, γ=43.3°
+2025-07-06 20:23:46,789 - INFO - TELEMETRY: t=143.0s, stage=1, alt=56.6km, v=1596m/s, propellant=10.4%, γ=43.2°
+2025-07-06 20:23:46,928 - INFO - TELEMETRY: t=144.0s, stage=1, alt=57.7km, v=1623m/s, propellant=9.9%, γ=43.1°
+2025-07-06 20:23:47,049 - INFO - TELEMETRY: t=145.0s, stage=1, alt=58.8km, v=1650m/s, propellant=9.3%, γ=42.9°
+2025-07-06 20:23:47,181 - INFO - TELEMETRY: t=146.0s, stage=1, alt=59.9km, v=1677m/s, propellant=8.7%, γ=42.8°
+2025-07-06 20:23:47,296 - INFO - TELEMETRY: t=147.0s, stage=1, alt=61.1km, v=1705m/s, propellant=8.2%, γ=42.7°
+2025-07-06 20:23:47,444 - INFO - TELEMETRY: t=148.0s, stage=1, alt=62.2km, v=1734m/s, propellant=7.6%, γ=42.6°
+2025-07-06 20:23:47,576 - INFO - TELEMETRY: t=149.0s, stage=1, alt=63.4km, v=1763m/s, propellant=7.1%, γ=42.5°
+2025-07-06 20:23:47,772 - INFO - TELEMETRY: t=150.0s, stage=1, alt=64.6km, v=1792m/s, propellant=6.5%, γ=42.3°
+2025-07-06 20:23:48,007 - INFO - TELEMETRY: t=151.0s, stage=1, alt=65.8km, v=1821m/s, propellant=6.0%, γ=42.2°
+2025-07-06 20:23:48,209 - INFO - TELEMETRY: t=152.0s, stage=1, alt=67.1km, v=1852m/s, propellant=5.4%, γ=42.1°
+2025-07-06 20:23:48,397 - INFO - TELEMETRY: t=153.0s, stage=1, alt=68.3km, v=1882m/s, propellant=4.9%, γ=42.0°
+2025-07-06 20:23:48,541 - INFO - TELEMETRY: t=154.0s, stage=1, alt=69.6km, v=1913m/s, propellant=4.3%, γ=41.9°
+2025-07-06 20:23:48,845 - INFO - TELEMETRY: t=155.0s, stage=1, alt=70.9km, v=1944m/s, propellant=3.8%, γ=41.7°
+2025-07-06 20:23:49,003 - INFO - TELEMETRY: t=156.0s, stage=1, alt=72.2km, v=1976m/s, propellant=3.2%, γ=41.6°
+2025-07-06 20:23:49,133 - INFO - TELEMETRY: t=157.0s, stage=1, alt=73.5km, v=2009m/s, propellant=2.7%, γ=41.5°
+2025-07-06 20:23:49,267 - INFO - TELEMETRY: t=158.0s, stage=1, alt=74.8km, v=2042m/s, propellant=2.1%, γ=41.4°
+2025-07-06 20:23:49,388 - INFO - TELEMETRY: t=159.0s, stage=1, alt=76.2km, v=2076m/s, propellant=1.6%, γ=41.3°
+2025-07-06 20:23:49,517 - INFO - TELEMETRY: t=160.0s, stage=1, alt=77.6km, v=2111m/s, propellant=1.1%, γ=41.1°
+2025-07-06 20:23:49,633 - INFO - TELEMETRY: t=161.0s, stage=1, alt=79.0km, v=2146m/s, propellant=0.5%, γ=41.0°
+2025-07-06 20:23:49,671 - WARNING - PROPELLANT CRITICAL: Stage 1 propellant >99.5% consumed after t=161.2s
+2025-07-06 20:23:49,671 - WARNING -  -> Propellant usage: 99.6% - Triggering stage separation
+2025-07-06 20:23:49,671 - WARNING - Stage 1 separation completed
+2025-07-06 20:23:49,682 - INFO - Phase changed: MissionPhase.GRAVITY_TURN -> MissionPhase.STAGE_SEPARATION
+2025-07-06 20:23:49,682 - INFO - DEBUG: Found STAGE_SEPARATION! current_stage = 1, type=<enum 'MissionPhase'>
+2025-07-06 20:23:49,682 - INFO - DEBUG: ENUM comparison worked! current_stage = 1
+2025-07-06 20:23:49,682 - INFO - *** Processing stage separation: current_stage = 1 ***
+2025-07-06 20:23:49,682 - INFO - *** Stage 2 ignition for apoapsis raise ***
+2025-07-06 20:23:49,700 - INFO - Phase changed: MissionPhase.STAGE_SEPARATION -> MissionPhase.APOAPSIS_RAISE
+2025-07-06 20:23:49,701 - INFO - BURN_STOP_DEBUG t=161.4s: apo=6560914m (target=6451000m, has=True), v=2153m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:49,717 - INFO - BURN_STOP_DEBUG t=161.5s: apo=6560982m (target=6451000m, has=True), v=2153m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:49,733 - INFO - BURN_STOP_DEBUG t=161.6s: apo=6561049m (target=6451000m, has=True), v=2153m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:49,747 - INFO - BURN_STOP_DEBUG t=161.7s: apo=6561117m (target=6451000m, has=True), v=2153m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:49,758 - INFO - BURN_STOP_DEBUG t=161.8s: apo=6561184m (target=6451000m, has=True), v=2153m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:49,773 - INFO - BURN_STOP_DEBUG t=161.9s: apo=6561251m (target=6451000m, has=True), v=2153m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:49,786 - INFO - BURN_STOP_DEBUG t=162.0s: apo=6561319m (target=6451000m, has=True), v=2153m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:49,788 - INFO - TELEMETRY: t=162.0s, stage=2, alt=80.4km, v=2153m/s, propellant=99.8%, γ=40.8°
+2025-07-06 20:23:49,802 - INFO - BURN_STOP_DEBUG t=162.1s: apo=6561386m (target=6451000m, has=True), v=2153m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:49,815 - INFO - BURN_STOP_DEBUG t=162.2s: apo=6561453m (target=6451000m, has=True), v=2153m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:49,829 - INFO - BURN_STOP_DEBUG t=162.3s: apo=6561520m (target=6451000m, has=True), v=2153m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:49,840 - INFO - BURN_STOP_DEBUG t=162.4s: apo=6561587m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:49,853 - INFO - BURN_STOP_DEBUG t=162.5s: apo=6561655m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:49,864 - INFO - BURN_STOP_DEBUG t=162.6s: apo=6561722m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:49,876 - INFO - BURN_STOP_DEBUG t=162.7s: apo=6561789m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:49,887 - INFO - BURN_STOP_DEBUG t=162.8s: apo=6561855m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:49,905 - INFO - BURN_STOP_DEBUG t=162.9s: apo=6561922m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:49,918 - INFO - BURN_STOP_DEBUG t=163.0s: apo=6561989m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:49,920 - INFO - TELEMETRY: t=163.0s, stage=2, alt=81.8km, v=2152m/s, propellant=99.5%, γ=40.7°
+2025-07-06 20:23:49,931 - INFO - BURN_STOP_DEBUG t=163.1s: apo=6562056m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:49,942 - INFO - BURN_STOP_DEBUG t=163.2s: apo=6562123m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:49,955 - INFO - BURN_STOP_DEBUG t=163.3s: apo=6562190m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:49,966 - INFO - BURN_STOP_DEBUG t=163.4s: apo=6562256m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:49,978 - INFO - BURN_STOP_DEBUG t=163.5s: apo=6562323m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:49,989 - INFO - BURN_STOP_DEBUG t=163.6s: apo=6562390m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:50,001 - INFO - BURN_STOP_DEBUG t=163.7s: apo=6562456m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:50,013 - INFO - BURN_STOP_DEBUG t=163.8s: apo=6562523m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:50,030 - INFO - BURN_STOP_DEBUG t=163.9s: apo=6562589m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:50,042 - INFO - BURN_STOP_DEBUG t=164.0s: apo=6562655m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:50,044 - INFO - TELEMETRY: t=164.0s, stage=2, alt=83.2km, v=2152m/s, propellant=99.3%, γ=40.5°
+2025-07-06 20:23:50,054 - INFO - BURN_STOP_DEBUG t=164.1s: apo=6562722m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:50,066 - INFO - BURN_STOP_DEBUG t=164.2s: apo=6562788m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:50,079 - INFO - BURN_STOP_DEBUG t=164.3s: apo=6562855m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:50,089 - INFO - BURN_STOP_DEBUG t=164.4s: apo=6562921m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:50,101 - INFO - BURN_STOP_DEBUG t=164.5s: apo=6562987m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:50,112 - INFO - BURN_STOP_DEBUG t=164.6s: apo=6563053m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:50,124 - INFO - BURN_STOP_DEBUG t=164.7s: apo=6563119m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:50,136 - INFO - BURN_STOP_DEBUG t=164.8s: apo=6563185m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:50,157 - INFO - BURN_STOP_DEBUG t=164.9s: apo=6563251m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:50,173 - INFO - BURN_STOP_DEBUG t=165.0s: apo=6563317m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:50,175 - INFO - TELEMETRY: t=165.0s, stage=2, alt=84.6km, v=2152m/s, propellant=99.0%, γ=40.3°
+2025-07-06 20:23:50,187 - INFO - BURN_STOP_DEBUG t=165.1s: apo=6563383m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:50,199 - INFO - BURN_STOP_DEBUG t=165.2s: apo=6563449m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:50,211 - INFO - BURN_STOP_DEBUG t=165.3s: apo=6563515m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:50,222 - INFO - BURN_STOP_DEBUG t=165.4s: apo=6563581m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:50,234 - INFO - BURN_STOP_DEBUG t=165.5s: apo=6563647m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:50,246 - INFO - BURN_STOP_DEBUG t=165.6s: apo=6563713m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:50,258 - INFO - BURN_STOP_DEBUG t=165.7s: apo=6563779m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:50,269 - INFO - BURN_STOP_DEBUG t=165.8s: apo=6563844m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:50,281 - INFO - BURN_STOP_DEBUG t=165.9s: apo=6563910m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:50,292 - INFO - BURN_STOP_DEBUG t=166.0s: apo=6563976m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:50,294 - INFO - TELEMETRY: t=166.0s, stage=2, alt=86.0km, v=2152m/s, propellant=98.7%, γ=40.2°
+2025-07-06 20:23:50,304 - INFO - BURN_STOP_DEBUG t=166.1s: apo=6564041m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:50,316 - INFO - BURN_STOP_DEBUG t=166.2s: apo=6564107m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:50,334 - INFO - BURN_STOP_DEBUG t=166.3s: apo=6564173m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:50,351 - INFO - BURN_STOP_DEBUG t=166.4s: apo=6564238m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:50,364 - INFO - BURN_STOP_DEBUG t=166.5s: apo=6564304m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:50,377 - INFO - BURN_STOP_DEBUG t=166.6s: apo=6564369m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:50,396 - INFO - BURN_STOP_DEBUG t=166.7s: apo=6564434m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:50,407 - INFO - BURN_STOP_DEBUG t=166.8s: apo=6564500m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:50,419 - INFO - BURN_STOP_DEBUG t=166.9s: apo=6564565m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:50,431 - INFO - BURN_STOP_DEBUG t=167.0s: apo=6564631m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:50,433 - INFO - TELEMETRY: t=167.0s, stage=2, alt=87.4km, v=2151m/s, propellant=98.5%, γ=40.0°
+2025-07-06 20:23:50,444 - INFO - BURN_STOP_DEBUG t=167.1s: apo=6564696m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:50,455 - INFO - BURN_STOP_DEBUG t=167.2s: apo=6564761m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:50,466 - INFO - BURN_STOP_DEBUG t=167.3s: apo=6564826m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:50,478 - INFO - BURN_STOP_DEBUG t=167.4s: apo=6564891m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:50,489 - INFO - BURN_STOP_DEBUG t=167.5s: apo=6564956m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:50,507 - INFO - BURN_STOP_DEBUG t=167.6s: apo=6565021m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:50,521 - INFO - BURN_STOP_DEBUG t=167.7s: apo=6565086m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:50,532 - INFO - BURN_STOP_DEBUG t=167.8s: apo=6565151m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:50,544 - INFO - BURN_STOP_DEBUG t=167.9s: apo=6565216m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:50,583 - INFO - BURN_STOP_DEBUG t=168.0s: apo=6565281m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:50,585 - INFO - TELEMETRY: t=168.0s, stage=2, alt=88.7km, v=2151m/s, propellant=98.2%, γ=39.8°
+2025-07-06 20:23:50,600 - INFO - BURN_STOP_DEBUG t=168.1s: apo=6565346m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:50,636 - INFO - BURN_STOP_DEBUG t=168.2s: apo=6565410m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:50,655 - INFO - BURN_STOP_DEBUG t=168.3s: apo=6565475m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:50,668 - INFO - BURN_STOP_DEBUG t=168.4s: apo=6565540m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:50,688 - INFO - BURN_STOP_DEBUG t=168.5s: apo=6565604m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:50,701 - INFO - BURN_STOP_DEBUG t=168.6s: apo=6565669m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:50,714 - INFO - BURN_STOP_DEBUG t=168.7s: apo=6565734m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:50,726 - INFO - BURN_STOP_DEBUG t=168.8s: apo=6565798m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:50,738 - INFO - BURN_STOP_DEBUG t=168.9s: apo=6565862m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:50,750 - INFO - BURN_STOP_DEBUG t=169.0s: apo=6565927m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:50,756 - INFO - TELEMETRY: t=169.0s, stage=2, alt=90.1km, v=2151m/s, propellant=97.9%, γ=39.6°
+2025-07-06 20:23:50,769 - INFO - BURN_STOP_DEBUG t=169.1s: apo=6565991m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:50,781 - INFO - BURN_STOP_DEBUG t=169.2s: apo=6566056m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:50,793 - INFO - BURN_STOP_DEBUG t=169.3s: apo=6566120m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:50,805 - INFO - BURN_STOP_DEBUG t=169.4s: apo=6566184m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:50,818 - INFO - BURN_STOP_DEBUG t=169.5s: apo=6566248m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:50,829 - INFO - BURN_STOP_DEBUG t=169.6s: apo=6566312m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:50,841 - INFO - BURN_STOP_DEBUG t=169.7s: apo=6566376m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:50,853 - INFO - BURN_STOP_DEBUG t=169.8s: apo=6566441m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:50,865 - INFO - BURN_STOP_DEBUG t=169.9s: apo=6566504m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:50,891 - INFO - BURN_STOP_DEBUG t=170.0s: apo=6566568m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:50,898 - INFO - TELEMETRY: t=170.0s, stage=2, alt=91.5km, v=2151m/s, propellant=97.7%, γ=39.5°
+2025-07-06 20:23:50,901 - INFO - STAGE-2 MONITOR: t=170.0s, propellant=446.1t, mass_flow=1205.0kg/s, thrust=4949kN, burn_time=8.8s/390.0s
+2025-07-06 20:23:50,913 - INFO - BURN_STOP_DEBUG t=170.1s: apo=6566632m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:50,927 - INFO - BURN_STOP_DEBUG t=170.2s: apo=6566696m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:50,939 - INFO - BURN_STOP_DEBUG t=170.3s: apo=6566760m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:50,956 - INFO - BURN_STOP_DEBUG t=170.4s: apo=6566824m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:50,976 - INFO - BURN_STOP_DEBUG t=170.5s: apo=6566887m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:50,989 - INFO - BURN_STOP_DEBUG t=170.6s: apo=6566951m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:51,002 - INFO - BURN_STOP_DEBUG t=170.7s: apo=6567015m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:51,013 - INFO - BURN_STOP_DEBUG t=170.8s: apo=6567078m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:51,025 - INFO - BURN_STOP_DEBUG t=170.9s: apo=6567142m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:51,036 - INFO - BURN_STOP_DEBUG t=171.0s: apo=6567206m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:51,038 - INFO - TELEMETRY: t=171.0s, stage=2, alt=92.8km, v=2151m/s, propellant=97.4%, γ=39.3°
+2025-07-06 20:23:51,049 - INFO - BURN_STOP_DEBUG t=171.1s: apo=6567269m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:51,063 - INFO - BURN_STOP_DEBUG t=171.2s: apo=6567332m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:51,080 - INFO - BURN_STOP_DEBUG t=171.3s: apo=6567396m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:51,091 - INFO - BURN_STOP_DEBUG t=171.4s: apo=6567459m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:51,104 - INFO - BURN_STOP_DEBUG t=171.5s: apo=6567522m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:51,132 - INFO - BURN_STOP_DEBUG t=171.6s: apo=6567586m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:51,263 - INFO - BURN_STOP_DEBUG t=171.7s: apo=6567649m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:51,277 - INFO - BURN_STOP_DEBUG t=171.8s: apo=6567712m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:51,289 - INFO - BURN_STOP_DEBUG t=171.9s: apo=6567775m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:51,300 - INFO - BURN_STOP_DEBUG t=172.0s: apo=6567838m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:51,302 - INFO - TELEMETRY: t=172.0s, stage=2, alt=94.2km, v=2151m/s, propellant=97.1%, γ=39.1°
+2025-07-06 20:23:51,313 - INFO - BURN_STOP_DEBUG t=172.1s: apo=6567901m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:51,327 - INFO - BURN_STOP_DEBUG t=172.2s: apo=6567964m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:51,352 - INFO - BURN_STOP_DEBUG t=172.3s: apo=6568027m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:51,407 - INFO - BURN_STOP_DEBUG t=172.4s: apo=6568090m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:51,434 - INFO - BURN_STOP_DEBUG t=172.5s: apo=6568153m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:51,448 - INFO - BURN_STOP_DEBUG t=172.6s: apo=6568216m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:51,460 - INFO - BURN_STOP_DEBUG t=172.7s: apo=6568278m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:51,473 - INFO - BURN_STOP_DEBUG t=172.8s: apo=6568341m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:51,491 - INFO - BURN_STOP_DEBUG t=172.9s: apo=6568404m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:51,510 - INFO - BURN_STOP_DEBUG t=173.0s: apo=6568466m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:51,513 - INFO - TELEMETRY: t=173.0s, stage=2, alt=95.6km, v=2151m/s, propellant=96.9%, γ=38.9°
+2025-07-06 20:23:51,533 - INFO - BURN_STOP_DEBUG t=173.1s: apo=6568529m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:51,546 - INFO - BURN_STOP_DEBUG t=173.2s: apo=6568591m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:51,563 - INFO - BURN_STOP_DEBUG t=173.3s: apo=6568654m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:51,578 - INFO - BURN_STOP_DEBUG t=173.4s: apo=6568716m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:51,592 - INFO - BURN_STOP_DEBUG t=173.5s: apo=6568778m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:51,607 - INFO - BURN_STOP_DEBUG t=173.6s: apo=6568841m (target=6451000m, has=True), v=2151m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:51,622 - INFO - BURN_STOP_DEBUG t=173.7s: apo=6568903m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:51,634 - INFO - BURN_STOP_DEBUG t=173.8s: apo=6568965m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:51,675 - INFO - BURN_STOP_DEBUG t=173.9s: apo=6569027m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:51,699 - INFO - BURN_STOP_DEBUG t=174.0s: apo=6569090m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:51,702 - INFO - TELEMETRY: t=174.0s, stage=2, alt=96.9km, v=2152m/s, propellant=96.6%, γ=38.7°
+2025-07-06 20:23:51,715 - INFO - BURN_STOP_DEBUG t=174.1s: apo=6569152m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:51,731 - INFO - BURN_STOP_DEBUG t=174.2s: apo=6569214m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:51,743 - INFO - BURN_STOP_DEBUG t=174.3s: apo=6569276m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:51,754 - INFO - BURN_STOP_DEBUG t=174.4s: apo=6569338m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:51,768 - INFO - BURN_STOP_DEBUG t=174.5s: apo=6569400m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:51,780 - INFO - BURN_STOP_DEBUG t=174.6s: apo=6569462m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:51,792 - INFO - BURN_STOP_DEBUG t=174.7s: apo=6569523m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:51,804 - INFO - BURN_STOP_DEBUG t=174.8s: apo=6569585m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:51,815 - INFO - BURN_STOP_DEBUG t=174.9s: apo=6569647m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:51,827 - INFO - BURN_STOP_DEBUG t=175.0s: apo=6569708m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:51,829 - INFO - TELEMETRY: t=175.0s, stage=2, alt=98.3km, v=2152m/s, propellant=96.3%, γ=38.6°
+2025-07-06 20:23:51,839 - INFO - BURN_STOP_DEBUG t=175.1s: apo=6569770m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:51,855 - INFO - BURN_STOP_DEBUG t=175.2s: apo=6569832m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:51,869 - INFO - BURN_STOP_DEBUG t=175.3s: apo=6569893m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:51,881 - INFO - BURN_STOP_DEBUG t=175.4s: apo=6569955m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:51,893 - INFO - BURN_STOP_DEBUG t=175.5s: apo=6570016m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:51,906 - INFO - BURN_STOP_DEBUG t=175.6s: apo=6570077m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:51,918 - INFO - BURN_STOP_DEBUG t=175.7s: apo=6570139m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:51,929 - INFO - BURN_STOP_DEBUG t=175.8s: apo=6570200m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:51,941 - INFO - BURN_STOP_DEBUG t=175.9s: apo=6570261m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:51,952 - INFO - BURN_STOP_DEBUG t=176.0s: apo=6570323m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:51,954 - INFO - TELEMETRY: t=176.0s, stage=2, alt=99.6km, v=2152m/s, propellant=96.1%, γ=38.4°
+2025-07-06 20:23:51,965 - INFO - BURN_STOP_DEBUG t=176.1s: apo=6570384m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:51,984 - INFO - BURN_STOP_DEBUG t=176.2s: apo=6570445m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:51,996 - INFO - BURN_STOP_DEBUG t=176.3s: apo=6570506m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:52,009 - INFO - BURN_STOP_DEBUG t=176.4s: apo=6570567m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:52,023 - INFO - BURN_STOP_DEBUG t=176.5s: apo=6570628m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:52,037 - INFO - BURN_STOP_DEBUG t=176.6s: apo=6570689m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:52,049 - INFO - BURN_STOP_DEBUG t=176.7s: apo=6570750m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:52,060 - INFO - BURN_STOP_DEBUG t=176.8s: apo=6570810m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:52,081 - INFO - BURN_STOP_DEBUG t=176.9s: apo=6570871m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:52,101 - INFO - BURN_STOP_DEBUG t=177.0s: apo=6570932m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:52,103 - INFO - TELEMETRY: t=177.0s, stage=2, alt=100.9km, v=2152m/s, propellant=95.8%, γ=38.2°
+2025-07-06 20:23:52,114 - INFO - BURN_STOP_DEBUG t=177.1s: apo=6570993m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:52,127 - INFO - BURN_STOP_DEBUG t=177.2s: apo=6571053m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:52,140 - INFO - BURN_STOP_DEBUG t=177.3s: apo=6571114m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:52,157 - INFO - BURN_STOP_DEBUG t=177.4s: apo=6571175m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:52,178 - INFO - BURN_STOP_DEBUG t=177.5s: apo=6571235m (target=6451000m, has=True), v=2152m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:52,192 - INFO - BURN_STOP_DEBUG t=177.6s: apo=6571296m (target=6451000m, has=True), v=2153m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:52,242 - INFO - BURN_STOP_DEBUG t=177.7s: apo=6571356m (target=6451000m, has=True), v=2153m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:52,257 - INFO - BURN_STOP_DEBUG t=177.8s: apo=6571417m (target=6451000m, has=True), v=2153m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:52,271 - INFO - BURN_STOP_DEBUG t=177.9s: apo=6571477m (target=6451000m, has=True), v=2153m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:52,284 - INFO - BURN_STOP_DEBUG t=178.0s: apo=6571538m (target=6451000m, has=True), v=2153m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:52,286 - INFO - TELEMETRY: t=178.0s, stage=2, alt=102.3km, v=2153m/s, propellant=95.5%, γ=38.0°
+2025-07-06 20:23:52,300 - INFO - BURN_STOP_DEBUG t=178.1s: apo=6571598m (target=6451000m, has=True), v=2153m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:52,311 - INFO - BURN_STOP_DEBUG t=178.2s: apo=6571658m (target=6451000m, has=True), v=2153m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:52,355 - INFO - BURN_STOP_DEBUG t=178.3s: apo=6571718m (target=6451000m, has=True), v=2153m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:52,373 - INFO - BURN_STOP_DEBUG t=178.4s: apo=6571779m (target=6451000m, has=True), v=2153m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:52,388 - INFO - BURN_STOP_DEBUG t=178.5s: apo=6571839m (target=6451000m, has=True), v=2153m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:52,406 - INFO - BURN_STOP_DEBUG t=178.6s: apo=6571899m (target=6451000m, has=True), v=2153m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:52,419 - INFO - BURN_STOP_DEBUG t=178.7s: apo=6571959m (target=6451000m, has=True), v=2153m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:52,430 - INFO - BURN_STOP_DEBUG t=178.8s: apo=6572019m (target=6451000m, has=True), v=2153m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:52,443 - INFO - BURN_STOP_DEBUG t=178.9s: apo=6572080m (target=6451000m, has=True), v=2153m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:52,455 - INFO - BURN_STOP_DEBUG t=179.0s: apo=6572140m (target=6451000m, has=True), v=2153m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:52,457 - INFO - TELEMETRY: t=179.0s, stage=2, alt=103.6km, v=2153m/s, propellant=95.3%, γ=37.8°
+2025-07-06 20:23:52,468 - INFO - BURN_STOP_DEBUG t=179.1s: apo=6572200m (target=6451000m, has=True), v=2153m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:52,479 - INFO - BURN_STOP_DEBUG t=179.2s: apo=6572260m (target=6451000m, has=True), v=2153m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:52,491 - INFO - BURN_STOP_DEBUG t=179.3s: apo=6572319m (target=6451000m, has=True), v=2153m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:52,502 - INFO - BURN_STOP_DEBUG t=179.4s: apo=6572379m (target=6451000m, has=True), v=2153m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:52,514 - INFO - BURN_STOP_DEBUG t=179.5s: apo=6572439m (target=6451000m, has=True), v=2153m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:52,524 - INFO - BURN_STOP_DEBUG t=179.6s: apo=6572499m (target=6451000m, has=True), v=2153m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:52,539 - INFO - BURN_STOP_DEBUG t=179.7s: apo=6572559m (target=6451000m, has=True), v=2153m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:52,550 - INFO - BURN_STOP_DEBUG t=179.8s: apo=6572619m (target=6451000m, has=True), v=2153m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:52,563 - INFO - BURN_STOP_DEBUG t=179.9s: apo=6572678m (target=6451000m, has=True), v=2153m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:52,581 - INFO - BURN_STOP_DEBUG t=180.0s: apo=6572738m (target=6451000m, has=True), v=2153m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:52,583 - INFO - TELEMETRY: t=180.0s, stage=2, alt=104.9km, v=2153m/s, propellant=95.0%, γ=37.6°
+2025-07-06 20:23:52,586 - INFO - STAGE-2 MONITOR: t=180.0s, propellant=434.0t, mass_flow=1211.1kg/s, thrust=5000kN, burn_time=18.8s/390.0s
+2025-07-06 20:23:52,597 - INFO - BURN_STOP_DEBUG t=180.1s: apo=6572798m (target=6451000m, has=True), v=2153m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:52,607 - INFO - BURN_STOP_DEBUG t=180.2s: apo=6572857m (target=6451000m, has=True), v=2154m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:52,620 - INFO - BURN_STOP_DEBUG t=180.3s: apo=6572917m (target=6451000m, has=True), v=2154m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:52,637 - INFO - BURN_STOP_DEBUG t=180.4s: apo=6572976m (target=6451000m, has=True), v=2154m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:52,654 - INFO - BURN_STOP_DEBUG t=180.5s: apo=6573036m (target=6451000m, has=True), v=2154m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:52,665 - INFO - BURN_STOP_DEBUG t=180.6s: apo=6573095m (target=6451000m, has=True), v=2154m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:52,678 - INFO - BURN_STOP_DEBUG t=180.7s: apo=6573155m (target=6451000m, has=True), v=2154m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:52,692 - INFO - BURN_STOP_DEBUG t=180.8s: apo=6573214m (target=6451000m, has=True), v=2154m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:52,707 - INFO - BURN_STOP_DEBUG t=180.9s: apo=6573274m (target=6451000m, has=True), v=2154m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:52,721 - INFO - BURN_STOP_DEBUG t=181.0s: apo=6573333m (target=6451000m, has=True), v=2154m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:52,723 - INFO - TELEMETRY: t=181.0s, stage=2, alt=106.2km, v=2154m/s, propellant=94.7%, γ=37.4°
+2025-07-06 20:23:52,733 - INFO - BURN_STOP_DEBUG t=181.1s: apo=6573392m (target=6451000m, has=True), v=2154m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:52,746 - INFO - BURN_STOP_DEBUG t=181.2s: apo=6573452m (target=6451000m, has=True), v=2154m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:52,763 - INFO - BURN_STOP_DEBUG t=181.3s: apo=6573511m (target=6451000m, has=True), v=2154m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:52,775 - INFO - BURN_STOP_DEBUG t=181.4s: apo=6573570m (target=6451000m, has=True), v=2154m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:52,791 - INFO - BURN_STOP_DEBUG t=181.5s: apo=6573629m (target=6451000m, has=True), v=2154m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:52,806 - INFO - BURN_STOP_DEBUG t=181.6s: apo=6573688m (target=6451000m, has=True), v=2154m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:52,823 - INFO - BURN_STOP_DEBUG t=181.7s: apo=6573747m (target=6451000m, has=True), v=2154m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:52,841 - INFO - BURN_STOP_DEBUG t=181.8s: apo=6573806m (target=6451000m, has=True), v=2154m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:52,856 - INFO - BURN_STOP_DEBUG t=181.9s: apo=6573866m (target=6451000m, has=True), v=2154m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:52,869 - INFO - BURN_STOP_DEBUG t=182.0s: apo=6573924m (target=6451000m, has=True), v=2154m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:52,871 - INFO - TELEMETRY: t=182.0s, stage=2, alt=107.5km, v=2154m/s, propellant=94.5%, γ=37.3°
+2025-07-06 20:23:52,881 - INFO - BURN_STOP_DEBUG t=182.1s: apo=6573983m (target=6451000m, has=True), v=2154m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:52,893 - INFO - BURN_STOP_DEBUG t=182.2s: apo=6574042m (target=6451000m, has=True), v=2154m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:52,905 - INFO - BURN_STOP_DEBUG t=182.3s: apo=6574101m (target=6451000m, has=True), v=2155m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:52,916 - INFO - BURN_STOP_DEBUG t=182.4s: apo=6574160m (target=6451000m, has=True), v=2155m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:52,933 - INFO - BURN_STOP_DEBUG t=182.5s: apo=6574219m (target=6451000m, has=True), v=2155m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:52,947 - INFO - BURN_STOP_DEBUG t=182.6s: apo=6574278m (target=6451000m, has=True), v=2155m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:52,974 - INFO - BURN_STOP_DEBUG t=182.7s: apo=6574336m (target=6451000m, has=True), v=2155m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:52,991 - INFO - BURN_STOP_DEBUG t=182.8s: apo=6574395m (target=6451000m, has=True), v=2155m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:53,010 - INFO - BURN_STOP_DEBUG t=182.9s: apo=6574454m (target=6451000m, has=True), v=2155m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:53,022 - INFO - BURN_STOP_DEBUG t=183.0s: apo=6574512m (target=6451000m, has=True), v=2155m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:53,024 - INFO - TELEMETRY: t=183.0s, stage=2, alt=108.8km, v=2155m/s, propellant=94.2%, γ=37.1°
+2025-07-06 20:23:53,034 - INFO - BURN_STOP_DEBUG t=183.1s: apo=6574571m (target=6451000m, has=True), v=2155m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:53,046 - INFO - BURN_STOP_DEBUG t=183.2s: apo=6574629m (target=6451000m, has=True), v=2155m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:53,065 - INFO - BURN_STOP_DEBUG t=183.3s: apo=6574688m (target=6451000m, has=True), v=2155m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:53,077 - INFO - BURN_STOP_DEBUG t=183.4s: apo=6574747m (target=6451000m, has=True), v=2155m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:53,089 - INFO - BURN_STOP_DEBUG t=183.5s: apo=6574805m (target=6451000m, has=True), v=2155m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:53,101 - INFO - BURN_STOP_DEBUG t=183.6s: apo=6574863m (target=6451000m, has=True), v=2155m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:53,113 - INFO - BURN_STOP_DEBUG t=183.7s: apo=6574922m (target=6451000m, has=True), v=2155m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:53,124 - INFO - BURN_STOP_DEBUG t=183.8s: apo=6574980m (target=6451000m, has=True), v=2155m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:53,136 - INFO - BURN_STOP_DEBUG t=183.9s: apo=6575038m (target=6451000m, has=True), v=2155m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:53,147 - INFO - BURN_STOP_DEBUG t=184.0s: apo=6575097m (target=6451000m, has=True), v=2155m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:53,149 - INFO - TELEMETRY: t=184.0s, stage=2, alt=110.1km, v=2155m/s, propellant=94.0%, γ=36.9°
+2025-07-06 20:23:53,159 - INFO - BURN_STOP_DEBUG t=184.1s: apo=6575155m (target=6451000m, has=True), v=2155m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:53,172 - INFO - BURN_STOP_DEBUG t=184.2s: apo=6575213m (target=6451000m, has=True), v=2156m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:53,184 - INFO - BURN_STOP_DEBUG t=184.3s: apo=6575271m (target=6451000m, has=True), v=2156m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:53,197 - INFO - BURN_STOP_DEBUG t=184.4s: apo=6575329m (target=6451000m, has=True), v=2156m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:53,208 - INFO - BURN_STOP_DEBUG t=184.5s: apo=6575387m (target=6451000m, has=True), v=2156m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:53,220 - INFO - BURN_STOP_DEBUG t=184.6s: apo=6575446m (target=6451000m, has=True), v=2156m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:53,232 - INFO - BURN_STOP_DEBUG t=184.7s: apo=6575504m (target=6451000m, has=True), v=2156m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:53,243 - INFO - BURN_STOP_DEBUG t=184.8s: apo=6575562m (target=6451000m, has=True), v=2156m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:53,254 - INFO - BURN_STOP_DEBUG t=184.9s: apo=6575619m (target=6451000m, has=True), v=2156m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:53,265 - INFO - BURN_STOP_DEBUG t=185.0s: apo=6575677m (target=6451000m, has=True), v=2156m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:53,268 - INFO - TELEMETRY: t=185.0s, stage=2, alt=111.4km, v=2156m/s, propellant=93.7%, γ=36.7°
+2025-07-06 20:23:53,278 - INFO - BURN_STOP_DEBUG t=185.1s: apo=6575735m (target=6451000m, has=True), v=2156m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:53,293 - INFO - BURN_STOP_DEBUG t=185.2s: apo=6575793m (target=6451000m, has=True), v=2156m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:53,307 - INFO - BURN_STOP_DEBUG t=185.3s: apo=6575851m (target=6451000m, has=True), v=2156m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:53,318 - INFO - BURN_STOP_DEBUG t=185.4s: apo=6575909m (target=6451000m, has=True), v=2156m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:53,332 - INFO - BURN_STOP_DEBUG t=185.5s: apo=6575966m (target=6451000m, has=True), v=2156m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:53,347 - INFO - BURN_STOP_DEBUG t=185.6s: apo=6576024m (target=6451000m, has=True), v=2156m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:53,367 - INFO - BURN_STOP_DEBUG t=185.7s: apo=6576082m (target=6451000m, has=True), v=2156m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:53,379 - INFO - BURN_STOP_DEBUG t=185.8s: apo=6576139m (target=6451000m, has=True), v=2156m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:53,391 - INFO - BURN_STOP_DEBUG t=185.9s: apo=6576197m (target=6451000m, has=True), v=2157m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:53,420 - INFO - BURN_STOP_DEBUG t=186.0s: apo=6576255m (target=6451000m, has=True), v=2157m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:53,423 - INFO - TELEMETRY: t=186.0s, stage=2, alt=112.7km, v=2157m/s, propellant=93.4%, γ=36.5°
+2025-07-06 20:23:53,435 - INFO - BURN_STOP_DEBUG t=186.1s: apo=6576312m (target=6451000m, has=True), v=2157m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:53,447 - INFO - BURN_STOP_DEBUG t=186.2s: apo=6576370m (target=6451000m, has=True), v=2157m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:53,459 - INFO - BURN_STOP_DEBUG t=186.3s: apo=6576427m (target=6451000m, has=True), v=2157m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:53,473 - INFO - BURN_STOP_DEBUG t=186.4s: apo=6576484m (target=6451000m, has=True), v=2157m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:53,485 - INFO - BURN_STOP_DEBUG t=186.5s: apo=6576542m (target=6451000m, has=True), v=2157m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:53,502 - INFO - BURN_STOP_DEBUG t=186.6s: apo=6576599m (target=6451000m, has=True), v=2157m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:53,518 - INFO - BURN_STOP_DEBUG t=186.7s: apo=6576656m (target=6451000m, has=True), v=2157m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:53,530 - INFO - BURN_STOP_DEBUG t=186.8s: apo=6576714m (target=6451000m, has=True), v=2157m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:53,550 - INFO - BURN_STOP_DEBUG t=186.9s: apo=6576771m (target=6451000m, has=True), v=2157m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:53,562 - INFO - BURN_STOP_DEBUG t=187.0s: apo=6576828m (target=6451000m, has=True), v=2157m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:53,564 - INFO - TELEMETRY: t=187.0s, stage=2, alt=114.0km, v=2157m/s, propellant=93.2%, γ=36.3°
+2025-07-06 20:23:53,575 - INFO - BURN_STOP_DEBUG t=187.1s: apo=6576885m (target=6451000m, has=True), v=2157m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:53,587 - INFO - BURN_STOP_DEBUG t=187.2s: apo=6576942m (target=6451000m, has=True), v=2157m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:53,599 - INFO - BURN_STOP_DEBUG t=187.3s: apo=6577000m (target=6451000m, has=True), v=2157m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:53,610 - INFO - BURN_STOP_DEBUG t=187.4s: apo=6577057m (target=6451000m, has=True), v=2158m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:53,622 - INFO - BURN_STOP_DEBUG t=187.5s: apo=6577114m (target=6451000m, has=True), v=2158m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:53,635 - INFO - BURN_STOP_DEBUG t=187.6s: apo=6577171m (target=6451000m, has=True), v=2158m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:53,654 - INFO - BURN_STOP_DEBUG t=187.7s: apo=6577227m (target=6451000m, has=True), v=2158m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:53,666 - INFO - BURN_STOP_DEBUG t=187.8s: apo=6577284m (target=6451000m, has=True), v=2158m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:53,678 - INFO - BURN_STOP_DEBUG t=187.9s: apo=6577341m (target=6451000m, has=True), v=2158m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:53,692 - INFO - BURN_STOP_DEBUG t=188.0s: apo=6577398m (target=6451000m, has=True), v=2158m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:53,698 - INFO - TELEMETRY: t=188.0s, stage=2, alt=115.2km, v=2158m/s, propellant=92.9%, γ=36.1°
+2025-07-06 20:23:53,708 - INFO - BURN_STOP_DEBUG t=188.1s: apo=6577455m (target=6451000m, has=True), v=2158m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:53,753 - INFO - BURN_STOP_DEBUG t=188.2s: apo=6577512m (target=6451000m, has=True), v=2158m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:53,771 - INFO - BURN_STOP_DEBUG t=188.3s: apo=6577568m (target=6451000m, has=True), v=2158m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:53,798 - INFO - BURN_STOP_DEBUG t=188.4s: apo=6577625m (target=6451000m, has=True), v=2158m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:53,811 - INFO - BURN_STOP_DEBUG t=188.5s: apo=6577682m (target=6451000m, has=True), v=2158m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:53,839 - INFO - BURN_STOP_DEBUG t=188.6s: apo=6577738m (target=6451000m, has=True), v=2158m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:53,880 - INFO - BURN_STOP_DEBUG t=188.7s: apo=6577795m (target=6451000m, has=True), v=2158m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:53,892 - INFO - BURN_STOP_DEBUG t=188.8s: apo=6577851m (target=6451000m, has=True), v=2159m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:53,905 - INFO - BURN_STOP_DEBUG t=188.9s: apo=6577908m (target=6451000m, has=True), v=2159m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:53,925 - INFO - BURN_STOP_DEBUG t=189.0s: apo=6577965m (target=6451000m, has=True), v=2159m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:53,927 - INFO - TELEMETRY: t=189.0s, stage=2, alt=116.5km, v=2159m/s, propellant=92.6%, γ=36.0°
+2025-07-06 20:23:53,940 - INFO - BURN_STOP_DEBUG t=189.1s: apo=6578021m (target=6451000m, has=True), v=2159m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:53,990 - INFO - BURN_STOP_DEBUG t=189.2s: apo=6578077m (target=6451000m, has=True), v=2159m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:54,006 - INFO - BURN_STOP_DEBUG t=189.3s: apo=6578134m (target=6451000m, has=True), v=2159m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:54,030 - INFO - BURN_STOP_DEBUG t=189.4s: apo=6578190m (target=6451000m, has=True), v=2159m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:54,042 - INFO - BURN_STOP_DEBUG t=189.5s: apo=6578246m (target=6451000m, has=True), v=2159m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:54,054 - INFO - BURN_STOP_DEBUG t=189.6s: apo=6578303m (target=6451000m, has=True), v=2159m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:54,068 - INFO - BURN_STOP_DEBUG t=189.7s: apo=6578359m (target=6451000m, has=True), v=2159m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:54,108 - INFO - BURN_STOP_DEBUG t=189.8s: apo=6578415m (target=6451000m, has=True), v=2159m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:54,124 - INFO - BURN_STOP_DEBUG t=189.9s: apo=6578471m (target=6451000m, has=True), v=2159m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:54,145 - INFO - BURN_STOP_DEBUG t=190.0s: apo=6578527m (target=6451000m, has=True), v=2159m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:54,150 - INFO - TELEMETRY: t=190.0s, stage=2, alt=117.8km, v=2159m/s, propellant=92.4%, γ=35.8°
+2025-07-06 20:23:54,157 - INFO - STAGE-2 MONITOR: t=190.0s, propellant=421.9t, mass_flow=1211.1kg/s, thrust=5000kN, burn_time=28.8s/390.0s
+2025-07-06 20:23:54,172 - INFO - BURN_STOP_DEBUG t=190.1s: apo=6578583m (target=6451000m, has=True), v=2160m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:54,184 - INFO - BURN_STOP_DEBUG t=190.2s: apo=6578639m (target=6451000m, has=True), v=2160m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:54,197 - INFO - BURN_STOP_DEBUG t=190.3s: apo=6578695m (target=6451000m, has=True), v=2160m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:54,211 - INFO - BURN_STOP_DEBUG t=190.4s: apo=6578751m (target=6451000m, has=True), v=2160m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:54,225 - INFO - BURN_STOP_DEBUG t=190.5s: apo=6578807m (target=6451000m, has=True), v=2160m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:54,237 - INFO - BURN_STOP_DEBUG t=190.6s: apo=6578863m (target=6451000m, has=True), v=2160m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:54,277 - INFO - BURN_STOP_DEBUG t=190.7s: apo=6578919m (target=6451000m, has=True), v=2160m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:54,302 - INFO - BURN_STOP_DEBUG t=190.8s: apo=6578975m (target=6451000m, has=True), v=2160m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:54,317 - INFO - BURN_STOP_DEBUG t=190.9s: apo=6579031m (target=6451000m, has=True), v=2160m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:54,330 - INFO - BURN_STOP_DEBUG t=191.0s: apo=6579086m (target=6451000m, has=True), v=2160m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:54,332 - INFO - TELEMETRY: t=191.0s, stage=2, alt=119.0km, v=2160m/s, propellant=92.1%, γ=35.6°
+2025-07-06 20:23:54,343 - INFO - BURN_STOP_DEBUG t=191.1s: apo=6579142m (target=6451000m, has=True), v=2160m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:54,357 - INFO - BURN_STOP_DEBUG t=191.2s: apo=6579198m (target=6451000m, has=True), v=2160m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:54,371 - INFO - BURN_STOP_DEBUG t=191.3s: apo=6579253m (target=6451000m, has=True), v=2161m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:54,390 - INFO - BURN_STOP_DEBUG t=191.4s: apo=6579309m (target=6451000m, has=True), v=2161m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:54,403 - INFO - BURN_STOP_DEBUG t=191.5s: apo=6579365m (target=6451000m, has=True), v=2161m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:54,416 - INFO - BURN_STOP_DEBUG t=191.6s: apo=6579420m (target=6451000m, has=True), v=2161m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:54,429 - INFO - BURN_STOP_DEBUG t=191.7s: apo=6579476m (target=6451000m, has=True), v=2161m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:54,440 - INFO - BURN_STOP_DEBUG t=191.8s: apo=6579531m (target=6451000m, has=True), v=2161m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:54,452 - INFO - BURN_STOP_DEBUG t=191.9s: apo=6579587m (target=6451000m, has=True), v=2161m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:54,463 - INFO - BURN_STOP_DEBUG t=192.0s: apo=6579642m (target=6451000m, has=True), v=2161m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:54,466 - INFO - TELEMETRY: t=192.0s, stage=2, alt=120.3km, v=2161m/s, propellant=91.8%, γ=35.4°
+2025-07-06 20:23:54,476 - INFO - BURN_STOP_DEBUG t=192.1s: apo=6579697m (target=6451000m, has=True), v=2161m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:54,500 - INFO - BURN_STOP_DEBUG t=192.2s: apo=6579753m (target=6451000m, has=True), v=2161m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:54,524 - INFO - BURN_STOP_DEBUG t=192.3s: apo=6579808m (target=6451000m, has=True), v=2161m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:54,536 - INFO - BURN_STOP_DEBUG t=192.4s: apo=6579863m (target=6451000m, has=True), v=2161m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:54,548 - INFO - BURN_STOP_DEBUG t=192.5s: apo=6579918m (target=6451000m, has=True), v=2162m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:54,564 - INFO - BURN_STOP_DEBUG t=192.6s: apo=6579973m (target=6451000m, has=True), v=2162m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:54,582 - INFO - BURN_STOP_DEBUG t=192.7s: apo=6580029m (target=6451000m, has=True), v=2162m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:54,594 - INFO - BURN_STOP_DEBUG t=192.8s: apo=6580084m (target=6451000m, has=True), v=2162m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:54,607 - INFO - BURN_STOP_DEBUG t=192.9s: apo=6580139m (target=6451000m, has=True), v=2162m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:54,619 - INFO - BURN_STOP_DEBUG t=193.0s: apo=6580194m (target=6451000m, has=True), v=2162m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:54,621 - INFO - TELEMETRY: t=193.0s, stage=2, alt=121.5km, v=2162m/s, propellant=91.6%, γ=35.2°
+2025-07-06 20:23:54,632 - INFO - BURN_STOP_DEBUG t=193.1s: apo=6580249m (target=6451000m, has=True), v=2162m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:54,643 - INFO - BURN_STOP_DEBUG t=193.2s: apo=6580304m (target=6451000m, has=True), v=2162m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:54,656 - INFO - BURN_STOP_DEBUG t=193.3s: apo=6580359m (target=6451000m, has=True), v=2162m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:54,676 - INFO - BURN_STOP_DEBUG t=193.4s: apo=6580414m (target=6451000m, has=True), v=2162m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:54,691 - INFO - BURN_STOP_DEBUG t=193.5s: apo=6580468m (target=6451000m, has=True), v=2162m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:54,703 - INFO - BURN_STOP_DEBUG t=193.6s: apo=6580523m (target=6451000m, has=True), v=2163m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:54,715 - INFO - BURN_STOP_DEBUG t=193.7s: apo=6580578m (target=6451000m, has=True), v=2163m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:54,729 - INFO - BURN_STOP_DEBUG t=193.8s: apo=6580633m (target=6451000m, has=True), v=2163m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:54,748 - INFO - BURN_STOP_DEBUG t=193.9s: apo=6580687m (target=6451000m, has=True), v=2163m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:54,763 - INFO - BURN_STOP_DEBUG t=194.0s: apo=6580742m (target=6451000m, has=True), v=2163m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:54,766 - INFO - TELEMETRY: t=194.0s, stage=2, alt=122.8km, v=2163m/s, propellant=91.3%, γ=35.0°
+2025-07-06 20:23:54,802 - INFO - BURN_STOP_DEBUG t=194.1s: apo=6580797m (target=6451000m, has=True), v=2163m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:54,825 - INFO - BURN_STOP_DEBUG t=194.2s: apo=6580851m (target=6451000m, has=True), v=2163m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:54,841 - INFO - BURN_STOP_DEBUG t=194.3s: apo=6580906m (target=6451000m, has=True), v=2163m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:54,862 - INFO - BURN_STOP_DEBUG t=194.4s: apo=6580960m (target=6451000m, has=True), v=2163m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:54,890 - INFO - BURN_STOP_DEBUG t=194.5s: apo=6581015m (target=6451000m, has=True), v=2163m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:54,903 - INFO - BURN_STOP_DEBUG t=194.6s: apo=6581069m (target=6451000m, has=True), v=2163m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:54,918 - INFO - BURN_STOP_DEBUG t=194.7s: apo=6581124m (target=6451000m, has=True), v=2164m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:54,930 - INFO - BURN_STOP_DEBUG t=194.8s: apo=6581178m (target=6451000m, has=True), v=2164m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:54,941 - INFO - BURN_STOP_DEBUG t=194.9s: apo=6581232m (target=6451000m, has=True), v=2164m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:54,953 - INFO - BURN_STOP_DEBUG t=195.0s: apo=6581287m (target=6451000m, has=True), v=2164m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:54,955 - INFO - TELEMETRY: t=195.0s, stage=2, alt=124.0km, v=2164m/s, propellant=91.0%, γ=34.8°
+2025-07-06 20:23:54,966 - INFO - BURN_STOP_DEBUG t=195.1s: apo=6581341m (target=6451000m, has=True), v=2164m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:54,978 - INFO - BURN_STOP_DEBUG t=195.2s: apo=6581395m (target=6451000m, has=True), v=2164m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:54,996 - INFO - BURN_STOP_DEBUG t=195.3s: apo=6581449m (target=6451000m, has=True), v=2164m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:55,008 - INFO - BURN_STOP_DEBUG t=195.4s: apo=6581504m (target=6451000m, has=True), v=2164m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:55,020 - INFO - BURN_STOP_DEBUG t=195.5s: apo=6581558m (target=6451000m, has=True), v=2164m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:55,031 - INFO - BURN_STOP_DEBUG t=195.6s: apo=6581612m (target=6451000m, has=True), v=2164m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:55,045 - INFO - BURN_STOP_DEBUG t=195.7s: apo=6581666m (target=6451000m, has=True), v=2165m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:55,055 - INFO - BURN_STOP_DEBUG t=195.8s: apo=6581720m (target=6451000m, has=True), v=2165m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:55,069 - INFO - BURN_STOP_DEBUG t=195.9s: apo=6581774m (target=6451000m, has=True), v=2165m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:55,081 - INFO - BURN_STOP_DEBUG t=196.0s: apo=6581828m (target=6451000m, has=True), v=2165m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:55,083 - INFO - TELEMETRY: t=196.0s, stage=2, alt=125.3km, v=2165m/s, propellant=90.8%, γ=34.6°
+2025-07-06 20:23:55,093 - INFO - BURN_STOP_DEBUG t=196.1s: apo=6581882m (target=6451000m, has=True), v=2165m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:55,109 - INFO - BURN_STOP_DEBUG t=196.2s: apo=6581935m (target=6451000m, has=True), v=2165m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:55,147 - INFO - BURN_STOP_DEBUG t=196.3s: apo=6581989m (target=6451000m, has=True), v=2165m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:55,168 - INFO - BURN_STOP_DEBUG t=196.4s: apo=6582043m (target=6451000m, has=True), v=2165m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:55,197 - INFO - BURN_STOP_DEBUG t=196.5s: apo=6582097m (target=6451000m, has=True), v=2165m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:55,209 - INFO - BURN_STOP_DEBUG t=196.6s: apo=6582151m (target=6451000m, has=True), v=2165m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:55,227 - INFO - BURN_STOP_DEBUG t=196.7s: apo=6582204m (target=6451000m, has=True), v=2166m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:55,244 - INFO - BURN_STOP_DEBUG t=196.8s: apo=6582258m (target=6451000m, has=True), v=2166m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:55,287 - INFO - BURN_STOP_DEBUG t=196.9s: apo=6582311m (target=6451000m, has=True), v=2166m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:55,302 - INFO - BURN_STOP_DEBUG t=197.0s: apo=6582365m (target=6451000m, has=True), v=2166m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:55,304 - INFO - TELEMETRY: t=197.0s, stage=2, alt=126.5km, v=2166m/s, propellant=90.5%, γ=34.4°
+2025-07-06 20:23:55,315 - INFO - BURN_STOP_DEBUG t=197.1s: apo=6582418m (target=6451000m, has=True), v=2166m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:55,326 - INFO - BURN_STOP_DEBUG t=197.2s: apo=6582472m (target=6451000m, has=True), v=2166m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:55,377 - INFO - BURN_STOP_DEBUG t=197.3s: apo=6582526m (target=6451000m, has=True), v=2166m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:55,391 - INFO - BURN_STOP_DEBUG t=197.4s: apo=6582579m (target=6451000m, has=True), v=2166m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:55,407 - INFO - BURN_STOP_DEBUG t=197.5s: apo=6582632m (target=6451000m, has=True), v=2166m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:55,420 - INFO - BURN_STOP_DEBUG t=197.6s: apo=6582686m (target=6451000m, has=True), v=2167m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:55,434 - INFO - BURN_STOP_DEBUG t=197.7s: apo=6582739m (target=6451000m, has=True), v=2167m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:55,445 - INFO - BURN_STOP_DEBUG t=197.8s: apo=6582792m (target=6451000m, has=True), v=2167m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:55,458 - INFO - BURN_STOP_DEBUG t=197.9s: apo=6582845m (target=6451000m, has=True), v=2167m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:55,475 - INFO - BURN_STOP_DEBUG t=198.0s: apo=6582899m (target=6451000m, has=True), v=2167m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:55,477 - INFO - TELEMETRY: t=198.0s, stage=2, alt=127.7km, v=2167m/s, propellant=90.2%, γ=34.2°
+2025-07-06 20:23:55,490 - INFO - BURN_STOP_DEBUG t=198.1s: apo=6582952m (target=6451000m, has=True), v=2167m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:55,502 - INFO - BURN_STOP_DEBUG t=198.2s: apo=6583005m (target=6451000m, has=True), v=2167m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:55,515 - INFO - BURN_STOP_DEBUG t=198.3s: apo=6583058m (target=6451000m, has=True), v=2167m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:55,527 - INFO - BURN_STOP_DEBUG t=198.4s: apo=6583111m (target=6451000m, has=True), v=2167m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:55,539 - INFO - BURN_STOP_DEBUG t=198.5s: apo=6583164m (target=6451000m, has=True), v=2168m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:55,550 - INFO - BURN_STOP_DEBUG t=198.6s: apo=6583217m (target=6451000m, has=True), v=2168m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:55,591 - INFO - BURN_STOP_DEBUG t=198.7s: apo=6583270m (target=6451000m, has=True), v=2168m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:55,616 - INFO - BURN_STOP_DEBUG t=198.8s: apo=6583323m (target=6451000m, has=True), v=2168m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:55,642 - INFO - BURN_STOP_DEBUG t=198.9s: apo=6583376m (target=6451000m, has=True), v=2168m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:55,657 - INFO - BURN_STOP_DEBUG t=199.0s: apo=6583429m (target=6451000m, has=True), v=2168m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:55,664 - INFO - TELEMETRY: t=199.0s, stage=2, alt=128.9km, v=2168m/s, propellant=90.0%, γ=34.1°
+2025-07-06 20:23:55,701 - INFO - BURN_STOP_DEBUG t=199.1s: apo=6583481m (target=6451000m, has=True), v=2168m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:55,720 - INFO - BURN_STOP_DEBUG t=199.2s: apo=6583534m (target=6451000m, has=True), v=2168m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:55,743 - INFO - BURN_STOP_DEBUG t=199.3s: apo=6583587m (target=6451000m, has=True), v=2168m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:55,756 - INFO - BURN_STOP_DEBUG t=199.4s: apo=6583640m (target=6451000m, has=True), v=2169m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:55,775 - INFO - BURN_STOP_DEBUG t=199.5s: apo=6583692m (target=6451000m, has=True), v=2169m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:55,851 - INFO - BURN_STOP_DEBUG t=199.6s: apo=6583745m (target=6451000m, has=True), v=2169m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:55,891 - INFO - BURN_STOP_DEBUG t=199.7s: apo=6583797m (target=6451000m, has=True), v=2169m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:55,907 - INFO - BURN_STOP_DEBUG t=199.8s: apo=6583850m (target=6451000m, has=True), v=2169m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:55,921 - INFO - PHASE_DEBUG: t=199.9s, phase=apoapsis_raise, stage=1
+2025-07-06 20:23:55,921 - INFO - BURN_STOP_DEBUG t=199.9s: apo=6583902m (target=6451000m, has=True), v=2169m/s (threshold=2600, ok=False), should_stop=False
+2025-07-06 20:23:55,934 - INFO - TELEMETRY: t=200.0s, stage=2, alt=130.1km, v=2169m/s, propellant=89.7%, γ=33.9°
+2025-07-06 20:23:55,936 - INFO - STAGE-2 MONITOR: t=200.0s, propellant=409.7t, mass_flow=1211.1kg/s, thrust=5000kN, burn_time=38.8s/390.0s
+2025-07-06 20:23:56,119 - INFO - TELEMETRY: t=201.0s, stage=2, alt=131.3km, v=2170m/s, propellant=89.4%, γ=33.7°
+2025-07-06 20:23:56,314 - INFO - TELEMETRY: t=202.0s, stage=2, alt=132.5km, v=2172m/s, propellant=89.2%, γ=33.5°
+2025-07-06 20:23:56,450 - INFO - TELEMETRY: t=203.0s, stage=2, alt=133.7km, v=2173m/s, propellant=88.9%, γ=33.3°
+2025-07-06 20:23:56,593 - INFO - TELEMETRY: t=204.0s, stage=2, alt=134.9km, v=2174m/s, propellant=88.7%, γ=33.1°
+2025-07-06 20:23:56,771 - INFO - TELEMETRY: t=205.0s, stage=2, alt=136.1km, v=2176m/s, propellant=88.4%, γ=32.9°
+2025-07-06 20:23:56,897 - INFO - TELEMETRY: t=206.0s, stage=2, alt=137.3km, v=2177m/s, propellant=88.1%, γ=32.7°
+2025-07-06 20:23:57,029 - INFO - TELEMETRY: t=207.0s, stage=2, alt=138.5km, v=2178m/s, propellant=87.9%, γ=32.5°
+2025-07-06 20:23:57,165 - INFO - TELEMETRY: t=208.0s, stage=2, alt=139.6km, v=2180m/s, propellant=87.6%, γ=32.3°
+2025-07-06 20:23:57,303 - INFO - TELEMETRY: t=209.0s, stage=2, alt=140.8km, v=2181m/s, propellant=87.3%, γ=32.1°
+2025-07-06 20:23:57,423 - INFO - TELEMETRY: t=210.0s, stage=2, alt=142.0km, v=2183m/s, propellant=87.1%, γ=32.0°
+2025-07-06 20:23:57,426 - INFO - STAGE-2 MONITOR: t=210.0s, propellant=397.6t, mass_flow=1211.1kg/s, thrust=5000kN, burn_time=48.8s/390.0s
+2025-07-06 20:23:57,564 - INFO - TELEMETRY: t=211.0s, stage=2, alt=143.1km, v=2184m/s, propellant=86.8%, γ=31.8°
+2025-07-06 20:23:57,729 - INFO - TELEMETRY: t=212.0s, stage=2, alt=144.3km, v=2186m/s, propellant=86.5%, γ=31.6°
+2025-07-06 20:23:57,854 - INFO - TELEMETRY: t=213.0s, stage=2, alt=145.4km, v=2188m/s, propellant=86.3%, γ=31.4°
+2025-07-06 20:23:57,976 - INFO - TELEMETRY: t=214.0s, stage=2, alt=146.5km, v=2189m/s, propellant=86.0%, γ=31.2°
+2025-07-06 20:23:58,105 - INFO - TELEMETRY: t=215.0s, stage=2, alt=147.7km, v=2191m/s, propellant=85.7%, γ=31.0°
+2025-07-06 20:23:58,261 - INFO - TELEMETRY: t=216.0s, stage=2, alt=148.8km, v=2193m/s, propellant=85.5%, γ=30.8°
+2025-07-06 20:23:58,411 - INFO - TELEMETRY: t=217.0s, stage=2, alt=149.9km, v=2195m/s, propellant=85.2%, γ=30.6°
+2025-07-06 20:23:58,602 - INFO - TELEMETRY: t=218.0s, stage=2, alt=151.0km, v=2196m/s, propellant=84.9%, γ=30.4°
+2025-07-06 20:23:58,920 - INFO - TELEMETRY: t=219.0s, stage=2, alt=152.1km, v=2198m/s, propellant=84.7%, γ=30.2°
+2025-07-06 20:23:59,086 - INFO - TELEMETRY: t=220.0s, stage=2, alt=153.2km, v=2200m/s, propellant=84.4%, γ=30.0°
+2025-07-06 20:23:59,088 - INFO - STAGE-2 MONITOR: t=220.0s, propellant=385.5t, mass_flow=1211.1kg/s, thrust=5000kN, burn_time=58.8s/390.0s
+2025-07-06 20:23:59,259 - INFO - TELEMETRY: t=221.0s, stage=2, alt=154.3km, v=2202m/s, propellant=84.1%, γ=29.8°
+2025-07-06 20:23:59,388 - INFO - TELEMETRY: t=222.0s, stage=2, alt=155.4km, v=2204m/s, propellant=83.9%, γ=29.6°
+2025-07-06 20:23:59,519 - INFO - TELEMETRY: t=223.0s, stage=2, alt=156.5km, v=2206m/s, propellant=83.6%, γ=29.4°
+2025-07-06 20:23:59,716 - INFO - TELEMETRY: t=224.0s, stage=2, alt=157.6km, v=2208m/s, propellant=83.3%, γ=29.2°
+2025-07-06 20:23:59,838 - INFO - TELEMETRY: t=225.0s, stage=2, alt=158.7km, v=2210m/s, propellant=83.1%, γ=29.0°
+2025-07-06 20:24:00,068 - INFO - TELEMETRY: t=226.0s, stage=2, alt=159.7km, v=2213m/s, propellant=82.8%, γ=28.8°
+2025-07-06 20:24:00,195 - INFO - TELEMETRY: t=227.0s, stage=2, alt=160.8km, v=2215m/s, propellant=82.6%, γ=28.7°
+2025-07-06 20:24:00,321 - INFO - TELEMETRY: t=228.0s, stage=2, alt=161.9km, v=2217m/s, propellant=82.3%, γ=28.5°
+2025-07-06 20:24:00,445 - INFO - TELEMETRY: t=229.0s, stage=2, alt=162.9km, v=2219m/s, propellant=82.0%, γ=28.3°
+2025-07-06 20:24:00,574 - INFO - TELEMETRY: t=230.0s, stage=2, alt=164.0km, v=2222m/s, propellant=81.8%, γ=28.1°
+2025-07-06 20:24:00,576 - INFO - STAGE-2 MONITOR: t=230.0s, propellant=373.4t, mass_flow=1211.1kg/s, thrust=5000kN, burn_time=68.8s/390.0s
+2025-07-06 20:24:00,740 - INFO - TELEMETRY: t=231.0s, stage=2, alt=165.0km, v=2224m/s, propellant=81.5%, γ=27.9°
+2025-07-06 20:24:00,982 - INFO - TELEMETRY: t=232.0s, stage=2, alt=166.0km, v=2226m/s, propellant=81.2%, γ=27.7°
+2025-07-06 20:24:01,157 - INFO - TELEMETRY: t=233.0s, stage=2, alt=167.1km, v=2229m/s, propellant=81.0%, γ=27.5°
+2025-07-06 20:24:01,337 - INFO - TELEMETRY: t=234.0s, stage=2, alt=168.1km, v=2231m/s, propellant=80.7%, γ=27.3°
+2025-07-06 20:24:01,565 - INFO - TELEMETRY: t=235.0s, stage=2, alt=169.1km, v=2234m/s, propellant=80.4%, γ=27.1°
+2025-07-06 20:24:01,819 - INFO - TELEMETRY: t=236.0s, stage=2, alt=170.1km, v=2236m/s, propellant=80.2%, γ=26.9°
+2025-07-06 20:24:01,979 - INFO - TELEMETRY: t=237.0s, stage=2, alt=171.1km, v=2239m/s, propellant=79.9%, γ=26.7°
+2025-07-06 20:24:02,120 - INFO - TELEMETRY: t=238.0s, stage=2, alt=172.1km, v=2242m/s, propellant=79.6%, γ=26.5°
+2025-07-06 20:24:02,300 - INFO - TELEMETRY: t=239.0s, stage=2, alt=173.1km, v=2244m/s, propellant=79.4%, γ=26.3°
+2025-07-06 20:24:02,450 - INFO - TELEMETRY: t=240.0s, stage=2, alt=174.1km, v=2247m/s, propellant=79.1%, γ=26.1°
+2025-07-06 20:24:02,453 - INFO - STAGE-2 MONITOR: t=240.0s, propellant=361.3t, mass_flow=1211.1kg/s, thrust=5000kN, burn_time=78.8s/390.0s
+2025-07-06 20:24:02,591 - INFO - TELEMETRY: t=241.0s, stage=2, alt=175.1km, v=2250m/s, propellant=78.8%, γ=25.9°
+2025-07-06 20:24:02,734 - INFO - TELEMETRY: t=242.0s, stage=2, alt=176.1km, v=2253m/s, propellant=78.6%, γ=25.7°
+2025-07-06 20:24:02,858 - INFO - TELEMETRY: t=243.0s, stage=2, alt=177.1km, v=2256m/s, propellant=78.3%, γ=25.5°
+2025-07-06 20:24:03,075 - INFO - TELEMETRY: t=244.0s, stage=2, alt=178.0km, v=2258m/s, propellant=78.0%, γ=25.3°
+2025-07-06 20:24:03,218 - INFO - TELEMETRY: t=245.0s, stage=2, alt=179.0km, v=2261m/s, propellant=77.8%, γ=25.1°
+2025-07-06 20:24:03,462 - INFO - TELEMETRY: t=246.0s, stage=2, alt=180.0km, v=2264m/s, propellant=77.5%, γ=24.9°
+2025-07-06 20:24:03,611 - INFO - TELEMETRY: t=247.0s, stage=2, alt=180.9km, v=2267m/s, propellant=77.2%, γ=24.7°
+2025-07-06 20:24:03,793 - INFO - TELEMETRY: t=248.0s, stage=2, alt=181.9km, v=2270m/s, propellant=77.0%, γ=24.6°
+2025-07-06 20:24:03,922 - INFO - TELEMETRY: t=249.0s, stage=2, alt=182.8km, v=2274m/s, propellant=76.7%, γ=24.4°
+2025-07-06 20:24:04,055 - INFO - TELEMETRY: t=250.0s, stage=2, alt=183.7km, v=2277m/s, propellant=76.5%, γ=24.2°
+2025-07-06 20:24:04,058 - INFO - STAGE-2 MONITOR: t=250.0s, propellant=349.2t, mass_flow=1211.1kg/s, thrust=5000kN, burn_time=88.8s/390.0s
+2025-07-06 20:24:04,190 - INFO - TELEMETRY: t=251.0s, stage=2, alt=184.7km, v=2280m/s, propellant=76.2%, γ=24.0°
+2025-07-06 20:24:04,313 - INFO - TELEMETRY: t=252.0s, stage=2, alt=185.6km, v=2283m/s, propellant=75.9%, γ=23.8°
+2025-07-06 20:24:04,434 - INFO - TELEMETRY: t=253.0s, stage=2, alt=186.5km, v=2286m/s, propellant=75.7%, γ=23.6°
+2025-07-06 20:24:04,564 - INFO - TELEMETRY: t=254.0s, stage=2, alt=187.4km, v=2290m/s, propellant=75.4%, γ=23.4°
+2025-07-06 20:24:04,697 - INFO - TELEMETRY: t=255.0s, stage=2, alt=188.3km, v=2293m/s, propellant=75.1%, γ=23.2°
+2025-07-06 20:24:04,831 - INFO - TELEMETRY: t=256.0s, stage=2, alt=189.2km, v=2296m/s, propellant=74.9%, γ=23.0°
+2025-07-06 20:24:04,950 - INFO - TELEMETRY: t=257.0s, stage=2, alt=190.1km, v=2300m/s, propellant=74.6%, γ=22.8°
+2025-07-06 20:24:05,071 - INFO - TELEMETRY: t=258.0s, stage=2, alt=191.0km, v=2303m/s, propellant=74.3%, γ=22.6°
+2025-07-06 20:24:05,200 - INFO - TELEMETRY: t=259.0s, stage=2, alt=191.9km, v=2307m/s, propellant=74.1%, γ=22.4°
+2025-07-06 20:24:05,324 - INFO - TELEMETRY: t=260.0s, stage=2, alt=192.8km, v=2310m/s, propellant=73.8%, γ=22.2°
+2025-07-06 20:24:05,326 - INFO - STAGE-2 MONITOR: t=260.0s, propellant=337.1t, mass_flow=1211.1kg/s, thrust=5000kN, burn_time=98.8s/390.0s
+2025-07-06 20:24:05,476 - INFO - TELEMETRY: t=261.0s, stage=2, alt=193.6km, v=2314m/s, propellant=73.5%, γ=22.0°
+2025-07-06 20:24:05,598 - INFO - TELEMETRY: t=262.0s, stage=2, alt=194.5km, v=2318m/s, propellant=73.3%, γ=21.8°
+2025-07-06 20:24:05,728 - INFO - TELEMETRY: t=263.0s, stage=2, alt=195.4km, v=2321m/s, propellant=73.0%, γ=21.6°
+2025-07-06 20:24:05,857 - INFO - TELEMETRY: t=264.0s, stage=2, alt=196.2km, v=2325m/s, propellant=72.7%, γ=21.5°
+2025-07-06 20:24:06,028 - INFO - TELEMETRY: t=265.0s, stage=2, alt=197.1km, v=2329m/s, propellant=72.5%, γ=21.3°
+2025-07-06 20:24:06,181 - INFO - TELEMETRY: t=266.0s, stage=2, alt=197.9km, v=2333m/s, propellant=72.2%, γ=21.1°
+2025-07-06 20:24:06,338 - INFO - TELEMETRY: t=267.0s, stage=2, alt=198.7km, v=2336m/s, propellant=71.9%, γ=20.9°
+2025-07-06 20:24:06,465 - INFO - TELEMETRY: t=268.0s, stage=2, alt=199.6km, v=2340m/s, propellant=71.7%, γ=20.7°
+2025-07-06 20:24:06,625 - INFO - TELEMETRY: t=269.0s, stage=2, alt=200.4km, v=2344m/s, propellant=71.4%, γ=20.5°
+2025-07-06 20:24:06,770 - INFO - TELEMETRY: t=270.0s, stage=2, alt=201.2km, v=2348m/s, propellant=71.2%, γ=20.3°
+2025-07-06 20:24:06,772 - INFO - STAGE-2 MONITOR: t=270.0s, propellant=325.0t, mass_flow=1211.1kg/s, thrust=5000kN, burn_time=108.8s/390.0s
+2025-07-06 20:24:06,894 - INFO - TELEMETRY: t=271.0s, stage=2, alt=202.0km, v=2352m/s, propellant=70.9%, γ=20.1°
+2025-07-06 20:24:07,032 - INFO - TELEMETRY: t=272.0s, stage=2, alt=202.8km, v=2356m/s, propellant=70.6%, γ=19.9°
+2025-07-06 20:24:07,161 - INFO - TELEMETRY: t=273.0s, stage=2, alt=203.6km, v=2360m/s, propellant=70.4%, γ=19.7°
+2025-07-06 20:24:07,310 - INFO - TELEMETRY: t=274.0s, stage=2, alt=204.4km, v=2365m/s, propellant=70.1%, γ=19.5°
+2025-07-06 20:24:07,435 - INFO - TELEMETRY: t=275.0s, stage=2, alt=205.2km, v=2369m/s, propellant=69.8%, γ=19.3°
+2025-07-06 20:24:07,599 - INFO - TELEMETRY: t=276.0s, stage=2, alt=206.0km, v=2373m/s, propellant=69.6%, γ=19.1°
+2025-07-06 20:24:07,772 - INFO - TELEMETRY: t=277.0s, stage=2, alt=206.8km, v=2377m/s, propellant=69.3%, γ=19.0°
+2025-07-06 20:24:07,932 - INFO - TELEMETRY: t=278.0s, stage=2, alt=207.5km, v=2382m/s, propellant=69.0%, γ=18.8°
+2025-07-06 20:24:08,087 - INFO - TELEMETRY: t=279.0s, stage=2, alt=208.3km, v=2386m/s, propellant=68.8%, γ=18.6°
+2025-07-06 20:24:08,246 - INFO - TELEMETRY: t=280.0s, stage=2, alt=209.1km, v=2390m/s, propellant=68.5%, γ=18.4°
+2025-07-06 20:24:08,248 - INFO - STAGE-2 MONITOR: t=280.0s, propellant=312.9t, mass_flow=1211.1kg/s, thrust=5000kN, burn_time=118.8s/390.0s
+2025-07-06 20:24:08,477 - INFO - TELEMETRY: t=281.0s, stage=2, alt=209.8km, v=2395m/s, propellant=68.2%, γ=18.2°
+2025-07-06 20:24:08,650 - INFO - TELEMETRY: t=282.0s, stage=2, alt=210.6km, v=2399m/s, propellant=68.0%, γ=18.0°
+2025-07-06 20:24:08,784 - INFO - TELEMETRY: t=283.0s, stage=2, alt=211.3km, v=2404m/s, propellant=67.7%, γ=17.8°
+2025-07-06 20:24:08,908 - INFO - TELEMETRY: t=284.0s, stage=2, alt=212.0km, v=2408m/s, propellant=67.4%, γ=17.6°
+2025-07-06 20:24:09,040 - INFO - TELEMETRY: t=285.0s, stage=2, alt=212.8km, v=2413m/s, propellant=67.2%, γ=17.4°
+2025-07-06 20:24:09,169 - INFO - TELEMETRY: t=286.0s, stage=2, alt=213.5km, v=2418m/s, propellant=66.9%, γ=17.3°
+2025-07-06 20:24:09,299 - INFO - TELEMETRY: t=287.0s, stage=2, alt=214.2km, v=2422m/s, propellant=66.6%, γ=17.1°
+2025-07-06 20:24:09,413 - INFO - TELEMETRY: t=288.0s, stage=2, alt=214.9km, v=2427m/s, propellant=66.4%, γ=16.9°
+2025-07-06 20:24:09,591 - INFO - TELEMETRY: t=289.0s, stage=2, alt=215.6km, v=2432m/s, propellant=66.1%, γ=16.7°
+2025-07-06 20:24:09,901 - INFO - TELEMETRY: t=290.0s, stage=2, alt=216.3km, v=2437m/s, propellant=65.8%, γ=16.5°
+2025-07-06 20:24:09,904 - INFO - STAGE-2 MONITOR: t=290.0s, propellant=300.7t, mass_flow=1211.1kg/s, thrust=5000kN, burn_time=128.8s/390.0s
+2025-07-06 20:24:10,049 - INFO - TELEMETRY: t=291.0s, stage=2, alt=217.0km, v=2442m/s, propellant=65.6%, γ=16.3°
+2025-07-06 20:24:10,294 - INFO - TELEMETRY: t=292.0s, stage=2, alt=217.7km, v=2447m/s, propellant=65.3%, γ=16.1°
+2025-07-06 20:24:10,464 - INFO - TELEMETRY: t=293.0s, stage=2, alt=218.3km, v=2452m/s, propellant=65.1%, γ=15.9°
+2025-07-06 20:24:10,664 - INFO - TELEMETRY: t=294.0s, stage=2, alt=219.0km, v=2457m/s, propellant=64.8%, γ=15.8°
+2025-07-06 20:24:10,804 - INFO - TELEMETRY: t=295.0s, stage=2, alt=219.7km, v=2462m/s, propellant=64.5%, γ=15.6°
+2025-07-06 20:24:10,944 - INFO - TELEMETRY: t=296.0s, stage=2, alt=220.3km, v=2467m/s, propellant=64.3%, γ=15.4°
+2025-07-06 20:24:11,070 - INFO - TELEMETRY: t=297.0s, stage=2, alt=221.0km, v=2472m/s, propellant=64.0%, γ=15.2°
+2025-07-06 20:24:11,234 - INFO - TELEMETRY: t=298.0s, stage=2, alt=221.6km, v=2477m/s, propellant=63.7%, γ=15.0°
+2025-07-06 20:24:11,383 - INFO - TELEMETRY: t=299.0s, stage=2, alt=222.3km, v=2482m/s, propellant=63.5%, γ=14.8°
+2025-07-06 20:24:11,519 - INFO - PHASE_DEBUG: t=299.9s, phase=apoapsis_raise, stage=1
+2025-07-06 20:24:11,535 - INFO - TELEMETRY: t=300.0s, stage=2, alt=222.9km, v=2487m/s, propellant=63.2%, γ=14.7°
+2025-07-06 20:24:11,538 - INFO - STAGE-2 MONITOR: t=300.0s, propellant=288.6t, mass_flow=1211.1kg/s, thrust=5000kN, burn_time=138.8s/390.0s
+2025-07-06 20:24:11,678 - INFO - TELEMETRY: t=301.0s, stage=2, alt=223.5km, v=2493m/s, propellant=62.9%, γ=14.5°
+2025-07-06 20:24:11,837 - INFO - TELEMETRY: t=302.0s, stage=2, alt=224.1km, v=2498m/s, propellant=62.7%, γ=14.3°
+2025-07-06 20:24:12,028 - INFO - TELEMETRY: t=303.0s, stage=2, alt=224.8km, v=2504m/s, propellant=62.4%, γ=14.1°
+2025-07-06 20:24:12,209 - INFO - TELEMETRY: t=304.0s, stage=2, alt=225.4km, v=2509m/s, propellant=62.1%, γ=13.9°
+2025-07-06 20:24:12,327 - INFO - TELEMETRY: t=305.0s, stage=2, alt=226.0km, v=2514m/s, propellant=61.9%, γ=13.7°
+2025-07-06 20:24:12,523 - INFO - TELEMETRY: t=306.0s, stage=2, alt=226.6km, v=2520m/s, propellant=61.6%, γ=13.6°
+2025-07-06 20:24:12,661 - INFO - TELEMETRY: t=307.0s, stage=2, alt=227.1km, v=2526m/s, propellant=61.3%, γ=13.4°
+2025-07-06 20:24:12,804 - INFO - TELEMETRY: t=308.0s, stage=2, alt=227.7km, v=2531m/s, propellant=61.1%, γ=13.2°
+2025-07-06 20:24:12,945 - INFO - TELEMETRY: t=309.0s, stage=2, alt=228.3km, v=2537m/s, propellant=60.8%, γ=13.0°
+2025-07-06 20:24:13,059 - INFO - TELEMETRY: t=310.0s, stage=2, alt=228.9km, v=2542m/s, propellant=60.5%, γ=12.8°
+2025-07-06 20:24:13,061 - INFO - STAGE-2 MONITOR: t=310.0s, propellant=276.5t, mass_flow=1211.1kg/s, thrust=5000kN, burn_time=148.8s/390.0s
+2025-07-06 20:24:13,261 - INFO - TELEMETRY: t=311.0s, stage=2, alt=229.4km, v=2548m/s, propellant=60.3%, γ=12.7°
+2025-07-06 20:24:13,429 - INFO - TELEMETRY: t=312.0s, stage=2, alt=230.0km, v=2554m/s, propellant=60.0%, γ=12.5°
+2025-07-06 20:24:13,554 - INFO - TELEMETRY: t=313.0s, stage=2, alt=230.5km, v=2560m/s, propellant=59.7%, γ=12.3°
+2025-07-06 20:24:13,687 - INFO - TELEMETRY: t=314.0s, stage=2, alt=231.1km, v=2566m/s, propellant=59.5%, γ=12.1°
+2025-07-06 20:24:13,861 - INFO - TELEMETRY: t=315.0s, stage=2, alt=231.6km, v=2572m/s, propellant=59.2%, γ=12.0°
+2025-07-06 20:24:14,028 - INFO - TELEMETRY: t=316.0s, stage=2, alt=232.1km, v=2577m/s, propellant=59.0%, γ=11.8°
+2025-07-06 20:24:14,205 - INFO - TELEMETRY: t=317.0s, stage=2, alt=232.7km, v=2583m/s, propellant=58.7%, γ=11.6°
+2025-07-06 20:24:14,336 - INFO - TELEMETRY: t=318.0s, stage=2, alt=233.2km, v=2589m/s, propellant=58.4%, γ=11.4°
+2025-07-06 20:24:14,553 - INFO - TELEMETRY: t=319.0s, stage=2, alt=233.7km, v=2596m/s, propellant=58.2%, γ=11.2°
+2025-07-06 20:24:14,750 - INFO - TELEMETRY: t=320.0s, stage=2, alt=234.2km, v=2602m/s, propellant=57.9%, γ=11.1°
+2025-07-06 20:24:14,752 - INFO - STAGE-2 MONITOR: t=320.0s, propellant=264.4t, mass_flow=1211.1kg/s, thrust=5000kN, burn_time=158.8s/390.0s
+2025-07-06 20:24:14,878 - INFO - TELEMETRY: t=321.0s, stage=2, alt=234.7km, v=2608m/s, propellant=57.6%, γ=10.9°
+2025-07-06 20:24:15,015 - INFO - TELEMETRY: t=322.0s, stage=2, alt=235.2km, v=2614m/s, propellant=57.4%, γ=10.7°
+2025-07-06 20:24:15,152 - INFO - TELEMETRY: t=323.0s, stage=2, alt=235.7km, v=2620m/s, propellant=57.1%, γ=10.5°
+2025-07-06 20:24:15,327 - INFO - TELEMETRY: t=324.0s, stage=2, alt=236.1km, v=2627m/s, propellant=56.8%, γ=10.4°
+2025-07-06 20:24:15,470 - INFO - TELEMETRY: t=325.0s, stage=2, alt=236.6km, v=2633m/s, propellant=56.6%, γ=10.2°
+2025-07-06 20:24:15,602 - INFO - TELEMETRY: t=326.0s, stage=2, alt=237.1km, v=2639m/s, propellant=56.3%, γ=10.0°
+2025-07-06 20:24:15,797 - INFO - TELEMETRY: t=327.0s, stage=2, alt=237.5km, v=2646m/s, propellant=56.0%, γ=9.9°
+2025-07-06 20:24:15,967 - INFO - TELEMETRY: t=328.0s, stage=2, alt=238.0km, v=2652m/s, propellant=55.8%, γ=9.7°
+2025-07-06 20:24:16,098 - INFO - TELEMETRY: t=329.0s, stage=2, alt=238.4km, v=2659m/s, propellant=55.5%, γ=9.5°
+2025-07-06 20:24:16,269 - INFO - TELEMETRY: t=330.0s, stage=2, alt=238.9km, v=2665m/s, propellant=55.2%, γ=9.3°
+2025-07-06 20:24:16,274 - INFO - STAGE-2 MONITOR: t=330.0s, propellant=252.3t, mass_flow=1211.1kg/s, thrust=5000kN, burn_time=168.8s/390.0s
+2025-07-06 20:24:16,411 - INFO - TELEMETRY: t=331.0s, stage=2, alt=239.3km, v=2672m/s, propellant=55.0%, γ=9.2°
+2025-07-06 20:24:16,559 - INFO - TELEMETRY: t=332.0s, stage=2, alt=239.7km, v=2678m/s, propellant=54.7%, γ=9.0°
+2025-07-06 20:24:16,695 - INFO - TELEMETRY: t=333.0s, stage=2, alt=240.1km, v=2685m/s, propellant=54.4%, γ=8.8°
+2025-07-06 20:24:16,831 - INFO - TELEMETRY: t=334.0s, stage=2, alt=240.5km, v=2692m/s, propellant=54.2%, γ=8.7°
+2025-07-06 20:24:16,955 - INFO - TELEMETRY: t=335.0s, stage=2, alt=240.9km, v=2699m/s, propellant=53.9%, γ=8.5°
+2025-07-06 20:24:17,081 - INFO - TELEMETRY: t=336.0s, stage=2, alt=241.3km, v=2705m/s, propellant=53.7%, γ=8.3°
+2025-07-06 20:24:17,212 - INFO - TELEMETRY: t=337.0s, stage=2, alt=241.7km, v=2712m/s, propellant=53.4%, γ=8.2°
+2025-07-06 20:24:17,336 - INFO - TELEMETRY: t=338.0s, stage=2, alt=242.1km, v=2719m/s, propellant=53.1%, γ=8.0°
+2025-07-06 20:24:17,457 - INFO - TELEMETRY: t=339.0s, stage=2, alt=242.5km, v=2726m/s, propellant=52.9%, γ=7.8°
+2025-07-06 20:24:17,590 - INFO - TELEMETRY: t=340.0s, stage=2, alt=242.8km, v=2733m/s, propellant=52.6%, γ=7.7°
+2025-07-06 20:24:17,594 - INFO - STAGE-2 MONITOR: t=340.0s, propellant=240.2t, mass_flow=1211.1kg/s, thrust=5000kN, burn_time=178.8s/390.0s
+2025-07-06 20:24:17,730 - INFO - TELEMETRY: t=341.0s, stage=2, alt=243.2km, v=2740m/s, propellant=52.3%, γ=7.5°
+2025-07-06 20:24:17,853 - INFO - TELEMETRY: t=342.0s, stage=2, alt=243.6km, v=2747m/s, propellant=52.1%, γ=7.3°
+2025-07-06 20:24:18,032 - INFO - TELEMETRY: t=343.0s, stage=2, alt=243.9km, v=2754m/s, propellant=51.8%, γ=7.2°
+2025-07-06 20:24:18,150 - INFO - TELEMETRY: t=344.0s, stage=2, alt=244.2km, v=2761m/s, propellant=51.5%, γ=7.0°
+2025-07-06 20:24:18,289 - INFO - TELEMETRY: t=345.0s, stage=2, alt=244.6km, v=2768m/s, propellant=51.3%, γ=6.8°
+2025-07-06 20:24:18,418 - INFO - TELEMETRY: t=346.0s, stage=2, alt=244.9km, v=2776m/s, propellant=51.0%, γ=6.7°
+2025-07-06 20:24:18,546 - INFO - TELEMETRY: t=347.0s, stage=2, alt=245.2km, v=2783m/s, propellant=50.7%, γ=6.5°
+2025-07-06 20:24:18,838 - INFO - TELEMETRY: t=348.0s, stage=2, alt=245.5km, v=2790m/s, propellant=50.5%, γ=6.4°
+2025-07-06 20:24:18,985 - INFO - TELEMETRY: t=349.0s, stage=2, alt=245.8km, v=2798m/s, propellant=50.2%, γ=6.2°
+2025-07-06 20:24:19,112 - INFO - TELEMETRY: t=350.0s, stage=2, alt=246.1km, v=2805m/s, propellant=49.9%, γ=6.0°
+2025-07-06 20:24:19,114 - INFO - STAGE-2 MONITOR: t=350.0s, propellant=228.1t, mass_flow=1211.1kg/s, thrust=5000kN, burn_time=188.8s/390.0s
+2025-07-06 20:24:19,261 - INFO - TELEMETRY: t=351.0s, stage=2, alt=246.4km, v=2812m/s, propellant=49.7%, γ=5.9°
+2025-07-06 20:24:19,409 - INFO - TELEMETRY: t=352.0s, stage=2, alt=246.7km, v=2820m/s, propellant=49.4%, γ=5.7°
+2025-07-06 20:24:19,648 - INFO - TELEMETRY: t=353.0s, stage=2, alt=247.0km, v=2827m/s, propellant=49.1%, γ=5.5°
+2025-07-06 20:24:19,809 - INFO - TELEMETRY: t=354.0s, stage=2, alt=247.3km, v=2835m/s, propellant=48.9%, γ=5.4°
+2025-07-06 20:24:19,939 - INFO - TELEMETRY: t=355.0s, stage=2, alt=247.5km, v=2843m/s, propellant=48.6%, γ=5.2°
+2025-07-06 20:24:20,094 - INFO - TELEMETRY: t=356.0s, stage=2, alt=247.8km, v=2850m/s, propellant=48.3%, γ=5.1°
+2025-07-06 20:24:20,260 - INFO - TELEMETRY: t=357.0s, stage=2, alt=248.0km, v=2858m/s, propellant=48.1%, γ=4.9°
+2025-07-06 20:24:20,409 - INFO - TELEMETRY: t=358.0s, stage=2, alt=248.3km, v=2866m/s, propellant=47.8%, γ=4.8°
+2025-07-06 20:24:20,557 - INFO - TELEMETRY: t=359.0s, stage=2, alt=248.5km, v=2873m/s, propellant=47.6%, γ=4.6°
+2025-07-06 20:24:20,705 - INFO - TELEMETRY: t=360.0s, stage=2, alt=248.7km, v=2881m/s, propellant=47.3%, γ=4.4°
+2025-07-06 20:24:20,711 - INFO - STAGE-2 MONITOR: t=360.0s, propellant=216.0t, mass_flow=1211.1kg/s, thrust=5000kN, burn_time=198.8s/390.0s
+2025-07-06 20:24:20,843 - INFO - TELEMETRY: t=361.0s, stage=2, alt=249.0km, v=2889m/s, propellant=47.0%, γ=4.3°
+2025-07-06 20:24:20,978 - INFO - TELEMETRY: t=362.0s, stage=2, alt=249.2km, v=2897m/s, propellant=46.8%, γ=4.1°
+2025-07-06 20:24:21,129 - INFO - TELEMETRY: t=363.0s, stage=2, alt=249.4km, v=2905m/s, propellant=46.5%, γ=4.0°
+2025-07-06 20:24:21,269 - INFO - TELEMETRY: t=364.0s, stage=2, alt=249.6km, v=2913m/s, propellant=46.2%, γ=3.8°
+2025-07-06 20:24:21,393 - INFO - TELEMETRY: t=365.0s, stage=2, alt=249.8km, v=2921m/s, propellant=46.0%, γ=3.7°
+2025-07-06 20:24:21,569 - INFO - TELEMETRY: t=366.0s, stage=2, alt=249.9km, v=2929m/s, propellant=45.7%, γ=3.5°
+2025-07-06 20:24:21,710 - INFO - TELEMETRY: t=367.0s, stage=2, alt=250.1km, v=2937m/s, propellant=45.4%, γ=3.4°
+2025-07-06 20:24:21,827 - INFO - TELEMETRY: t=368.0s, stage=2, alt=250.3km, v=2945m/s, propellant=45.2%, γ=3.2°
+2025-07-06 20:24:21,954 - INFO - TELEMETRY: t=369.0s, stage=2, alt=250.5km, v=2954m/s, propellant=44.9%, γ=3.1°
+2025-07-06 20:24:22,081 - INFO - TELEMETRY: t=370.0s, stage=2, alt=250.6km, v=2962m/s, propellant=44.6%, γ=2.9°
+2025-07-06 20:24:22,083 - INFO - STAGE-2 MONITOR: t=370.0s, propellant=203.9t, mass_flow=1211.1kg/s, thrust=5000kN, burn_time=208.8s/390.0s
+2025-07-06 20:24:22,212 - INFO - TELEMETRY: t=371.0s, stage=2, alt=250.8km, v=2970m/s, propellant=44.4%, γ=2.8°
+2025-07-06 20:24:22,343 - INFO - TELEMETRY: t=372.0s, stage=2, alt=250.9km, v=2978m/s, propellant=44.1%, γ=2.6°
+2025-07-06 20:24:22,470 - INFO - TELEMETRY: t=373.0s, stage=2, alt=251.0km, v=2987m/s, propellant=43.8%, γ=2.5°
+2025-07-06 20:24:22,585 - INFO - TELEMETRY: t=374.0s, stage=2, alt=251.2km, v=2995m/s, propellant=43.6%, γ=2.3°
+2025-07-06 20:24:22,782 - INFO - TELEMETRY: t=375.0s, stage=2, alt=251.3km, v=3004m/s, propellant=43.3%, γ=2.2°
+2025-07-06 20:24:22,905 - INFO - TELEMETRY: t=376.0s, stage=2, alt=251.4km, v=3012m/s, propellant=43.0%, γ=2.0°
+2025-07-06 20:24:23,080 - INFO - TELEMETRY: t=377.0s, stage=2, alt=251.5km, v=3021m/s, propellant=42.8%, γ=1.9°
+2025-07-06 20:24:23,213 - INFO - TELEMETRY: t=378.0s, stage=2, alt=251.6km, v=3029m/s, propellant=42.5%, γ=1.7°
+2025-07-06 20:24:23,403 - INFO - TELEMETRY: t=379.0s, stage=2, alt=251.7km, v=3038m/s, propellant=42.2%, γ=1.6°
+2025-07-06 20:24:23,620 - INFO - TELEMETRY: t=380.0s, stage=2, alt=251.7km, v=3047m/s, propellant=42.0%, γ=1.4°
+2025-07-06 20:24:23,623 - INFO - STAGE-2 MONITOR: t=380.0s, propellant=191.8t, mass_flow=1211.1kg/s, thrust=5000kN, burn_time=218.8s/390.0s
+2025-07-06 20:24:23,788 - INFO - TELEMETRY: t=381.0s, stage=2, alt=251.8km, v=3055m/s, propellant=41.7%, γ=1.3°
+2025-07-06 20:24:23,923 - INFO - TELEMETRY: t=382.0s, stage=2, alt=251.9km, v=3064m/s, propellant=41.5%, γ=1.2°
+2025-07-06 20:24:24,046 - INFO - TELEMETRY: t=383.0s, stage=2, alt=251.9km, v=3073m/s, propellant=41.2%, γ=1.0°
+2025-07-06 20:24:24,229 - INFO - TELEMETRY: t=384.0s, stage=2, alt=252.0km, v=3082m/s, propellant=40.9%, γ=0.9°
+2025-07-06 20:24:24,372 - INFO - TELEMETRY: t=385.0s, stage=2, alt=252.0km, v=3090m/s, propellant=40.7%, γ=0.7°
+2025-07-06 20:24:24,536 - INFO - TELEMETRY: t=386.0s, stage=2, alt=252.1km, v=3099m/s, propellant=40.4%, γ=0.6°
+2025-07-06 20:24:24,713 - INFO - TELEMETRY: t=387.0s, stage=2, alt=252.1km, v=3108m/s, propellant=40.1%, γ=0.5°
+2025-07-06 20:24:24,833 - INFO - TELEMETRY: t=388.0s, stage=2, alt=252.1km, v=3117m/s, propellant=39.9%, γ=0.3°
+2025-07-06 20:24:24,969 - INFO - TELEMETRY: t=389.0s, stage=2, alt=252.1km, v=3126m/s, propellant=39.6%, γ=0.2°
+2025-07-06 20:24:25,089 - INFO - TELEMETRY: t=390.0s, stage=3, alt=252.1km, v=3135m/s, propellant=125.1%, γ=0.0°
+2025-07-06 20:24:25,132 - INFO - TELEMETRY: t=391.0s, stage=3, alt=252.1km, v=3138m/s, propellant=124.9%, γ=-0.1°
+2025-07-06 20:24:25,174 - INFO - TELEMETRY: t=392.0s, stage=3, alt=252.1km, v=3141m/s, propellant=124.8%, γ=-0.2°
+2025-07-06 20:24:25,221 - INFO - TELEMETRY: t=393.0s, stage=3, alt=252.1km, v=3144m/s, propellant=124.6%, γ=-0.4°
+2025-07-06 20:24:25,263 - INFO - TELEMETRY: t=394.0s, stage=3, alt=252.1km, v=3146m/s, propellant=124.5%, γ=-0.5°
+2025-07-06 20:24:25,302 - INFO - TELEMETRY: t=395.0s, stage=3, alt=252.1km, v=3149m/s, propellant=124.3%, γ=-0.7°
+2025-07-06 20:24:25,349 - INFO - TELEMETRY: t=396.0s, stage=3, alt=252.0km, v=3152m/s, propellant=124.2%, γ=-0.8°
+2025-07-06 20:24:25,419 - INFO - TELEMETRY: t=397.0s, stage=3, alt=252.0km, v=3155m/s, propellant=124.0%, γ=-0.9°
+2025-07-06 20:24:25,458 - INFO - TELEMETRY: t=398.0s, stage=3, alt=251.9km, v=3158m/s, propellant=123.8%, γ=-1.1°
+2025-07-06 20:24:25,498 - INFO - TELEMETRY: t=399.0s, stage=3, alt=251.9km, v=3161m/s, propellant=123.7%, γ=-1.2°
+2025-07-06 20:24:25,554 - INFO - PHASE_DEBUG: t=399.9s, phase=apoapsis_raise, stage=2
+2025-07-06 20:24:25,566 - INFO - TELEMETRY: t=400.0s, stage=3, alt=251.8km, v=3164m/s, propellant=123.5%, γ=-1.3°
+2025-07-06 20:24:25,612 - INFO - TELEMETRY: t=401.0s, stage=3, alt=251.7km, v=3167m/s, propellant=123.4%, γ=-1.5°
+2025-07-06 20:24:25,689 - INFO - TELEMETRY: t=402.0s, stage=3, alt=251.6km, v=3170m/s, propellant=123.2%, γ=-1.6°
+2025-07-06 20:24:25,735 - INFO - TELEMETRY: t=403.0s, stage=3, alt=251.5km, v=3172m/s, propellant=123.1%, γ=-1.8°
+2025-07-06 20:24:25,772 - INFO - TELEMETRY: t=404.0s, stage=3, alt=251.4km, v=3175m/s, propellant=122.9%, γ=-1.9°
+2025-07-06 20:24:25,819 - INFO - TELEMETRY: t=405.0s, stage=3, alt=251.3km, v=3179m/s, propellant=122.8%, γ=-2.0°
+2025-07-06 20:24:25,880 - INFO - TELEMETRY: t=406.0s, stage=3, alt=251.2km, v=3182m/s, propellant=122.6%, γ=-2.2°
+2025-07-06 20:24:25,919 - INFO - TELEMETRY: t=407.0s, stage=3, alt=251.1km, v=3185m/s, propellant=122.4%, γ=-2.3°
+2025-07-06 20:24:25,964 - INFO - TELEMETRY: t=408.0s, stage=3, alt=250.9km, v=3188m/s, propellant=122.3%, γ=-2.4°
+2025-07-06 20:24:26,003 - INFO - TELEMETRY: t=409.0s, stage=3, alt=250.8km, v=3191m/s, propellant=122.1%, γ=-2.6°
+2025-07-06 20:24:26,066 - INFO - TELEMETRY: t=410.0s, stage=3, alt=250.7km, v=3194m/s, propellant=122.0%, γ=-2.7°
+2025-07-06 20:24:26,115 - INFO - TELEMETRY: t=411.0s, stage=3, alt=250.5km, v=3197m/s, propellant=121.8%, γ=-2.8°
+2025-07-06 20:24:26,196 - INFO - TELEMETRY: t=412.0s, stage=3, alt=250.3km, v=3200m/s, propellant=121.7%, γ=-3.0°
+2025-07-06 20:24:26,238 - INFO - TELEMETRY: t=413.0s, stage=3, alt=250.2km, v=3203m/s, propellant=121.5%, γ=-3.1°
+2025-07-06 20:24:26,277 - INFO - TELEMETRY: t=414.0s, stage=3, alt=250.0km, v=3207m/s, propellant=121.4%, γ=-3.2°
+2025-07-06 20:24:26,327 - INFO - TELEMETRY: t=415.0s, stage=3, alt=249.8km, v=3210m/s, propellant=121.2%, γ=-3.4°
+2025-07-06 20:24:26,380 - INFO - TELEMETRY: t=416.0s, stage=3, alt=249.6km, v=3213m/s, propellant=121.0%, γ=-3.5°
+2025-07-06 20:24:26,434 - INFO - TELEMETRY: t=417.0s, stage=3, alt=249.4km, v=3216m/s, propellant=120.9%, γ=-3.7°
+2025-07-06 20:24:26,483 - INFO - TELEMETRY: t=418.0s, stage=3, alt=249.2km, v=3220m/s, propellant=120.7%, γ=-3.8°
+2025-07-06 20:24:26,533 - INFO - TELEMETRY: t=419.0s, stage=3, alt=249.0km, v=3223m/s, propellant=120.6%, γ=-3.9°
+2025-07-06 20:24:26,580 - INFO - TELEMETRY: t=420.0s, stage=3, alt=248.8km, v=3226m/s, propellant=120.4%, γ=-4.1°
+2025-07-06 20:24:26,639 - INFO - TELEMETRY: t=421.0s, stage=3, alt=248.5km, v=3230m/s, propellant=120.3%, γ=-4.2°
+2025-07-06 20:24:26,689 - INFO - TELEMETRY: t=422.0s, stage=3, alt=248.3km, v=3233m/s, propellant=120.1%, γ=-4.3°
+2025-07-06 20:24:26,733 - INFO - TELEMETRY: t=423.0s, stage=3, alt=248.0km, v=3237m/s, propellant=120.0%, γ=-4.5°
+2025-07-06 20:24:26,783 - INFO - TELEMETRY: t=424.0s, stage=3, alt=247.8km, v=3240m/s, propellant=119.8%, γ=-4.6°
+2025-07-06 20:24:26,828 - INFO - TELEMETRY: t=425.0s, stage=3, alt=247.5km, v=3243m/s, propellant=119.6%, γ=-4.7°
+2025-07-06 20:24:26,864 - INFO - TELEMETRY: t=426.0s, stage=3, alt=247.3km, v=3247m/s, propellant=119.5%, γ=-4.8°
+2025-07-06 20:24:26,915 - INFO - TELEMETRY: t=427.0s, stage=3, alt=247.0km, v=3250m/s, propellant=119.3%, γ=-5.0°
+2025-07-06 20:24:26,962 - INFO - TELEMETRY: t=428.0s, stage=3, alt=246.7km, v=3254m/s, propellant=119.2%, γ=-5.1°
+2025-07-06 20:24:27,000 - INFO - TELEMETRY: t=429.0s, stage=3, alt=246.4km, v=3257m/s, propellant=119.0%, γ=-5.2°
+2025-07-06 20:24:27,043 - INFO - TELEMETRY: t=430.0s, stage=3, alt=246.1km, v=3261m/s, propellant=118.9%, γ=-5.4°
+2025-07-06 20:24:27,107 - INFO - TELEMETRY: t=431.0s, stage=3, alt=245.8km, v=3265m/s, propellant=118.7%, γ=-5.5°
+2025-07-06 20:24:27,154 - INFO - TELEMETRY: t=432.0s, stage=3, alt=245.5km, v=3268m/s, propellant=118.6%, γ=-5.6°
+2025-07-06 20:24:27,197 - INFO - TELEMETRY: t=433.0s, stage=3, alt=245.1km, v=3272m/s, propellant=118.4%, γ=-5.8°
+2025-07-06 20:24:27,258 - INFO - TELEMETRY: t=434.0s, stage=3, alt=244.8km, v=3275m/s, propellant=118.2%, γ=-5.9°
+2025-07-06 20:24:27,299 - INFO - TELEMETRY: t=435.0s, stage=3, alt=244.5km, v=3279m/s, propellant=118.1%, γ=-6.0°
+2025-07-06 20:24:27,336 - INFO - TELEMETRY: t=436.0s, stage=3, alt=244.1km, v=3283m/s, propellant=117.9%, γ=-6.2°
+2025-07-06 20:24:27,379 - INFO - TELEMETRY: t=437.0s, stage=3, alt=243.8km, v=3286m/s, propellant=117.8%, γ=-6.3°
+2025-07-06 20:24:27,416 - INFO - TELEMETRY: t=438.0s, stage=3, alt=243.4km, v=3290m/s, propellant=117.6%, γ=-6.4°
+2025-07-06 20:24:27,488 - INFO - TELEMETRY: t=439.0s, stage=3, alt=243.0km, v=3294m/s, propellant=117.5%, γ=-6.5°
+2025-07-06 20:24:27,536 - INFO - TELEMETRY: t=440.0s, stage=3, alt=242.7km, v=3298m/s, propellant=117.3%, γ=-6.7°
+2025-07-06 20:24:27,612 - INFO - TELEMETRY: t=441.0s, stage=3, alt=242.3km, v=3301m/s, propellant=117.2%, γ=-6.8°
+2025-07-06 20:24:27,652 - INFO - TELEMETRY: t=442.0s, stage=3, alt=241.9km, v=3305m/s, propellant=117.0%, γ=-6.9°
+2025-07-06 20:24:27,723 - INFO - TELEMETRY: t=443.0s, stage=3, alt=241.5km, v=3309m/s, propellant=116.8%, γ=-7.1°
+2025-07-06 20:24:27,775 - INFO - TELEMETRY: t=444.0s, stage=3, alt=241.1km, v=3313m/s, propellant=116.7%, γ=-7.2°
+2025-07-06 20:24:27,816 - INFO - TELEMETRY: t=445.0s, stage=3, alt=240.6km, v=3317m/s, propellant=116.5%, γ=-7.3°
+2025-07-06 20:24:27,865 - INFO - TELEMETRY: t=446.0s, stage=3, alt=240.2km, v=3321m/s, propellant=116.4%, γ=-7.4°
+2025-07-06 20:24:27,903 - INFO - TELEMETRY: t=447.0s, stage=3, alt=239.8km, v=3324m/s, propellant=116.2%, γ=-7.6°
+2025-07-06 20:24:27,941 - INFO - TELEMETRY: t=448.0s, stage=3, alt=239.3km, v=3328m/s, propellant=116.1%, γ=-7.7°
+2025-07-06 20:24:28,005 - INFO - TELEMETRY: t=449.0s, stage=3, alt=238.9km, v=3332m/s, propellant=115.9%, γ=-7.8°
+2025-07-06 20:24:28,048 - INFO - TELEMETRY: t=450.0s, stage=3, alt=238.4km, v=3336m/s, propellant=115.8%, γ=-7.9°
+2025-07-06 20:24:28,087 - INFO - TELEMETRY: t=451.0s, stage=3, alt=238.0km, v=3340m/s, propellant=115.6%, γ=-8.1°
+2025-07-06 20:24:28,130 - INFO - TELEMETRY: t=452.0s, stage=3, alt=237.5km, v=3344m/s, propellant=115.4%, γ=-8.2°
+2025-07-06 20:24:28,168 - INFO - TELEMETRY: t=453.0s, stage=3, alt=237.0km, v=3348m/s, propellant=115.3%, γ=-8.3°
+2025-07-06 20:24:28,219 - INFO - TELEMETRY: t=454.0s, stage=3, alt=236.5km, v=3352m/s, propellant=115.1%, γ=-8.5°
+2025-07-06 20:24:28,275 - INFO - TELEMETRY: t=455.0s, stage=3, alt=236.0km, v=3356m/s, propellant=115.0%, γ=-8.6°
+2025-07-06 20:24:28,319 - INFO - TELEMETRY: t=456.0s, stage=3, alt=235.5km, v=3360m/s, propellant=114.8%, γ=-8.7°
+2025-07-06 20:24:28,355 - INFO - TELEMETRY: t=457.0s, stage=3, alt=235.0km, v=3365m/s, propellant=114.7%, γ=-8.8°
+2025-07-06 20:24:28,391 - INFO - TELEMETRY: t=458.0s, stage=3, alt=234.5km, v=3369m/s, propellant=114.5%, γ=-9.0°
+2025-07-06 20:24:28,427 - INFO - TELEMETRY: t=459.0s, stage=3, alt=234.0km, v=3373m/s, propellant=114.4%, γ=-9.1°
+2025-07-06 20:24:28,479 - INFO - TELEMETRY: t=460.0s, stage=3, alt=233.4km, v=3377m/s, propellant=114.2%, γ=-9.2°
+2025-07-06 20:24:28,520 - INFO - TELEMETRY: t=461.0s, stage=3, alt=232.9km, v=3381m/s, propellant=114.0%, γ=-9.3°
+2025-07-06 20:24:28,558 - INFO - TELEMETRY: t=462.0s, stage=3, alt=232.3km, v=3385m/s, propellant=113.9%, γ=-9.5°
+2025-07-06 20:24:28,603 - INFO - TELEMETRY: t=463.0s, stage=3, alt=231.8km, v=3390m/s, propellant=113.7%, γ=-9.6°
+2025-07-06 20:24:28,647 - INFO - TELEMETRY: t=464.0s, stage=3, alt=231.2km, v=3394m/s, propellant=113.6%, γ=-9.7°
+2025-07-06 20:24:28,707 - INFO - TELEMETRY: t=465.0s, stage=3, alt=230.6km, v=3398m/s, propellant=113.4%, γ=-9.8°
+2025-07-06 20:24:28,752 - INFO - TELEMETRY: t=466.0s, stage=3, alt=230.0km, v=3402m/s, propellant=113.3%, γ=-9.9°
+2025-07-06 20:24:28,789 - INFO - TELEMETRY: t=467.0s, stage=3, alt=229.4km, v=3407m/s, propellant=113.1%, γ=-10.1°
+2025-07-06 20:24:28,833 - INFO - TELEMETRY: t=468.0s, stage=3, alt=228.9km, v=3411m/s, propellant=113.0%, γ=-10.2°
+2025-07-06 20:24:28,876 - INFO - TELEMETRY: t=469.0s, stage=3, alt=228.2km, v=3415m/s, propellant=112.8%, γ=-10.3°
+2025-07-06 20:24:28,915 - INFO - TELEMETRY: t=470.0s, stage=3, alt=227.6km, v=3420m/s, propellant=112.6%, γ=-10.4°
+2025-07-06 20:24:29,092 - INFO - TELEMETRY: t=471.0s, stage=3, alt=227.0km, v=3424m/s, propellant=112.5%, γ=-10.6°
+2025-07-06 20:24:29,130 - INFO - TELEMETRY: t=472.0s, stage=3, alt=226.4km, v=3428m/s, propellant=112.3%, γ=-10.7°
+2025-07-06 20:24:29,168 - INFO - TELEMETRY: t=473.0s, stage=3, alt=225.7km, v=3433m/s, propellant=112.2%, γ=-10.8°
+2025-07-06 20:24:29,225 - INFO - TELEMETRY: t=474.0s, stage=3, alt=225.1km, v=3437m/s, propellant=112.0%, γ=-10.9°
+2025-07-06 20:24:29,275 - INFO - TELEMETRY: t=475.0s, stage=3, alt=224.4km, v=3442m/s, propellant=111.9%, γ=-11.0°
+2025-07-06 20:24:29,329 - INFO - TELEMETRY: t=476.0s, stage=3, alt=223.8km, v=3446m/s, propellant=111.7%, γ=-11.2°
+2025-07-06 20:24:29,382 - INFO - TELEMETRY: t=477.0s, stage=3, alt=223.1km, v=3451m/s, propellant=111.6%, γ=-11.3°
+2025-07-06 20:24:29,422 - INFO - TELEMETRY: t=478.0s, stage=3, alt=222.4km, v=3455m/s, propellant=111.4%, γ=-11.4°
+2025-07-06 20:24:29,479 - INFO - TELEMETRY: t=479.0s, stage=3, alt=221.7km, v=3460m/s, propellant=111.2%, γ=-11.5°
+2025-07-06 20:24:29,535 - INFO - TELEMETRY: t=480.0s, stage=3, alt=221.0km, v=3464m/s, propellant=111.1%, γ=-11.6°
+2025-07-06 20:24:29,586 - INFO - TELEMETRY: t=481.0s, stage=3, alt=220.3km, v=3469m/s, propellant=110.9%, γ=-11.8°
+2025-07-06 20:24:29,655 - INFO - TELEMETRY: t=482.0s, stage=3, alt=219.6km, v=3473m/s, propellant=110.8%, γ=-11.9°
+2025-07-06 20:24:29,715 - INFO - TELEMETRY: t=483.0s, stage=3, alt=218.9km, v=3478m/s, propellant=110.6%, γ=-12.0°
+2025-07-06 20:24:29,753 - INFO - TELEMETRY: t=484.0s, stage=3, alt=218.2km, v=3483m/s, propellant=110.5%, γ=-12.1°
+2025-07-06 20:24:29,805 - INFO - TELEMETRY: t=485.0s, stage=3, alt=217.4km, v=3487m/s, propellant=110.3%, γ=-12.2°
+2025-07-06 20:24:29,853 - INFO - TELEMETRY: t=486.0s, stage=3, alt=216.7km, v=3492m/s, propellant=110.1%, γ=-12.3°
+2025-07-06 20:24:29,897 - INFO - TELEMETRY: t=487.0s, stage=3, alt=216.0km, v=3497m/s, propellant=110.0%, γ=-12.5°
+2025-07-06 20:24:30,070 - INFO - TELEMETRY: t=488.0s, stage=3, alt=215.2km, v=3501m/s, propellant=109.8%, γ=-12.6°
+2025-07-06 20:24:30,125 - INFO - TELEMETRY: t=489.0s, stage=3, alt=214.4km, v=3506m/s, propellant=109.7%, γ=-12.7°
+2025-07-06 20:24:30,178 - INFO - TELEMETRY: t=490.0s, stage=3, alt=213.7km, v=3511m/s, propellant=109.5%, γ=-12.8°
+2025-07-06 20:24:30,226 - INFO - TELEMETRY: t=491.0s, stage=3, alt=212.9km, v=3516m/s, propellant=109.4%, γ=-12.9°
+2025-07-06 20:24:30,264 - INFO - TELEMETRY: t=492.0s, stage=3, alt=212.1km, v=3520m/s, propellant=109.2%, γ=-13.0°
+2025-07-06 20:24:30,317 - INFO - TELEMETRY: t=493.0s, stage=3, alt=211.3km, v=3525m/s, propellant=109.1%, γ=-13.2°
+2025-07-06 20:24:30,361 - INFO - TELEMETRY: t=494.0s, stage=3, alt=210.5km, v=3530m/s, propellant=108.9%, γ=-13.3°
+2025-07-06 20:24:30,402 - INFO - TELEMETRY: t=495.0s, stage=3, alt=209.7km, v=3535m/s, propellant=108.7%, γ=-13.4°
+2025-07-06 20:24:30,483 - INFO - TELEMETRY: t=496.0s, stage=3, alt=208.8km, v=3540m/s, propellant=108.6%, γ=-13.5°
+2025-07-06 20:24:30,527 - INFO - TELEMETRY: t=497.0s, stage=3, alt=208.0km, v=3545m/s, propellant=108.4%, γ=-13.6°
+2025-07-06 20:24:30,598 - INFO - TELEMETRY: t=498.0s, stage=3, alt=207.2km, v=3549m/s, propellant=108.3%, γ=-13.7°
+2025-07-06 20:24:30,648 - INFO - TELEMETRY: t=499.0s, stage=3, alt=206.3km, v=3554m/s, propellant=108.1%, γ=-13.9°
+2025-07-06 20:24:30,720 - INFO - PHASE_DEBUG: t=499.9s, phase=apoapsis_raise, stage=2
+2025-07-06 20:24:30,725 - INFO - TELEMETRY: t=500.0s, stage=3, alt=205.5km, v=3559m/s, propellant=108.0%, γ=-14.0°
+2025-07-06 20:24:30,839 - INFO - TELEMETRY: t=501.0s, stage=3, alt=204.6km, v=3564m/s, propellant=107.8%, γ=-14.1°
+2025-07-06 20:24:30,879 - INFO - TELEMETRY: t=502.0s, stage=3, alt=203.7km, v=3569m/s, propellant=107.7%, γ=-14.2°
+2025-07-06 20:24:30,966 - INFO - TELEMETRY: t=503.0s, stage=3, alt=202.9km, v=3574m/s, propellant=107.5%, γ=-14.3°
+2025-07-06 20:24:31,014 - INFO - TELEMETRY: t=504.0s, stage=3, alt=202.0km, v=3579m/s, propellant=107.3%, γ=-14.4°
+2025-07-06 20:24:31,068 - INFO - TELEMETRY: t=505.0s, stage=3, alt=201.1km, v=3584m/s, propellant=107.2%, γ=-14.5°
+2025-07-06 20:24:31,106 - INFO - TELEMETRY: t=506.0s, stage=3, alt=200.2km, v=3589m/s, propellant=107.0%, γ=-14.6°
+2025-07-06 20:24:31,142 - INFO - TELEMETRY: t=507.0s, stage=3, alt=199.3km, v=3594m/s, propellant=106.9%, γ=-14.8°
+2025-07-06 20:24:31,188 - INFO - TELEMETRY: t=508.0s, stage=3, alt=198.3km, v=3599m/s, propellant=106.7%, γ=-14.9°
+2025-07-06 20:24:31,230 - INFO - TELEMETRY: t=509.0s, stage=3, alt=197.4km, v=3604m/s, propellant=106.6%, γ=-15.0°
+2025-07-06 20:24:31,266 - INFO - TELEMETRY: t=510.0s, stage=3, alt=196.5km, v=3610m/s, propellant=106.4%, γ=-15.1°
+2025-07-06 20:24:31,313 - INFO - TELEMETRY: t=511.0s, stage=3, alt=195.5km, v=3615m/s, propellant=106.3%, γ=-15.2°
+2025-07-06 20:24:31,351 - INFO - TELEMETRY: t=512.0s, stage=3, alt=194.6km, v=3620m/s, propellant=106.1%, γ=-15.3°
+2025-07-06 20:24:31,386 - INFO - TELEMETRY: t=513.0s, stage=3, alt=193.6km, v=3625m/s, propellant=105.9%, γ=-15.4°
+2025-07-06 20:24:31,444 - INFO - TELEMETRY: t=514.0s, stage=3, alt=192.6km, v=3630m/s, propellant=105.8%, γ=-15.5°
+2025-07-06 20:24:31,487 - INFO - TELEMETRY: t=515.0s, stage=3, alt=191.7km, v=3635m/s, propellant=105.6%, γ=-15.6°
+2025-07-06 20:24:31,537 - INFO - TELEMETRY: t=516.0s, stage=3, alt=190.7km, v=3641m/s, propellant=105.5%, γ=-15.8°
+2025-07-06 20:24:31,582 - INFO - TELEMETRY: t=517.0s, stage=3, alt=189.7km, v=3646m/s, propellant=105.3%, γ=-15.9°
+2025-07-06 20:24:31,623 - INFO - TELEMETRY: t=518.0s, stage=3, alt=188.7km, v=3651m/s, propellant=105.2%, γ=-16.0°
+2025-07-06 20:24:31,726 - INFO - TELEMETRY: t=519.0s, stage=3, alt=187.7km, v=3656m/s, propellant=105.0%, γ=-16.1°
+2025-07-06 20:24:31,770 - INFO - TELEMETRY: t=520.0s, stage=3, alt=186.7km, v=3662m/s, propellant=104.9%, γ=-16.2°
+2025-07-06 20:24:31,820 - INFO - TELEMETRY: t=521.0s, stage=3, alt=185.6km, v=3667m/s, propellant=104.7%, γ=-16.3°
+2025-07-06 20:24:31,857 - INFO - TELEMETRY: t=522.0s, stage=3, alt=184.6km, v=3672m/s, propellant=104.5%, γ=-16.4°
+2025-07-06 20:24:31,902 - INFO - TELEMETRY: t=523.0s, stage=3, alt=183.6km, v=3678m/s, propellant=104.4%, γ=-16.5°
+2025-07-06 20:24:31,945 - INFO - TELEMETRY: t=524.0s, stage=3, alt=182.5km, v=3683m/s, propellant=104.2%, γ=-16.6°
+2025-07-06 20:24:31,983 - INFO - TELEMETRY: t=525.0s, stage=3, alt=181.5km, v=3688m/s, propellant=104.1%, γ=-16.7°
+2025-07-06 20:24:32,020 - INFO - TELEMETRY: t=526.0s, stage=3, alt=180.4km, v=3694m/s, propellant=103.9%, γ=-16.8°
+2025-07-06 20:24:32,056 - INFO - TELEMETRY: t=527.0s, stage=3, alt=179.3km, v=3699m/s, propellant=103.8%, γ=-16.9°
+2025-07-06 20:24:32,094 - INFO - TELEMETRY: t=528.0s, stage=3, alt=178.2km, v=3704m/s, propellant=103.6%, γ=-17.0°
+2025-07-06 20:24:32,133 - INFO - TELEMETRY: t=529.0s, stage=3, alt=177.2km, v=3710m/s, propellant=103.5%, γ=-17.2°
+2025-07-06 20:24:32,185 - INFO - TELEMETRY: t=530.0s, stage=3, alt=176.1km, v=3715m/s, propellant=103.3%, γ=-17.3°
+2025-07-06 20:24:32,283 - INFO - TELEMETRY: t=531.0s, stage=3, alt=174.9km, v=3721m/s, propellant=103.1%, γ=-17.4°
+2025-07-06 20:24:32,323 - INFO - TELEMETRY: t=532.0s, stage=3, alt=173.8km, v=3726m/s, propellant=103.0%, γ=-17.5°
+2025-07-06 20:24:32,359 - INFO - TELEMETRY: t=533.0s, stage=3, alt=172.7km, v=3732m/s, propellant=102.8%, γ=-17.6°
+2025-07-06 20:24:32,402 - INFO - TELEMETRY: t=534.0s, stage=3, alt=171.6km, v=3737m/s, propellant=102.7%, γ=-17.7°
+2025-07-06 20:24:32,440 - INFO - TELEMETRY: t=535.0s, stage=3, alt=170.4km, v=3743m/s, propellant=102.5%, γ=-17.8°
+2025-07-06 20:24:32,501 - INFO - TELEMETRY: t=536.0s, stage=3, alt=169.3km, v=3748m/s, propellant=102.4%, γ=-17.9°
+2025-07-06 20:24:32,543 - INFO - TELEMETRY: t=537.0s, stage=3, alt=168.1km, v=3754m/s, propellant=102.2%, γ=-18.0°
+2025-07-06 20:24:32,589 - INFO - TELEMETRY: t=538.0s, stage=3, alt=167.0km, v=3760m/s, propellant=102.1%, γ=-18.1°
+2025-07-06 20:24:32,633 - INFO - TELEMETRY: t=539.0s, stage=3, alt=165.8km, v=3765m/s, propellant=101.9%, γ=-18.2°
+2025-07-06 20:24:32,682 - INFO - TELEMETRY: t=540.0s, stage=3, alt=164.6km, v=3771m/s, propellant=101.7%, γ=-18.3°
+2025-07-06 20:24:32,725 - INFO - TELEMETRY: t=541.0s, stage=3, alt=163.4km, v=3777m/s, propellant=101.6%, γ=-18.4°
+2025-07-06 20:24:32,761 - INFO - TELEMETRY: t=542.0s, stage=3, alt=162.2km, v=3782m/s, propellant=101.4%, γ=-18.5°
+2025-07-06 20:24:32,798 - INFO - TELEMETRY: t=543.0s, stage=3, alt=161.0km, v=3788m/s, propellant=101.3%, γ=-18.6°
+2025-07-06 20:24:32,836 - INFO - TELEMETRY: t=544.0s, stage=3, alt=159.8km, v=3794m/s, propellant=101.1%, γ=-18.7°
+2025-07-06 20:24:32,884 - INFO - TELEMETRY: t=545.0s, stage=3, alt=158.6km, v=3799m/s, propellant=101.0%, γ=-18.8°
+2025-07-06 20:24:32,921 - INFO - TELEMETRY: t=546.0s, stage=3, alt=157.4km, v=3805m/s, propellant=100.8%, γ=-18.9°
+2025-07-06 20:24:32,957 - INFO - TELEMETRY: t=547.0s, stage=3, alt=156.1km, v=3811m/s, propellant=100.7%, γ=-19.0°
+2025-07-06 20:24:33,008 - INFO - TELEMETRY: t=548.0s, stage=3, alt=154.9km, v=3817m/s, propellant=100.5%, γ=-19.1°
+2025-07-06 20:24:33,046 - INFO - TELEMETRY: t=549.0s, stage=3, alt=153.6km, v=3822m/s, propellant=100.3%, γ=-19.2°
+2025-07-06 20:24:33,090 - INFO - TELEMETRY: t=550.0s, stage=3, alt=152.4km, v=3828m/s, propellant=100.2%, γ=-19.3°
+2025-07-06 20:24:33,133 - INFO - TELEMETRY: t=551.0s, stage=3, alt=151.1km, v=3834m/s, propellant=100.0%, γ=-19.4°
+2025-07-06 20:24:33,251 - INFO - TELEMETRY: t=552.0s, stage=3, alt=149.8km, v=3840m/s, propellant=99.9%, γ=-19.5°
+2025-07-06 20:24:33,374 - INFO - TELEMETRY: t=553.0s, stage=3, alt=148.5km, v=3846m/s, propellant=99.7%, γ=-19.6°
+2025-07-06 20:24:33,524 - INFO - TELEMETRY: t=554.0s, stage=3, alt=147.2km, v=3852m/s, propellant=99.6%, γ=-19.7°
+2025-07-06 20:24:33,654 - INFO - TELEMETRY: t=555.0s, stage=3, alt=145.9km, v=3857m/s, propellant=99.4%, γ=-19.8°
+2025-07-06 20:24:33,873 - INFO - TELEMETRY: t=556.0s, stage=3, alt=144.6km, v=3863m/s, propellant=99.3%, γ=-19.9°
+2025-07-06 20:24:34,121 - INFO - TELEMETRY: t=557.0s, stage=3, alt=143.3km, v=3869m/s, propellant=99.1%, γ=-20.0°
+2025-07-06 20:24:34,288 - INFO - TELEMETRY: t=558.0s, stage=3, alt=142.0km, v=3875m/s, propellant=98.9%, γ=-20.1°
+2025-07-06 20:24:34,435 - INFO - TELEMETRY: t=559.0s, stage=3, alt=140.6km, v=3881m/s, propellant=98.8%, γ=-20.2°
+2025-07-06 20:24:34,561 - INFO - TELEMETRY: t=560.0s, stage=3, alt=139.3km, v=3887m/s, propellant=98.6%, γ=-20.3°
+2025-07-06 20:24:34,745 - INFO - TELEMETRY: t=561.0s, stage=3, alt=137.9km, v=3893m/s, propellant=98.5%, γ=-20.4°
+2025-07-06 20:24:34,962 - INFO - TELEMETRY: t=562.0s, stage=3, alt=136.6km, v=3899m/s, propellant=98.3%, γ=-20.5°
+2025-07-06 20:24:35,125 - INFO - TELEMETRY: t=563.0s, stage=3, alt=135.2km, v=3905m/s, propellant=98.2%, γ=-20.6°
+2025-07-06 20:24:35,372 - INFO - TELEMETRY: t=564.0s, stage=3, alt=133.8km, v=3911m/s, propellant=98.0%, γ=-20.7°
+2025-07-06 20:24:35,544 - INFO - TELEMETRY: t=565.0s, stage=3, alt=132.4km, v=3917m/s, propellant=97.9%, γ=-20.8°
+2025-07-06 20:24:35,694 - INFO - TELEMETRY: t=566.0s, stage=3, alt=131.0km, v=3923m/s, propellant=97.7%, γ=-20.9°
+2025-07-06 20:24:35,896 - INFO - TELEMETRY: t=567.0s, stage=3, alt=129.6km, v=3929m/s, propellant=97.5%, γ=-21.0°
+2025-07-06 20:24:36,022 - INFO - TELEMETRY: t=568.0s, stage=3, alt=128.2km, v=3936m/s, propellant=97.4%, γ=-21.1°
+2025-07-06 20:24:36,160 - INFO - TELEMETRY: t=569.0s, stage=3, alt=126.8km, v=3942m/s, propellant=97.2%, γ=-21.2°
+2025-07-06 20:24:36,293 - INFO - TELEMETRY: t=570.0s, stage=3, alt=125.4km, v=3948m/s, propellant=97.1%, γ=-21.3°
+2025-07-06 20:24:36,418 - INFO - TELEMETRY: t=571.0s, stage=3, alt=123.9km, v=3954m/s, propellant=96.9%, γ=-21.4°
+2025-07-06 20:24:36,538 - INFO - TELEMETRY: t=572.0s, stage=3, alt=122.5km, v=3960m/s, propellant=96.8%, γ=-21.5°
+2025-07-06 20:24:36,723 - INFO - TELEMETRY: t=573.0s, stage=3, alt=121.0km, v=3966m/s, propellant=96.6%, γ=-21.6°
+2025-07-06 20:24:36,983 - INFO - TELEMETRY: t=574.0s, stage=3, alt=119.6km, v=3973m/s, propellant=96.5%, γ=-21.7°
+2025-07-06 20:24:37,304 - INFO - TELEMETRY: t=575.0s, stage=3, alt=118.1km, v=3979m/s, propellant=96.3%, γ=-21.8°
+2025-07-06 20:24:37,536 - INFO - TELEMETRY: t=576.0s, stage=3, alt=116.6km, v=3985m/s, propellant=96.1%, γ=-21.8°
+2025-07-06 20:24:37,689 - INFO - TELEMETRY: t=577.0s, stage=3, alt=115.1km, v=3992m/s, propellant=96.0%, γ=-21.9°
+2025-07-06 20:24:37,832 - INFO - TELEMETRY: t=578.0s, stage=3, alt=113.6km, v=3998m/s, propellant=95.8%, γ=-22.0°
+2025-07-06 20:24:38,010 - INFO - TELEMETRY: t=579.0s, stage=3, alt=112.1km, v=4004m/s, propellant=95.7%, γ=-22.1°
+2025-07-06 20:24:38,176 - INFO - TELEMETRY: t=580.0s, stage=3, alt=110.6km, v=4010m/s, propellant=95.5%, γ=-22.2°
+2025-07-06 20:24:38,307 - INFO - TELEMETRY: t=581.0s, stage=3, alt=109.1km, v=4017m/s, propellant=95.4%, γ=-22.3°
+2025-07-06 20:24:38,440 - INFO - TELEMETRY: t=582.0s, stage=3, alt=107.6km, v=4023m/s, propellant=95.2%, γ=-22.4°
+2025-07-06 20:24:38,665 - INFO - TELEMETRY: t=583.0s, stage=3, alt=106.0km, v=4030m/s, propellant=95.0%, γ=-22.5°
+2025-07-06 20:24:38,825 - INFO - TELEMETRY: t=584.0s, stage=3, alt=104.5km, v=4036m/s, propellant=94.9%, γ=-22.6°
+2025-07-06 20:24:38,969 - INFO - TELEMETRY: t=585.0s, stage=3, alt=102.9km, v=4042m/s, propellant=94.7%, γ=-22.7°
+2025-07-06 20:24:39,111 - INFO - TELEMETRY: t=586.0s, stage=3, alt=101.4km, v=4049m/s, propellant=94.6%, γ=-22.8°
+2025-07-06 20:24:39,411 - INFO - TELEMETRY: t=587.0s, stage=3, alt=99.8km, v=4055m/s, propellant=94.4%, γ=-22.9°
+2025-07-06 20:24:39,593 - INFO - TELEMETRY: t=588.0s, stage=3, alt=98.2km, v=4062m/s, propellant=94.3%, γ=-23.0°
+2025-07-06 20:24:39,878 - INFO - TELEMETRY: t=589.0s, stage=3, alt=96.6km, v=4068m/s, propellant=94.1%, γ=-23.0°
+2025-07-06 20:24:40,047 - INFO - TELEMETRY: t=590.0s, stage=3, alt=95.0km, v=4075m/s, propellant=94.0%, γ=-23.1°
+2025-07-06 20:24:40,185 - INFO - TELEMETRY: t=591.0s, stage=3, alt=93.4km, v=4081m/s, propellant=93.9%, γ=-23.2°
+2025-07-06 20:24:40,317 - INFO - TELEMETRY: t=592.0s, stage=3, alt=91.8km, v=4088m/s, propellant=93.7%, γ=-23.3°
+2025-07-06 20:24:40,460 - INFO - TELEMETRY: t=593.0s, stage=3, alt=90.2km, v=4094m/s, propellant=93.6%, γ=-23.4°
+2025-07-06 20:24:40,590 - INFO - TELEMETRY: t=594.0s, stage=3, alt=88.6km, v=4101m/s, propellant=93.4%, γ=-23.5°
+2025-07-06 20:24:40,796 - INFO - TELEMETRY: t=595.0s, stage=3, alt=86.9km, v=4107m/s, propellant=93.3%, γ=-23.6°
+2025-07-06 20:24:40,981 - INFO - TELEMETRY: t=596.0s, stage=3, alt=85.3km, v=4114m/s, propellant=93.2%, γ=-23.7°
+2025-07-06 20:24:41,125 - INFO - TELEMETRY: t=597.0s, stage=3, alt=83.6km, v=4120m/s, propellant=93.0%, γ=-23.8°
+2025-07-06 20:24:41,253 - INFO - TELEMETRY: t=598.0s, stage=3, alt=82.0km, v=4127m/s, propellant=92.9%, γ=-23.8°
+2025-07-06 20:24:41,425 - INFO - TELEMETRY: t=599.0s, stage=3, alt=80.3km, v=4133m/s, propellant=92.8%, γ=-23.9°
+2025-07-06 20:24:41,556 - INFO - PHASE_DEBUG: t=599.9s, phase=apoapsis_raise, stage=2
+2025-07-06 20:24:41,570 - INFO - TELEMETRY: t=600.0s, stage=3, alt=78.6km, v=4140m/s, propellant=92.6%, γ=-24.0°
+2025-07-06 20:24:41,753 - INFO - TELEMETRY: t=601.0s, stage=3, alt=76.9km, v=4147m/s, propellant=92.5%, γ=-24.1°
+2025-07-06 20:24:41,882 - INFO - TELEMETRY: t=602.0s, stage=3, alt=75.2km, v=4153m/s, propellant=92.4%, γ=-24.2°
+2025-07-06 20:24:42,008 - INFO - TELEMETRY: t=603.0s, stage=3, alt=73.5km, v=4160m/s, propellant=92.2%, γ=-24.3°
+2025-07-06 20:24:42,211 - INFO - TELEMETRY: t=604.0s, stage=3, alt=71.8km, v=4166m/s, propellant=92.1%, γ=-24.3°
+2025-07-06 20:24:42,366 - INFO - TELEMETRY: t=605.0s, stage=3, alt=70.1km, v=4172m/s, propellant=92.0%, γ=-24.4°
+2025-07-06 20:24:42,559 - INFO - TELEMETRY: t=606.0s, stage=3, alt=68.4km, v=4177m/s, propellant=91.8%, γ=-24.5°
+2025-07-06 20:24:42,699 - INFO - TELEMETRY: t=607.0s, stage=3, alt=66.6km, v=4183m/s, propellant=91.7%, γ=-24.6°
+2025-07-06 20:24:42,838 - INFO - TELEMETRY: t=608.0s, stage=3, alt=64.9km, v=4188m/s, propellant=91.6%, γ=-24.7°
+2025-07-06 20:24:43,020 - INFO - TELEMETRY: t=609.0s, stage=3, alt=63.1km, v=4194m/s, propellant=91.4%, γ=-24.8°
+2025-07-06 20:24:43,157 - INFO - TELEMETRY: t=610.0s, stage=3, alt=61.4km, v=4200m/s, propellant=91.3%, γ=-24.8°
+2025-07-06 20:24:43,283 - INFO - TELEMETRY: t=611.0s, stage=3, alt=59.6km, v=4207m/s, propellant=91.2%, γ=-24.9°
+2025-07-06 20:24:43,417 - INFO - TELEMETRY: t=612.0s, stage=3, alt=57.8km, v=4213m/s, propellant=91.1%, γ=-25.0°
+2025-07-06 20:24:43,548 - INFO - TELEMETRY: t=613.0s, stage=3, alt=56.0km, v=4219m/s, propellant=90.9%, γ=-25.1°
+2025-07-06 20:24:43,678 - INFO - TELEMETRY: t=614.0s, stage=3, alt=54.2km, v=4226m/s, propellant=90.8%, γ=-25.2°
+2025-07-06 20:24:43,795 - INFO - TELEMETRY: t=615.0s, stage=3, alt=52.4km, v=4232m/s, propellant=90.7%, γ=-25.2°
+2025-07-06 20:24:43,926 - INFO - TELEMETRY: t=616.0s, stage=3, alt=50.6km, v=4239m/s, propellant=90.6%, γ=-25.3°
+2025-07-06 20:24:44,128 - INFO - TELEMETRY: t=617.0s, stage=3, alt=48.8km, v=4246m/s, propellant=90.5%, γ=-25.4°
+2025-07-06 20:24:44,256 - INFO - TELEMETRY: t=618.0s, stage=3, alt=47.0km, v=4252m/s, propellant=90.3%, γ=-25.5°
+2025-07-06 20:24:44,411 - INFO - TELEMETRY: t=619.0s, stage=3, alt=45.2km, v=4250m/s, propellant=90.2%, γ=-25.5°
+2025-07-06 20:24:44,536 - INFO - TELEMETRY: t=620.0s, stage=3, alt=43.3km, v=4249m/s, propellant=90.1%, γ=-25.6°
+2025-07-06 20:24:44,698 - INFO - TELEMETRY: t=621.0s, stage=3, alt=41.5km, v=4250m/s, propellant=90.0%, γ=-25.7°
+2025-07-06 20:24:44,834 - INFO - TELEMETRY: t=622.0s, stage=3, alt=39.6km, v=4252m/s, propellant=89.9%, γ=-25.8°
+2025-07-06 20:24:45,002 - INFO - TELEMETRY: t=623.0s, stage=3, alt=37.8km, v=4255m/s, propellant=89.8%, γ=-25.9°
+2025-07-06 20:24:45,169 - INFO - TELEMETRY: t=624.0s, stage=3, alt=35.9km, v=4259m/s, propellant=89.7%, γ=-25.9°
+2025-07-06 20:24:45,325 - INFO - TELEMETRY: t=625.0s, stage=3, alt=34.1km, v=4263m/s, propellant=89.5%, γ=-26.0°
+2025-07-06 20:24:45,486 - INFO - TELEMETRY: t=626.0s, stage=3, alt=32.2km, v=4268m/s, propellant=89.4%, γ=-26.1°
+2025-07-06 20:24:45,617 - INFO - TELEMETRY: t=627.0s, stage=3, alt=30.3km, v=4225m/s, propellant=89.3%, γ=-26.2°
+2025-07-06 20:24:45,787 - INFO - TELEMETRY: t=628.0s, stage=3, alt=28.5km, v=4192m/s, propellant=89.2%, γ=-26.2°
+2025-07-06 20:24:45,912 - INFO - TELEMETRY: t=629.0s, stage=3, alt=26.6km, v=4168m/s, propellant=89.1%, γ=-26.3°
+2025-07-06 20:24:46,077 - INFO - TELEMETRY: t=630.0s, stage=3, alt=24.8km, v=4152m/s, propellant=89.0%, γ=-26.4°
+2025-07-06 20:24:46,213 - INFO - TELEMETRY: t=631.0s, stage=3, alt=22.9km, v=4141m/s, propellant=88.9%, γ=-26.5°
+2025-07-06 20:24:46,348 - INFO - TELEMETRY: t=632.0s, stage=3, alt=21.1km, v=4135m/s, propellant=88.8%, γ=-26.5°
+2025-07-06 20:24:46,483 - INFO - TELEMETRY: t=633.0s, stage=3, alt=19.2km, v=4131m/s, propellant=88.7%, γ=-26.6°
+2025-07-06 20:24:46,668 - INFO - TELEMETRY: t=634.0s, stage=3, alt=17.4km, v=4125m/s, propellant=88.6%, γ=-26.7°
+2025-07-06 20:24:46,803 - INFO - TELEMETRY: t=635.0s, stage=3, alt=15.5km, v=4115m/s, propellant=88.5%, γ=-26.8°
+2025-07-06 20:24:46,965 - INFO - TELEMETRY: t=636.0s, stage=3, alt=13.7km, v=4099m/s, propellant=88.4%, γ=-26.8°
+2025-07-06 20:24:47,153 - INFO - TELEMETRY: t=637.0s, stage=3, alt=11.8km, v=4076m/s, propellant=88.3%, γ=-26.9°
+2025-07-06 20:24:47,284 - INFO - TELEMETRY: t=638.0s, stage=3, alt=10.0km, v=4044m/s, propellant=88.2%, γ=-27.0°
+2025-07-06 20:24:47,404 - INFO - TELEMETRY: t=639.0s, stage=3, alt=8.1km, v=4003m/s, propellant=88.1%, γ=-27.1°
+2025-07-06 20:24:47,578 - INFO - TELEMETRY: t=640.0s, stage=3, alt=6.3km, v=3952m/s, propellant=88.0%, γ=-27.2°
+2025-07-06 20:24:47,726 - INFO - TELEMETRY: t=641.0s, stage=3, alt=4.5km, v=3889m/s, propellant=87.9%, γ=-27.2°
+2025-07-06 20:24:47,861 - INFO - TELEMETRY: t=642.0s, stage=3, alt=2.8km, v=3815m/s, propellant=87.8%, γ=-27.3°
+2025-07-06 20:24:48,032 - INFO - TELEMETRY: t=643.0s, stage=3, alt=1.0km, v=3728m/s, propellant=87.7%, γ=-27.4°
+2025-07-06 20:24:48,148 - ERROR - Mission failed: Crashed into Earth at altitude -159.1 m
+2025-07-06 20:42:55,031 - INFO - Starting Monte Carlo campaign: runs 0 to 499
+2025-07-06 20:42:55,031 - INFO - Total runs in batch: 500
+2025-07-06 20:42:55,048 - INFO - Using 3 parallel workers
+2025-07-06 20:42:55,182 - ERROR - Failed to process run 0: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,185 - ERROR - Failed to process run 1: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,187 - ERROR - Failed to process run 2: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,188 - ERROR - Failed to process run 3: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,188 - ERROR - Failed to process run 4: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,188 - ERROR - Failed to process run 5: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,190 - ERROR - Failed to process run 6: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,191 - ERROR - Failed to process run 7: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,193 - ERROR - Failed to process run 8: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,198 - ERROR - Failed to process run 9: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,198 - ERROR - Failed to process run 10: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,208 - ERROR - Failed to process run 11: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,208 - ERROR - Failed to process run 12: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,209 - ERROR - Failed to process run 13: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,212 - ERROR - Failed to process run 14: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,214 - ERROR - Failed to process run 15: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,215 - ERROR - Failed to process run 16: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,217 - ERROR - Failed to process run 17: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,219 - ERROR - Failed to process run 18: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,219 - ERROR - Failed to process run 19: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,221 - ERROR - Failed to process run 20: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,221 - ERROR - Failed to process run 21: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,222 - ERROR - Failed to process run 22: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,224 - ERROR - Failed to process run 23: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,224 - ERROR - Failed to process run 24: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,225 - ERROR - Failed to process run 25: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,227 - ERROR - Failed to process run 26: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,228 - ERROR - Failed to process run 27: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,229 - ERROR - Failed to process run 28: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,230 - ERROR - Failed to process run 29: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,232 - ERROR - Failed to process run 30: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,234 - ERROR - Failed to process run 31: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,234 - ERROR - Failed to process run 32: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,235 - ERROR - Failed to process run 33: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,236 - ERROR - Failed to process run 34: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,237 - ERROR - Failed to process run 35: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,238 - ERROR - Failed to process run 36: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,239 - ERROR - Failed to process run 37: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,240 - ERROR - Failed to process run 38: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,241 - ERROR - Failed to process run 39: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,242 - ERROR - Failed to process run 40: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,242 - ERROR - Failed to process run 41: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,243 - ERROR - Failed to process run 42: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,244 - ERROR - Failed to process run 43: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,245 - ERROR - Failed to process run 44: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,246 - ERROR - Failed to process run 45: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,247 - ERROR - Failed to process run 46: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,248 - ERROR - Failed to process run 47: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,249 - ERROR - Failed to process run 48: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,249 - ERROR - Failed to process run 49: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,251 - ERROR - Failed to process run 50: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,251 - ERROR - Failed to process run 51: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,252 - ERROR - Failed to process run 52: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,253 - ERROR - Failed to process run 53: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,254 - ERROR - Failed to process run 54: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,255 - ERROR - Failed to process run 55: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,259 - ERROR - Failed to process run 56: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,261 - ERROR - Failed to process run 57: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,261 - ERROR - Failed to process run 58: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,263 - ERROR - Failed to process run 59: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,264 - ERROR - Failed to process run 60: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,265 - ERROR - Failed to process run 61: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,266 - ERROR - Failed to process run 62: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,269 - ERROR - Failed to process run 63: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,270 - ERROR - Failed to process run 64: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,271 - ERROR - Failed to process run 65: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,272 - ERROR - Failed to process run 66: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,274 - ERROR - Failed to process run 67: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,276 - ERROR - Failed to process run 68: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,276 - ERROR - Failed to process run 69: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,276 - ERROR - Failed to process run 70: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,276 - ERROR - Failed to process run 71: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,276 - ERROR - Failed to process run 72: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,277 - ERROR - Failed to process run 73: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,277 - ERROR - Failed to process run 74: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,277 - ERROR - Failed to process run 75: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,277 - ERROR - Failed to process run 76: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,277 - ERROR - Failed to process run 77: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,277 - ERROR - Failed to process run 78: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,278 - ERROR - Failed to process run 79: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,278 - ERROR - Failed to process run 80: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,278 - ERROR - Failed to process run 81: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,278 - ERROR - Failed to process run 82: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,282 - ERROR - Failed to process run 83: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,283 - ERROR - Failed to process run 84: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,283 - ERROR - Failed to process run 85: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,283 - ERROR - Failed to process run 86: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,283 - ERROR - Failed to process run 87: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,287 - ERROR - Failed to process run 88: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,287 - ERROR - Failed to process run 89: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,287 - ERROR - Failed to process run 90: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,287 - ERROR - Failed to process run 91: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,292 - ERROR - Failed to process run 92: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,292 - ERROR - Failed to process run 93: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,292 - ERROR - Failed to process run 94: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,293 - ERROR - Failed to process run 95: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,297 - ERROR - Failed to process run 96: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,298 - ERROR - Failed to process run 97: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,298 - ERROR - Failed to process run 98: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,298 - ERROR - Failed to process run 99: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,303 - ERROR - Failed to process run 100: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,303 - ERROR - Failed to process run 101: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,303 - ERROR - Failed to process run 102: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,303 - ERROR - Failed to process run 103: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,306 - ERROR - Failed to process run 104: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,307 - ERROR - Failed to process run 105: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,307 - ERROR - Failed to process run 106: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,307 - ERROR - Failed to process run 107: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,310 - ERROR - Failed to process run 108: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,310 - ERROR - Failed to process run 109: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,311 - ERROR - Failed to process run 110: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,311 - ERROR - Failed to process run 111: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,314 - ERROR - Failed to process run 112: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,314 - ERROR - Failed to process run 113: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,314 - ERROR - Failed to process run 114: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,314 - ERROR - Failed to process run 115: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,320 - ERROR - Failed to process run 116: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,320 - ERROR - Failed to process run 117: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,320 - ERROR - Failed to process run 118: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,321 - ERROR - Failed to process run 119: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,332 - ERROR - Failed to process run 120: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,333 - ERROR - Failed to process run 121: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,333 - ERROR - Failed to process run 122: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,333 - ERROR - Failed to process run 123: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,339 - ERROR - Failed to process run 124: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,339 - ERROR - Failed to process run 125: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,339 - ERROR - Failed to process run 126: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,339 - ERROR - Failed to process run 127: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,342 - ERROR - Failed to process run 128: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,345 - ERROR - Failed to process run 129: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,345 - ERROR - Failed to process run 130: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,346 - ERROR - Failed to process run 131: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,351 - ERROR - Failed to process run 132: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,351 - ERROR - Failed to process run 133: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,351 - ERROR - Failed to process run 134: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,351 - ERROR - Failed to process run 135: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,354 - ERROR - Failed to process run 136: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,354 - ERROR - Failed to process run 137: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,355 - ERROR - Failed to process run 138: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,355 - ERROR - Failed to process run 139: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,358 - ERROR - Failed to process run 140: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,358 - ERROR - Failed to process run 141: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,358 - ERROR - Failed to process run 142: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,358 - ERROR - Failed to process run 143: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,362 - ERROR - Failed to process run 144: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,362 - ERROR - Failed to process run 145: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,363 - ERROR - Failed to process run 146: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,363 - ERROR - Failed to process run 147: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,368 - ERROR - Failed to process run 148: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,369 - ERROR - Failed to process run 149: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,369 - ERROR - Failed to process run 150: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,371 - ERROR - Failed to process run 151: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,372 - ERROR - Failed to process run 152: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,372 - ERROR - Failed to process run 153: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,375 - ERROR - Failed to process run 154: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,375 - ERROR - Failed to process run 155: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,375 - ERROR - Failed to process run 156: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,375 - ERROR - Failed to process run 157: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,376 - ERROR - Failed to process run 158: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,381 - ERROR - Failed to process run 159: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,381 - ERROR - Failed to process run 160: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,381 - ERROR - Failed to process run 161: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,381 - ERROR - Failed to process run 162: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,384 - ERROR - Failed to process run 163: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,385 - ERROR - Failed to process run 164: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,385 - ERROR - Failed to process run 165: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,385 - ERROR - Failed to process run 166: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,389 - ERROR - Failed to process run 167: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,390 - ERROR - Failed to process run 168: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,390 - ERROR - Failed to process run 169: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,390 - ERROR - Failed to process run 170: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,392 - ERROR - Failed to process run 171: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,392 - ERROR - Failed to process run 172: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,393 - ERROR - Failed to process run 173: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,393 - ERROR - Failed to process run 174: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,395 - ERROR - Failed to process run 175: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,396 - ERROR - Failed to process run 176: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,398 - ERROR - Failed to process run 177: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,399 - ERROR - Failed to process run 178: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,399 - ERROR - Failed to process run 179: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,399 - ERROR - Failed to process run 180: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,399 - ERROR - Failed to process run 181: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,428 - ERROR - Failed to process run 182: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,429 - ERROR - Failed to process run 183: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,429 - ERROR - Failed to process run 184: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,429 - ERROR - Failed to process run 185: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,435 - ERROR - Failed to process run 186: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,436 - ERROR - Failed to process run 187: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,437 - ERROR - Failed to process run 188: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,437 - ERROR - Failed to process run 189: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,447 - ERROR - Failed to process run 190: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,448 - ERROR - Failed to process run 191: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,448 - ERROR - Failed to process run 192: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,448 - ERROR - Failed to process run 193: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,454 - ERROR - Failed to process run 194: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,454 - ERROR - Failed to process run 195: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,454 - ERROR - Failed to process run 196: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,454 - ERROR - Failed to process run 197: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,456 - ERROR - Failed to process run 198: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,456 - ERROR - Failed to process run 199: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,456 - ERROR - Failed to process run 200: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,457 - ERROR - Failed to process run 201: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,459 - ERROR - Failed to process run 202: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,460 - ERROR - Failed to process run 203: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,460 - ERROR - Failed to process run 204: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,460 - ERROR - Failed to process run 205: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,463 - ERROR - Failed to process run 206: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,463 - ERROR - Failed to process run 207: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,463 - ERROR - Failed to process run 208: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,464 - ERROR - Failed to process run 209: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,466 - ERROR - Failed to process run 210: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,466 - ERROR - Failed to process run 211: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,467 - ERROR - Failed to process run 212: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,467 - ERROR - Failed to process run 213: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,469 - ERROR - Failed to process run 214: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,470 - ERROR - Failed to process run 215: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,470 - ERROR - Failed to process run 216: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,470 - ERROR - Failed to process run 217: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,477 - ERROR - Failed to process run 218: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,478 - ERROR - Failed to process run 219: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,478 - ERROR - Failed to process run 220: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,478 - ERROR - Failed to process run 221: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,480 - ERROR - Failed to process run 222: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,480 - ERROR - Failed to process run 223: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,480 - ERROR - Failed to process run 224: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,480 - ERROR - Failed to process run 225: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,486 - ERROR - Failed to process run 226: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,486 - ERROR - Failed to process run 227: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,486 - ERROR - Failed to process run 228: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,486 - ERROR - Failed to process run 229: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,490 - ERROR - Failed to process run 230: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,490 - ERROR - Failed to process run 231: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,490 - ERROR - Failed to process run 232: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,490 - ERROR - Failed to process run 233: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,495 - ERROR - Failed to process run 234: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,495 - ERROR - Failed to process run 235: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,495 - ERROR - Failed to process run 236: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,496 - ERROR - Failed to process run 237: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,500 - ERROR - Failed to process run 238: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,500 - ERROR - Failed to process run 239: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,500 - ERROR - Failed to process run 240: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,502 - ERROR - Failed to process run 241: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,507 - ERROR - Failed to process run 242: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,507 - ERROR - Failed to process run 243: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,508 - ERROR - Failed to process run 244: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,508 - ERROR - Failed to process run 245: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,511 - ERROR - Failed to process run 246: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,511 - ERROR - Failed to process run 247: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,512 - ERROR - Failed to process run 248: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,513 - ERROR - Failed to process run 249: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,518 - ERROR - Failed to process run 250: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,518 - ERROR - Failed to process run 251: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,519 - ERROR - Failed to process run 252: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,519 - ERROR - Failed to process run 253: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,523 - ERROR - Failed to process run 254: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,523 - ERROR - Failed to process run 255: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,523 - ERROR - Failed to process run 256: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,523 - ERROR - Failed to process run 257: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,527 - ERROR - Failed to process run 258: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,527 - ERROR - Failed to process run 259: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,527 - ERROR - Failed to process run 260: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,527 - ERROR - Failed to process run 261: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,532 - ERROR - Failed to process run 262: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,533 - ERROR - Failed to process run 263: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,533 - ERROR - Failed to process run 264: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,533 - ERROR - Failed to process run 265: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,536 - ERROR - Failed to process run 266: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,536 - ERROR - Failed to process run 267: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,536 - ERROR - Failed to process run 268: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,536 - ERROR - Failed to process run 269: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,540 - ERROR - Failed to process run 270: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,540 - ERROR - Failed to process run 271: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,540 - ERROR - Failed to process run 272: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,541 - ERROR - Failed to process run 273: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,544 - ERROR - Failed to process run 274: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,544 - ERROR - Failed to process run 275: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,544 - ERROR - Failed to process run 276: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,544 - ERROR - Failed to process run 277: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,548 - ERROR - Failed to process run 278: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,548 - ERROR - Failed to process run 279: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,548 - ERROR - Failed to process run 280: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,548 - ERROR - Failed to process run 281: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,551 - ERROR - Failed to process run 282: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,551 - ERROR - Failed to process run 283: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,556 - ERROR - Failed to process run 284: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,556 - ERROR - Failed to process run 285: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,556 - ERROR - Failed to process run 286: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,556 - ERROR - Failed to process run 287: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,556 - ERROR - Failed to process run 288: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,559 - ERROR - Failed to process run 289: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,559 - ERROR - Failed to process run 290: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,559 - ERROR - Failed to process run 291: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,560 - ERROR - Failed to process run 292: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,563 - ERROR - Failed to process run 293: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,563 - ERROR - Failed to process run 294: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,563 - ERROR - Failed to process run 295: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,563 - ERROR - Failed to process run 296: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,568 - ERROR - Failed to process run 297: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,569 - ERROR - Failed to process run 298: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,572 - ERROR - Failed to process run 299: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,572 - ERROR - Failed to process run 300: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,572 - ERROR - Failed to process run 301: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,572 - ERROR - Failed to process run 302: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,572 - ERROR - Failed to process run 303: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,573 - ERROR - Failed to process run 304: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,576 - ERROR - Failed to process run 305: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,577 - ERROR - Failed to process run 306: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,582 - ERROR - Failed to process run 307: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,585 - ERROR - Failed to process run 308: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,586 - ERROR - Failed to process run 309: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,587 - ERROR - Failed to process run 310: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,587 - ERROR - Failed to process run 311: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,593 - ERROR - Failed to process run 312: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,593 - ERROR - Failed to process run 313: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,593 - ERROR - Failed to process run 314: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,593 - ERROR - Failed to process run 315: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,594 - ERROR - Failed to process run 316: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,594 - ERROR - Failed to process run 317: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,594 - ERROR - Failed to process run 318: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,594 - ERROR - Failed to process run 319: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,597 - ERROR - Failed to process run 320: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,598 - ERROR - Failed to process run 321: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,602 - ERROR - Failed to process run 322: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,602 - ERROR - Failed to process run 323: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,602 - ERROR - Failed to process run 324: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,603 - ERROR - Failed to process run 325: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,603 - ERROR - Failed to process run 326: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,606 - ERROR - Failed to process run 327: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,607 - ERROR - Failed to process run 328: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,607 - ERROR - Failed to process run 329: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,607 - ERROR - Failed to process run 330: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,608 - ERROR - Failed to process run 331: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,614 - ERROR - Failed to process run 332: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,621 - ERROR - Failed to process run 333: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,621 - ERROR - Failed to process run 334: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,621 - ERROR - Failed to process run 335: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,621 - ERROR - Failed to process run 336: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,621 - ERROR - Failed to process run 337: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,622 - ERROR - Failed to process run 338: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,624 - ERROR - Failed to process run 339: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,624 - ERROR - Failed to process run 340: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,625 - ERROR - Failed to process run 341: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,625 - ERROR - Failed to process run 342: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,625 - ERROR - Failed to process run 343: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,625 - ERROR - Failed to process run 344: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,628 - ERROR - Failed to process run 345: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,628 - ERROR - Failed to process run 346: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,628 - ERROR - Failed to process run 347: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,629 - ERROR - Failed to process run 348: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,634 - ERROR - Failed to process run 349: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,634 - ERROR - Failed to process run 350: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,634 - ERROR - Failed to process run 351: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,634 - ERROR - Failed to process run 352: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,637 - ERROR - Failed to process run 353: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,638 - ERROR - Failed to process run 354: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,638 - ERROR - Failed to process run 355: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,638 - ERROR - Failed to process run 356: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,641 - ERROR - Failed to process run 357: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,641 - ERROR - Failed to process run 358: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,642 - ERROR - Failed to process run 359: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,642 - ERROR - Failed to process run 360: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,645 - ERROR - Failed to process run 361: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,646 - ERROR - Failed to process run 362: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,646 - ERROR - Failed to process run 363: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,646 - ERROR - Failed to process run 364: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,649 - ERROR - Failed to process run 365: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,650 - ERROR - Failed to process run 366: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,650 - ERROR - Failed to process run 367: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,650 - ERROR - Failed to process run 368: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,654 - ERROR - Failed to process run 369: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,654 - ERROR - Failed to process run 370: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,655 - ERROR - Failed to process run 371: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,655 - ERROR - Failed to process run 372: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,661 - ERROR - Failed to process run 373: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,662 - ERROR - Failed to process run 374: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,663 - ERROR - Failed to process run 375: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,667 - ERROR - Failed to process run 376: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,667 - ERROR - Failed to process run 377: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,667 - ERROR - Failed to process run 378: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,667 - ERROR - Failed to process run 379: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,670 - ERROR - Failed to process run 380: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,673 - ERROR - Failed to process run 381: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,673 - ERROR - Failed to process run 382: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,673 - ERROR - Failed to process run 383: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,673 - ERROR - Failed to process run 384: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,674 - ERROR - Failed to process run 385: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,681 - ERROR - Failed to process run 386: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,681 - ERROR - Failed to process run 387: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,681 - ERROR - Failed to process run 388: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,682 - ERROR - Failed to process run 389: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,685 - ERROR - Failed to process run 390: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,685 - ERROR - Failed to process run 391: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,685 - ERROR - Failed to process run 392: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,685 - ERROR - Failed to process run 393: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,688 - ERROR - Failed to process run 394: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,688 - ERROR - Failed to process run 395: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,688 - ERROR - Failed to process run 396: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,689 - ERROR - Failed to process run 397: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,691 - ERROR - Failed to process run 398: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,692 - ERROR - Failed to process run 399: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,692 - ERROR - Failed to process run 400: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,692 - ERROR - Failed to process run 401: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,695 - ERROR - Failed to process run 402: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,695 - ERROR - Failed to process run 403: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,696 - ERROR - Failed to process run 404: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,696 - ERROR - Failed to process run 405: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,703 - ERROR - Failed to process run 406: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,704 - ERROR - Failed to process run 407: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,704 - ERROR - Failed to process run 408: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,704 - ERROR - Failed to process run 409: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,707 - ERROR - Failed to process run 410: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,707 - ERROR - Failed to process run 411: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,707 - ERROR - Failed to process run 412: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,707 - ERROR - Failed to process run 413: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,711 - ERROR - Failed to process run 414: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,711 - ERROR - Failed to process run 415: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,711 - ERROR - Failed to process run 416: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,711 - ERROR - Failed to process run 417: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,715 - ERROR - Failed to process run 418: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,715 - ERROR - Failed to process run 419: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,715 - ERROR - Failed to process run 420: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,715 - ERROR - Failed to process run 421: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,718 - ERROR - Failed to process run 422: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,718 - ERROR - Failed to process run 423: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,719 - ERROR - Failed to process run 424: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,719 - ERROR - Failed to process run 425: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,721 - ERROR - Failed to process run 426: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,722 - ERROR - Failed to process run 427: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,722 - ERROR - Failed to process run 428: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,722 - ERROR - Failed to process run 429: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,725 - ERROR - Failed to process run 430: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,725 - ERROR - Failed to process run 431: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,725 - ERROR - Failed to process run 432: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,725 - ERROR - Failed to process run 433: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,728 - ERROR - Failed to process run 434: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,728 - ERROR - Failed to process run 435: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,728 - ERROR - Failed to process run 436: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,728 - ERROR - Failed to process run 437: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,735 - ERROR - Failed to process run 438: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,735 - ERROR - Failed to process run 439: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,735 - ERROR - Failed to process run 440: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,735 - ERROR - Failed to process run 441: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,739 - ERROR - Failed to process run 442: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,739 - ERROR - Failed to process run 443: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,742 - ERROR - Failed to process run 444: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,742 - ERROR - Failed to process run 445: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,742 - ERROR - Failed to process run 446: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,742 - ERROR - Failed to process run 447: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,742 - ERROR - Failed to process run 448: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,742 - ERROR - Failed to process run 449: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,749 - ERROR - Failed to process run 450: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,749 - ERROR - Failed to process run 451: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,749 - ERROR - Failed to process run 452: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,749 - ERROR - Failed to process run 453: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,755 - ERROR - Failed to process run 454: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,755 - ERROR - Failed to process run 455: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,755 - ERROR - Failed to process run 456: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,755 - ERROR - Failed to process run 457: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,757 - ERROR - Failed to process run 458: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,757 - ERROR - Failed to process run 459: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,757 - ERROR - Failed to process run 460: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,757 - ERROR - Failed to process run 461: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,759 - ERROR - Failed to process run 462: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,760 - ERROR - Failed to process run 463: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,760 - ERROR - Failed to process run 464: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,760 - ERROR - Failed to process run 465: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,762 - ERROR - Failed to process run 466: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,762 - ERROR - Failed to process run 467: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,763 - ERROR - Failed to process run 468: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,764 - ERROR - Failed to process run 469: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,767 - ERROR - Failed to process run 470: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,768 - ERROR - Failed to process run 471: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,768 - ERROR - Failed to process run 472: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,772 - ERROR - Failed to process run 473: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,772 - ERROR - Failed to process run 474: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,772 - ERROR - Failed to process run 475: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,772 - ERROR - Failed to process run 476: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,772 - ERROR - Failed to process run 477: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,778 - ERROR - Failed to process run 478: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,778 - ERROR - Failed to process run 479: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,779 - ERROR - Failed to process run 480: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,779 - ERROR - Failed to process run 481: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,781 - ERROR - Failed to process run 482: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,782 - ERROR - Failed to process run 483: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,782 - ERROR - Failed to process run 484: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,782 - ERROR - Failed to process run 485: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,785 - ERROR - Failed to process run 486: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,785 - ERROR - Failed to process run 487: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,785 - ERROR - Failed to process run 488: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,785 - ERROR - Failed to process run 489: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,788 - ERROR - Failed to process run 490: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,789 - ERROR - Failed to process run 491: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,789 - ERROR - Failed to process run 492: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,789 - ERROR - Failed to process run 493: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,792 - ERROR - Failed to process run 494: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,792 - ERROR - Failed to process run 495: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,792 - ERROR - Failed to process run 496: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,792 - ERROR - Failed to process run 497: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,794 - ERROR - Failed to process run 498: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:55,794 - ERROR - Failed to process run 499: cannot pickle 'TextIOWrapper' instances
+2025-07-06 20:42:57,064 - INFO - Generating summary report...
+2025-07-06 20:45:26,801 - INFO - Starting Monte Carlo campaign: runs 0 to 499
+2025-07-06 20:45:26,801 - INFO - Total runs in batch: 500
+2025-07-06 20:45:26,833 - INFO - Using 3 parallel workers
+2025-07-06 20:49:52,363 - INFO - Run 0001: Success=False, Phase=failed, Duration=0.2h, ΔV=7851m/s
+2025-07-06 20:49:54,823 - INFO - Run 0002: Success=False, Phase=failed, Duration=0.2h, ΔV=7765m/s
+2025-07-06 20:50:01,097 - INFO - Run 0000: Success=False, Phase=failed, Duration=0.2h, ΔV=7751m/s
+2025-07-06 21:00:02,206 - INFO - Run 0003: Success=False, Phase=failed, Duration=0.2h, ΔV=7879m/s
+2025-07-06 21:00:02,846 - INFO - Run 0004: Success=False, Phase=failed, Duration=0.2h, ΔV=7801m/s
+2025-07-06 21:00:12,529 - INFO - Run 0005: Success=False, Phase=failed, Duration=0.2h, ΔV=7845m/s
+2025-07-06 21:15:44,048 - INFO - Run 0008: Success=False, Phase=failed, Duration=0.2h, ΔV=7811m/s
+2025-07-06 21:16:04,641 - INFO - Run 0007: Success=False, Phase=failed, Duration=0.2h, ΔV=7879m/s
+2025-07-06 21:16:06,652 - INFO - Run 0006: Success=False, Phase=failed, Duration=0.2h, ΔV=7801m/s

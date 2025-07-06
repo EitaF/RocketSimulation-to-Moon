@@ -21,8 +21,15 @@ def run_trajectory_analysis(duration=7*24*3600):
     
     return results, [], []
 
-def create_trajectory_plots(trajectory_data, stage_events, phase_changes):
-    """Create comprehensive trajectory visualization including lunar intercept"""
+def create_trajectory_plots(trajectory_data, stage_events, phase_changes, save_filename='lunar_intercept_trajectory.png'):
+    """Create comprehensive trajectory visualization including lunar intercept
+    
+    Args:
+        trajectory_data: Simulation trajectory data
+        stage_events: Stage separation events
+        phase_changes: Mission phase changes
+        save_filename: Filename to save the plot
+    """
     
     # Convert to numpy arrays for easier handling
     time_arr = np.array(trajectory_data['time_history'])
@@ -137,10 +144,35 @@ def create_trajectory_plots(trajectory_data, stage_events, phase_changes):
     plt.tight_layout()
     
     # Save the plot
-    plt.savefig('lunar_intercept_trajectory.png', dpi=300, bbox_inches='tight')
-    print("Lunar intercept trajectory plot saved as 'lunar_intercept_trajectory.png'")
+    plt.savefig(save_filename, dpi=300, bbox_inches='tight')
+    print(f"Lunar intercept trajectory plot saved as '{save_filename}'")
     
     return fig
+
+def create_lunar_orbit_trajectory_plot(results_data):
+    """Create the specific lunar orbit trajectory plot required by Professor v33"""
+    
+    # Import here to avoid circular import
+    from rocket_simulation_main import Mission, create_saturn_v_rocket
+    
+    # Run the complete simulation
+    config = {
+        "launch_latitude": 28.573,
+        "launch_azimuth": 90,
+        "target_parking_orbit": 200e3,
+        "gravity_turn_altitude": 1500,
+        "simulation_duration": 10 * 24 * 3600,
+        "time_step": 0.1
+    }
+    
+    rocket = create_saturn_v_rocket("saturn_v_config.json")
+    mission = Mission(rocket, config)
+    results = mission.simulate()
+    
+    # Create the plot
+    fig = create_trajectory_plots(results, [], [], save_filename='lunar_orbit_trajectory.png')
+    
+    return fig, results
 
 def main():
     """Main trajectory visualization function"""

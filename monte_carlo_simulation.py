@@ -55,10 +55,13 @@ def _run_single_simulation_worker(run_config: Tuple[int, Dict]) -> Tuple[int, Di
             for stage in rocket.stages:
                 stage.dry_mass *= multiplier
         
-        # Create and run mission
+        # Create and run mission with shorter duration for Monte Carlo runs
         mission = rocket_simulation_main.Mission(rocket, config)
+        # Reduce simulation duration for Monte Carlo to prevent hanging
+        # Full mission to moon takes ~3 days, so 4 days should be sufficient
+        max_duration = config.get("simulation_duration", 4 * 24 * 3600)  # 4 days max
         results = mission.simulate(
-            duration=config.get("simulation_duration", 10 * 24 * 3600),
+            duration=max_duration,
             dt=config.get("time_step", 0.1)
         )
         
@@ -316,7 +319,7 @@ class MonteCarloOrchestrator:
                 "launch_azimuth": 90,
                 "target_parking_orbit": 185e3,
                 "gravity_turn_altitude": 1500,
-                "simulation_duration": 10 * 24 * 3600,
+                "simulation_duration": 4 * 24 * 3600,  # 4 days max for Monte Carlo
                 "time_step": 0.1
             }
         
@@ -510,7 +513,7 @@ def main():
             "launch_azimuth": 90,
             "target_parking_orbit": 185e3,
             "gravity_turn_altitude": 1500,
-            "simulation_duration": 10 * 24 * 3600,
+            "simulation_duration": 4 * 24 * 3600,  # 4 days max for Monte Carlo
             "time_step": 0.1
         }
         run_config = orchestrator._apply_variations_to_config(base_config, variations)

@@ -1,5 +1,5 @@
 {
-  "completed_runs": 0,
+  "completed_runs": 40,
   "random_state": [
     "MT19937",
     [
@@ -632,6 +632,6 @@
     1,
     0.1315247898636244
   ],
-  "timestamp": 1751802177.063412,
+  "timestamp": 1751887196.435929,
   "config_path": "mc_config.json"
 }

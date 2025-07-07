@@ -67,48 +67,17 @@ def apply_pitch_rate_limiting(target_pitch: float, current_time: float, altitude
 
 def get_target_pitch_angle(altitude: float, velocity: float, time: float = 0) -> float:
     """
-    Calculate target pitch angle based on flight phase
-    Professor v17: Enhanced with optimized pitch schedule
-    Professor v23: Smoothed profile to reduce Max-Q loads
+    Calculate target pitch angle based on a balanced pitch-over maneuver.
     """
-    if is_enabled("PITCH_OPTIMIZATION"):
-        # Use optimized pitch schedule from LHS sweep results
-        # Best parameters from pitch_optimization_results.json
-        INITIAL_PITCH = 14.164042243789494
-        PITCH_HOLD_TIME = 25.225660429005217
-        PITCH_RATE_1 = 1.3063950009515768
-        PITCH_RATE_2 = 0.5342683993330313
-        FINAL_PITCH = 80.85562222136585
-        
-        if time <= PITCH_HOLD_TIME:
-            return INITIAL_PITCH
-        elif time <= 60:  # First transition (60s - hold_time)
-            transition_time = time - PITCH_HOLD_TIME
-            return INITIAL_PITCH + PITCH_RATE_1 * transition_time
-        elif time <= 120:  # Second transition
-            transition_time = time - 60
-            mid_pitch = INITIAL_PITCH + PITCH_RATE_1 * (60 - PITCH_HOLD_TIME)
-            return mid_pitch + PITCH_RATE_2 * transition_time
-        else:
-            return FINAL_PITCH
+    # Initial vertical ascent for 20 seconds
+    if time < 20:
+        return 90.0
+    # Gradual pitch-over
+    elif time < 120:
+        return 90.0 - (time - 20) * 0.75  # 0.75 deg/s pitch rate
+    # Continue to horizontal
     else:
-        # Professor v23: Smoothed gravity turn to prevent Max-Q violations
-        if altitude < 500:  # Below 500m - stay vertical for clearance
-            return 90.0
-        elif altitude < 2000:  # 500m-2km - very gradual start to avoid Max-Q spike
-            return 90.0 - (altitude - 500) / 300  # 3.33° per km decrease (gentler)
-        elif altitude < 12000:  # 2-12km - delayed turn past Max-Q region
-            return max(45, 85.0 - (altitude - 2000) / 250)  # From 85° at 2km to 45° at 12km
-        elif altitude < 25000:  # 12-25km - continue building horizontal velocity
-            return max(20, 45.0 - (altitude - 12000) / 520)  # From 45° at 12km to 20° at 25km
-        elif altitude < 60000:  # 25-60km - approach horizontal for orbital velocity
-            return max(8, 20.0 - (altitude - 25000) / 2917)  # From 20° at 25km to 8° at 60km
-        elif velocity < 4000:  # Low velocity - maintain vertical component
-            return max(6, 12.0 - altitude / 8333)
-        elif velocity < 7000:  # Medium-high velocity - more horizontal
-            return max(3, 8.0 - altitude / 12500)
-        else:  # High velocity - nearly horizontal for LEO insertion
-            return max(1, 4.0 - altitude / 25000)
+        return 15.0
 
 def compute_thrust_direction(mission, t: float, thrust_magnitude: float) -> Vector3:
     """

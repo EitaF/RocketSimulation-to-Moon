@@ -1,0 +1,623 @@
+2025-07-08 20:55:56,295 - INFO - Starting parameter sweep...
+2025-07-08 20:55:56,297 - INFO - Generated 30 parameter sets for testing
+2025-07-08 20:55:56,298 - INFO - Running test 1 with parameters: pitch_rate=1.3, final_pitch=8.0, stage3_offset=-5.0
+2025-07-08 20:55:56,391 - INFO - Mission Validation Results:
+2025-07-08 20:55:56,391 - INFO -   Periapsis: -23.2 km (❌)
+2025-07-08 20:55:56,391 - INFO -   Eccentricity: 0.0744 (❌)
+2025-07-08 20:55:56,393 - INFO -   Stage 3 propellant: 3.4% (❌)
+2025-07-08 20:55:56,393 - INFO -   Horizontal velocity: 7504 m/s (✅)
+2025-07-08 20:55:56,393 - INFO -   Overall success: ❌
+2025-07-08 20:55:56,394 - WARNING - Mission failed: Periapsis too low: -23.2 km < 150 km; Eccentricity too high: 0.0744 > 0.05; Stage 3 propellant too low: 3.4% < 5%
+2025-07-08 20:55:56,394 - INFO - === POST-FLIGHT ANALYSIS SUMMARY ===
+2025-07-08 20:55:56,394 - INFO - Max altitude: 274.6 km
+2025-07-08 20:55:56,395 - INFO - Final apoapsis: 296.2 km
+2025-07-08 20:55:56,395 - INFO - Final periapsis: -23.2 km
+2025-07-08 20:55:56,395 - INFO - Final eccentricity: 0.0744
+2025-07-08 20:55:56,395 - INFO - Final velocity: 7973 m/s
+2025-07-08 20:55:56,395 - INFO - Time to apoapsis: 41.2 s
+2025-07-08 20:55:56,396 - INFO - ===================================
+2025-07-08 20:55:56,396 - WARNING - ❌ Test 1 FAILED: Periapsis too low: -23.2 km < 150 km; Eccentricity too high: 0.0744 > 0.05; Stage 3 propellant too low: 3.4% < 5%
+2025-07-08 20:55:56,397 - INFO - Running test 5 with parameters: pitch_rate=1.3, final_pitch=8.0, stage3_offset=5.0
+2025-07-08 20:55:56,397 - INFO - Mission Validation Results:
+2025-07-08 20:55:56,397 - INFO -   Periapsis: -17.6 km (❌)
+2025-07-08 20:55:56,397 - INFO -   Eccentricity: 0.1336 (❌)
+2025-07-08 20:55:56,398 - INFO -   Stage 3 propellant: 11.2% (✅)
+2025-07-08 20:55:56,398 - INFO -   Horizontal velocity: 7239 m/s (❌)
+2025-07-08 20:55:56,398 - INFO -   Overall success: ❌
+2025-07-08 20:55:56,398 - WARNING - Mission failed: Periapsis too low: -17.6 km < 150 km; Eccentricity too high: 0.1336 > 0.05; Horizontal velocity too low: 7239 m/s < 7400 m/s
+2025-07-08 20:55:56,398 - INFO - === POST-FLIGHT ANALYSIS SUMMARY ===
+2025-07-08 20:55:56,398 - INFO - Max altitude: 278.7 km
+2025-07-08 20:55:56,398 - INFO - Final apoapsis: 284.4 km
+2025-07-08 20:55:56,398 - INFO - Final periapsis: -17.6 km
+2025-07-08 20:55:56,399 - INFO - Final eccentricity: 0.1336
+2025-07-08 20:55:56,399 - INFO - Final velocity: 7822 m/s
+2025-07-08 20:55:56,399 - INFO - Time to apoapsis: 42.0 s
+2025-07-08 20:55:56,399 - INFO - ===================================
+2025-07-08 20:55:56,399 - WARNING - ❌ Test 5 FAILED: Periapsis too low: -17.6 km < 150 km; Eccentricity too high: 0.1336 > 0.05; Horizontal velocity too low: 7239 m/s < 7400 m/s
+2025-07-08 20:55:56,400 - INFO - Running test 9 with parameters: pitch_rate=1.3, final_pitch=9.0, stage3_offset=2.5
+2025-07-08 20:55:56,400 - INFO - Mission Validation Results:
+2025-07-08 20:55:56,400 - INFO -   Periapsis: -16.8 km (❌)
+2025-07-08 20:55:56,400 - INFO -   Eccentricity: 0.0627 (❌)
+2025-07-08 20:55:56,400 - INFO -   Stage 3 propellant: 7.0% (✅)
+2025-07-08 20:55:56,401 - INFO -   Horizontal velocity: 7178 m/s (❌)
+2025-07-08 20:55:56,401 - INFO -   Overall success: ❌
+2025-07-08 20:55:56,401 - WARNING - Mission failed: Periapsis too low: -16.8 km < 150 km; Eccentricity too high: 0.0627 > 0.05; Horizontal velocity too low: 7178 m/s < 7400 m/s
+2025-07-08 20:55:56,401 - INFO - === POST-FLIGHT ANALYSIS SUMMARY ===
+2025-07-08 20:55:56,401 - INFO - Max altitude: 279.9 km
+2025-07-08 20:55:56,401 - INFO - Final apoapsis: 280.0 km
+2025-07-08 20:55:56,401 - INFO - Final periapsis: -16.8 km
+2025-07-08 20:55:56,401 - INFO - Final eccentricity: 0.0627
+2025-07-08 20:55:56,402 - INFO - Final velocity: 7724 m/s
+2025-07-08 20:55:56,402 - INFO - Time to apoapsis: 42.5 s
+2025-07-08 20:55:56,402 - INFO - ===================================
+2025-07-08 20:55:56,403 - WARNING - ❌ Test 9 FAILED: Periapsis too low: -16.8 km < 150 km; Eccentricity too high: 0.0627 > 0.05; Horizontal velocity too low: 7178 m/s < 7400 m/s
+2025-07-08 20:55:56,403 - INFO - Running test 13 with parameters: pitch_rate=1.3, final_pitch=10.0, stage3_offset=0.0
+2025-07-08 20:55:56,403 - INFO - Mission Validation Results:
+2025-07-08 20:55:56,403 - INFO -   Periapsis: 4.1 km (❌)
+2025-07-08 20:55:56,403 - INFO -   Eccentricity: 0.0841 (❌)
+2025-07-08 20:55:56,403 - INFO -   Stage 3 propellant: 9.1% (✅)
+2025-07-08 20:55:56,403 - INFO -   Horizontal velocity: 7465 m/s (✅)
+2025-07-08 20:55:56,403 - INFO -   Overall success: ❌
+2025-07-08 20:55:56,404 - WARNING - Mission failed: Periapsis too low: 4.1 km < 150 km; Eccentricity too high: 0.0841 > 0.05
+2025-07-08 20:55:56,404 - INFO - === POST-FLIGHT ANALYSIS SUMMARY ===
+2025-07-08 20:55:56,404 - INFO - Max altitude: 282.3 km
+2025-07-08 20:55:56,404 - INFO - Final apoapsis: 272.9 km
+2025-07-08 20:55:56,404 - INFO - Final periapsis: 4.1 km
+2025-07-08 20:55:56,405 - INFO - Final eccentricity: 0.0841
+2025-07-08 20:55:56,406 - INFO - Final velocity: 8069 m/s
+2025-07-08 20:55:56,406 - INFO - Time to apoapsis: 49.3 s
+2025-07-08 20:55:56,406 - INFO - ===================================
+2025-07-08 20:55:56,407 - WARNING - ❌ Test 13 FAILED: Periapsis too low: 4.1 km < 150 km; Eccentricity too high: 0.0841 > 0.05
+2025-07-08 20:55:56,407 - INFO - Running test 18 with parameters: pitch_rate=1.3, final_pitch=11.0, stage3_offset=0.0
+2025-07-08 20:55:56,407 - INFO - Mission Validation Results:
+2025-07-08 20:55:56,408 - INFO -   Periapsis: 32.8 km (❌)
+2025-07-08 20:55:56,408 - INFO -   Eccentricity: 0.0823 (❌)
+2025-07-08 20:55:56,408 - INFO -   Stage 3 propellant: 9.2% (✅)
+2025-07-08 20:55:56,408 - INFO -   Horizontal velocity: 7431 m/s (✅)
+2025-07-08 20:55:56,409 - INFO -   Overall success: ❌
+2025-07-08 20:55:56,409 - WARNING - Mission failed: Periapsis too low: 32.8 km < 150 km; Eccentricity too high: 0.0823 > 0.05
+2025-07-08 20:55:56,410 - INFO - === POST-FLIGHT ANALYSIS SUMMARY ===
+2025-07-08 20:55:56,410 - INFO - Max altitude: 280.8 km
+2025-07-08 20:55:56,410 - INFO - Final apoapsis: 280.8 km
+2025-07-08 20:55:56,410 - INFO - Final periapsis: 32.8 km
+2025-07-08 20:55:56,410 - INFO - Final eccentricity: 0.0823
+2025-07-08 20:55:56,410 - INFO - Final velocity: 7889 m/s
+2025-07-08 20:55:56,410 - INFO - Time to apoapsis: 47.0 s
+2025-07-08 20:55:56,410 - INFO - ===================================
+2025-07-08 20:55:56,411 - WARNING - ❌ Test 18 FAILED: Periapsis too low: 32.8 km < 150 km; Eccentricity too high: 0.0823 > 0.05
+2025-07-08 20:55:56,411 - INFO - Running test 22 with parameters: pitch_rate=1.3, final_pitch=12.0, stage3_offset=-2.5
+2025-07-08 20:55:56,411 - INFO - Mission Validation Results:
+2025-07-08 20:55:56,412 - INFO -   Periapsis: -40.3 km (❌)
+2025-07-08 20:55:56,412 - INFO -   Eccentricity: 0.1066 (❌)
+2025-07-08 20:55:56,412 - INFO -   Stage 3 propellant: 6.0% (✅)
+2025-07-08 20:55:56,412 - INFO -   Horizontal velocity: 7422 m/s (✅)
+2025-07-08 20:55:56,412 - INFO -   Overall success: ❌
+2025-07-08 20:55:56,412 - WARNING - Mission failed: Periapsis too low: -40.3 km < 150 km; Eccentricity too high: 0.1066 > 0.05
+2025-07-08 20:55:56,412 - INFO - === POST-FLIGHT ANALYSIS SUMMARY ===
+2025-07-08 20:55:56,412 - INFO - Max altitude: 278.8 km
+2025-07-08 20:55:56,412 - INFO - Final apoapsis: 279.1 km
+2025-07-08 20:55:56,413 - INFO - Final periapsis: -40.3 km
+2025-07-08 20:55:56,413 - INFO - Final eccentricity: 0.1066
+2025-07-08 20:55:56,413 - INFO - Final velocity: 7702 m/s
+2025-07-08 20:55:56,413 - INFO - Time to apoapsis: 39.5 s
+2025-07-08 20:55:56,413 - INFO - ===================================
+2025-07-08 20:55:56,413 - WARNING - ❌ Test 22 FAILED: Periapsis too low: -40.3 km < 150 km; Eccentricity too high: 0.1066 > 0.05
+2025-07-08 20:55:56,414 - INFO - Running test 26 with parameters: pitch_rate=1.4, final_pitch=8.0, stage3_offset=-5.0
+2025-07-08 20:55:56,414 - INFO - Mission Validation Results:
+2025-07-08 20:55:56,414 - INFO -   Periapsis: -46.8 km (❌)
+2025-07-08 20:55:56,414 - INFO -   Eccentricity: 0.0943 (❌)
+2025-07-08 20:55:56,414 - INFO -   Stage 3 propellant: 8.5% (✅)
+2025-07-08 20:55:56,414 - INFO -   Horizontal velocity: 7337 m/s (❌)
+2025-07-08 20:55:56,414 - INFO -   Overall success: ❌
+2025-07-08 20:55:56,415 - WARNING - Mission failed: Periapsis too low: -46.8 km < 150 km; Eccentricity too high: 0.0943 > 0.05; Horizontal velocity too low: 7337 m/s < 7400 m/s
+2025-07-08 20:55:56,415 - INFO - === POST-FLIGHT ANALYSIS SUMMARY ===
+2025-07-08 20:55:56,415 - INFO - Max altitude: 283.3 km
+2025-07-08 20:55:56,415 - INFO - Final apoapsis: 282.0 km
+2025-07-08 20:55:56,415 - INFO - Final periapsis: -46.8 km
+2025-07-08 20:55:56,415 - INFO - Final eccentricity: 0.0943
+2025-07-08 20:55:56,415 - INFO - Final velocity: 7754 m/s
+2025-07-08 20:55:56,415 - INFO - Time to apoapsis: 36.2 s
+2025-07-08 20:55:56,415 - INFO - ===================================
+2025-07-08 20:55:56,416 - WARNING - ❌ Test 26 FAILED: Periapsis too low: -46.8 km < 150 km; Eccentricity too high: 0.0943 > 0.05; Horizontal velocity too low: 7337 m/s < 7400 m/s
+2025-07-08 20:55:56,416 - INFO - Running test 30 with parameters: pitch_rate=1.4, final_pitch=8.0, stage3_offset=5.0
+2025-07-08 20:55:56,416 - INFO - Mission Validation Results:
+2025-07-08 20:55:56,417 - INFO -   Periapsis: 22.6 km (❌)
+2025-07-08 20:55:56,417 - INFO -   Eccentricity: 0.0606 (❌)
+2025-07-08 20:55:56,417 - INFO -   Stage 3 propellant: 8.6% (✅)
+2025-07-08 20:55:56,417 - INFO -   Horizontal velocity: 7167 m/s (❌)
+2025-07-08 20:55:56,417 - INFO -   Overall success: ❌
+2025-07-08 20:55:56,417 - WARNING - Mission failed: Periapsis too low: 22.6 km < 150 km; Eccentricity too high: 0.0606 > 0.05; Horizontal velocity too low: 7167 m/s < 7400 m/s
+2025-07-08 20:55:56,417 - INFO - === POST-FLIGHT ANALYSIS SUMMARY ===
+2025-07-08 20:55:56,418 - INFO - Max altitude: 282.4 km
+2025-07-08 20:55:56,418 - INFO - Final apoapsis: 267.4 km
+2025-07-08 20:55:56,418 - INFO - Final periapsis: 22.6 km
+2025-07-08 20:55:56,418 - INFO - Final eccentricity: 0.0606
+2025-07-08 20:55:56,418 - INFO - Final velocity: 7780 m/s
+2025-07-08 20:55:56,418 - INFO - Time to apoapsis: 52.9 s
+2025-07-08 20:55:56,418 - INFO - ===================================
+2025-07-08 20:55:56,419 - WARNING - ❌ Test 30 FAILED: Periapsis too low: 22.6 km < 150 km; Eccentricity too high: 0.0606 > 0.05; Horizontal velocity too low: 7167 m/s < 7400 m/s
+2025-07-08 20:55:56,419 - INFO - Running test 35 with parameters: pitch_rate=1.4, final_pitch=9.0, stage3_offset=5.0
+2025-07-08 20:55:56,419 - INFO - Mission Validation Results:
+2025-07-08 20:55:56,419 - INFO -   Periapsis: -16.3 km (❌)
+2025-07-08 20:55:56,420 - INFO -   Eccentricity: 0.0647 (❌)
+2025-07-08 20:55:56,420 - INFO -   Stage 3 propellant: 9.6% (✅)
+2025-07-08 20:55:56,420 - INFO -   Horizontal velocity: 7455 m/s (✅)
+2025-07-08 20:55:56,420 - INFO -   Overall success: ❌
+2025-07-08 20:55:56,420 - WARNING - Mission failed: Periapsis too low: -16.3 km < 150 km; Eccentricity too high: 0.0647 > 0.05
+2025-07-08 20:55:56,420 - INFO - === POST-FLIGHT ANALYSIS SUMMARY ===
+2025-07-08 20:55:56,420 - INFO - Max altitude: 275.4 km
+2025-07-08 20:55:56,420 - INFO - Final apoapsis: 261.1 km
+2025-07-08 20:55:56,420 - INFO - Final periapsis: -16.3 km
+2025-07-08 20:55:56,420 - INFO - Final eccentricity: 0.0647
+2025-07-08 20:55:56,420 - INFO - Final velocity: 7516 m/s
+2025-07-08 20:55:56,420 - INFO - Time to apoapsis: 50.8 s
+2025-07-08 20:55:56,420 - INFO - ===================================
+2025-07-08 20:55:56,421 - WARNING - ❌ Test 35 FAILED: Periapsis too low: -16.3 km < 150 km; Eccentricity too high: 0.0647 > 0.05
+2025-07-08 20:55:56,421 - INFO - Running test 39 with parameters: pitch_rate=1.4, final_pitch=10.0, stage3_offset=2.5
+2025-07-08 20:55:56,422 - INFO - Mission Validation Results:
+2025-07-08 20:55:56,422 - INFO -   Periapsis: -3.6 km (❌)
+2025-07-08 20:55:56,422 - INFO -   Eccentricity: 0.0771 (❌)
+2025-07-08 20:55:56,422 - INFO -   Stage 3 propellant: 12.8% (✅)
+2025-07-08 20:55:56,423 - INFO -   Horizontal velocity: 7148 m/s (❌)
+2025-07-08 20:55:56,423 - INFO -   Overall success: ❌
+2025-07-08 20:55:56,423 - WARNING - Mission failed: Periapsis too low: -3.6 km < 150 km; Eccentricity too high: 0.0771 > 0.05; Horizontal velocity too low: 7148 m/s < 7400 m/s
+2025-07-08 20:55:56,423 - INFO - === POST-FLIGHT ANALYSIS SUMMARY ===
+2025-07-08 20:55:56,423 - INFO - Max altitude: 280.6 km
+2025-07-08 20:55:56,423 - INFO - Final apoapsis: 294.0 km
+2025-07-08 20:55:56,423 - INFO - Final periapsis: -3.6 km
+2025-07-08 20:55:56,424 - INFO - Final eccentricity: 0.0771
+2025-07-08 20:55:56,424 - INFO - Final velocity: 7921 m/s
+2025-07-08 20:55:56,424 - INFO - Time to apoapsis: 32.9 s
+2025-07-08 20:55:56,424 - INFO - ===================================
+2025-07-08 20:55:56,426 - WARNING - ❌ Test 39 FAILED: Periapsis too low: -3.6 km < 150 km; Eccentricity too high: 0.0771 > 0.05; Horizontal velocity too low: 7148 m/s < 7400 m/s
+2025-07-08 20:55:56,428 - INFO - Running test 43 with parameters: pitch_rate=1.4, final_pitch=11.0, stage3_offset=0.0
+2025-07-08 20:55:56,428 - INFO - Mission Validation Results:
+2025-07-08 20:55:56,428 - INFO -   Periapsis: -26.2 km (❌)
+2025-07-08 20:55:56,428 - INFO -   Eccentricity: 0.0724 (❌)
+2025-07-08 20:55:56,428 - INFO -   Stage 3 propellant: 7.2% (✅)
+2025-07-08 20:55:56,428 - INFO -   Horizontal velocity: 7390 m/s (❌)
+2025-07-08 20:55:56,429 - INFO -   Overall success: ❌
+2025-07-08 20:55:56,429 - WARNING - Mission failed: Periapsis too low: -26.2 km < 150 km; Eccentricity too high: 0.0724 > 0.05; Horizontal velocity too low: 7390 m/s < 7400 m/s
+2025-07-08 20:55:56,429 - INFO - === POST-FLIGHT ANALYSIS SUMMARY ===
+2025-07-08 20:55:56,429 - INFO - Max altitude: 277.3 km
+2025-07-08 20:55:56,429 - INFO - Final apoapsis: 282.6 km
+2025-07-08 20:55:56,429 - INFO - Final periapsis: -26.2 km
+2025-07-08 20:55:56,429 - INFO - Final eccentricity: 0.0724
+2025-07-08 20:55:56,429 - INFO - Final velocity: 7972 m/s
+2025-07-08 20:55:56,430 - INFO - Time to apoapsis: 55.1 s
+2025-07-08 20:55:56,430 - INFO - ===================================
+2025-07-08 20:55:56,431 - WARNING - ❌ Test 43 FAILED: Periapsis too low: -26.2 km < 150 km; Eccentricity too high: 0.0724 > 0.05; Horizontal velocity too low: 7390 m/s < 7400 m/s
+2025-07-08 20:55:56,431 - INFO - Running test 48 with parameters: pitch_rate=1.4, final_pitch=12.0, stage3_offset=0.0
+2025-07-08 20:55:56,431 - INFO - Mission Validation Results:
+2025-07-08 20:55:56,431 - INFO -   Periapsis: -29.3 km (❌)
+2025-07-08 20:55:56,431 - INFO -   Eccentricity: 0.0672 (❌)
+2025-07-08 20:55:56,432 - INFO -   Stage 3 propellant: 10.2% (✅)
+2025-07-08 20:55:56,432 - INFO -   Horizontal velocity: 7133 m/s (❌)
+2025-07-08 20:55:56,432 - INFO -   Overall success: ❌
+2025-07-08 20:55:56,432 - WARNING - Mission failed: Periapsis too low: -29.3 km < 150 km; Eccentricity too high: 0.0672 > 0.05; Horizontal velocity too low: 7133 m/s < 7400 m/s
+2025-07-08 20:55:56,432 - INFO - === POST-FLIGHT ANALYSIS SUMMARY ===
+2025-07-08 20:55:56,432 - INFO - Max altitude: 285.3 km
+2025-07-08 20:55:56,432 - INFO - Final apoapsis: 270.1 km
+2025-07-08 20:55:56,432 - INFO - Final periapsis: -29.3 km
+2025-07-08 20:55:56,433 - INFO - Final eccentricity: 0.0672
+2025-07-08 20:55:56,433 - INFO - Final velocity: 7769 m/s
+2025-07-08 20:55:56,433 - INFO - Time to apoapsis: 48.5 s
+2025-07-08 20:55:56,433 - INFO - ===================================
+2025-07-08 20:55:56,434 - WARNING - ❌ Test 48 FAILED: Periapsis too low: -29.3 km < 150 km; Eccentricity too high: 0.0672 > 0.05; Horizontal velocity too low: 7133 m/s < 7400 m/s
+2025-07-08 20:55:56,434 - INFO - Running test 52 with parameters: pitch_rate=1.5, final_pitch=8.0, stage3_offset=-2.5
+2025-07-08 20:55:56,434 - INFO - Mission Validation Results:
+2025-07-08 20:55:56,434 - INFO -   Periapsis: -30.4 km (❌)
+2025-07-08 20:55:56,434 - INFO -   Eccentricity: 0.0798 (❌)
+2025-07-08 20:55:56,434 - INFO -   Stage 3 propellant: 8.8% (✅)
+2025-07-08 20:55:56,434 - INFO -   Horizontal velocity: 7478 m/s (✅)
+2025-07-08 20:55:56,435 - INFO -   Overall success: ❌
+2025-07-08 20:55:56,435 - WARNING - Mission failed: Periapsis too low: -30.4 km < 150 km; Eccentricity too high: 0.0798 > 0.05
+2025-07-08 20:55:56,435 - INFO - === POST-FLIGHT ANALYSIS SUMMARY ===
+2025-07-08 20:55:56,435 - INFO - Max altitude: 276.0 km
+2025-07-08 20:55:56,435 - INFO - Final apoapsis: 285.2 km
+2025-07-08 20:55:56,435 - INFO - Final periapsis: -30.4 km
+2025-07-08 20:55:56,435 - INFO - Final eccentricity: 0.0798
+2025-07-08 20:55:56,435 - INFO - Final velocity: 7803 m/s
+2025-07-08 20:55:56,435 - INFO - Time to apoapsis: 48.3 s
+2025-07-08 20:55:56,435 - INFO - ===================================
+2025-07-08 20:55:56,436 - WARNING - ❌ Test 52 FAILED: Periapsis too low: -30.4 km < 150 km; Eccentricity too high: 0.0798 > 0.05
+2025-07-08 20:55:56,436 - INFO - Running test 56 with parameters: pitch_rate=1.5, final_pitch=9.0, stage3_offset=-5.0
+2025-07-08 20:55:56,437 - INFO - Mission Validation Results:
+2025-07-08 20:55:56,437 - INFO -   Periapsis: 6.9 km (❌)
+2025-07-08 20:55:56,437 - INFO -   Eccentricity: 0.0971 (❌)
+2025-07-08 20:55:56,437 - INFO -   Stage 3 propellant: 4.8% (❌)
+2025-07-08 20:55:56,437 - INFO -   Horizontal velocity: 7323 m/s (❌)
+2025-07-08 20:55:56,437 - INFO -   Overall success: ❌
+2025-07-08 20:55:56,438 - WARNING - Mission failed: Periapsis too low: 6.9 km < 150 km; Eccentricity too high: 0.0971 > 0.05; Stage 3 propellant too low: 4.8% < 5%; Horizontal velocity too low: 7323 m/s < 7400 m/s
+2025-07-08 20:55:56,438 - INFO - === POST-FLIGHT ANALYSIS SUMMARY ===
+2025-07-08 20:55:56,439 - INFO - Max altitude: 277.4 km
+2025-07-08 20:55:56,439 - INFO - Final apoapsis: 269.6 km
+2025-07-08 20:55:56,440 - INFO - Final periapsis: 6.9 km
+2025-07-08 20:55:56,440 - INFO - Final eccentricity: 0.0971
+2025-07-08 20:55:56,440 - INFO - Final velocity: 7747 m/s
+2025-07-08 20:55:56,440 - INFO - Time to apoapsis: 49.7 s
+2025-07-08 20:55:56,440 - INFO - ===================================
+2025-07-08 20:55:56,441 - WARNING - ❌ Test 56 FAILED: Periapsis too low: 6.9 km < 150 km; Eccentricity too high: 0.0971 > 0.05; Stage 3 propellant too low: 4.8% < 5%; Horizontal velocity too low: 7323 m/s < 7400 m/s
+2025-07-08 20:55:56,442 - INFO - Running test 60 with parameters: pitch_rate=1.5, final_pitch=9.0, stage3_offset=5.0
+2025-07-08 20:55:56,443 - INFO - Mission Validation Results:
+2025-07-08 20:55:56,443 - INFO -   Periapsis: -16.7 km (❌)
+2025-07-08 20:55:56,443 - INFO -   Eccentricity: 0.0983 (❌)
+2025-07-08 20:55:56,443 - INFO -   Stage 3 propellant: 10.6% (✅)
+2025-07-08 20:55:56,444 - INFO -   Horizontal velocity: 7424 m/s (✅)
+2025-07-08 20:55:56,444 - INFO -   Overall success: ❌
+2025-07-08 20:55:56,444 - WARNING - Mission failed: Periapsis too low: -16.7 km < 150 km; Eccentricity too high: 0.0983 > 0.05
+2025-07-08 20:55:56,444 - INFO - === POST-FLIGHT ANALYSIS SUMMARY ===
+2025-07-08 20:55:56,444 - INFO - Max altitude: 273.8 km
+2025-07-08 20:55:56,444 - INFO - Final apoapsis: 270.8 km
+2025-07-08 20:55:56,444 - INFO - Final periapsis: -16.7 km
+2025-07-08 20:55:56,444 - INFO - Final eccentricity: 0.0983
+2025-07-08 20:55:56,444 - INFO - Final velocity: 7403 m/s
+2025-07-08 20:55:56,444 - INFO - Time to apoapsis: 46.9 s
+2025-07-08 20:55:56,445 - INFO - ===================================
+2025-07-08 20:55:56,445 - WARNING - ❌ Test 60 FAILED: Periapsis too low: -16.7 km < 150 km; Eccentricity too high: 0.0983 > 0.05
+2025-07-08 20:55:56,445 - INFO - Running test 65 with parameters: pitch_rate=1.5, final_pitch=10.0, stage3_offset=5.0
+2025-07-08 20:55:56,445 - INFO - Mission Validation Results:
+2025-07-08 20:55:56,445 - INFO -   Periapsis: -15.8 km (❌)
+2025-07-08 20:55:56,446 - INFO -   Eccentricity: 0.0578 (❌)
+2025-07-08 20:55:56,446 - INFO -   Stage 3 propellant: 9.5% (✅)
+2025-07-08 20:55:56,446 - INFO -   Horizontal velocity: 7191 m/s (❌)
+2025-07-08 20:55:56,446 - INFO -   Overall success: ❌
+2025-07-08 20:55:56,446 - WARNING - Mission failed: Periapsis too low: -15.8 km < 150 km; Eccentricity too high: 0.0578 > 0.05; Horizontal velocity too low: 7191 m/s < 7400 m/s
+2025-07-08 20:55:56,446 - INFO - === POST-FLIGHT ANALYSIS SUMMARY ===
+2025-07-08 20:55:56,446 - INFO - Max altitude: 277.5 km
+2025-07-08 20:55:56,446 - INFO - Final apoapsis: 271.7 km
+2025-07-08 20:55:56,446 - INFO - Final periapsis: -15.8 km
+2025-07-08 20:55:56,446 - INFO - Final eccentricity: 0.0578
+2025-07-08 20:55:56,446 - INFO - Final velocity: 8003 m/s
+2025-07-08 20:55:56,447 - INFO - Time to apoapsis: 45.4 s
+2025-07-08 20:55:56,447 - INFO - ===================================
+2025-07-08 20:55:56,447 - WARNING - ❌ Test 65 FAILED: Periapsis too low: -15.8 km < 150 km; Eccentricity too high: 0.0578 > 0.05; Horizontal velocity too low: 7191 m/s < 7400 m/s
+2025-07-08 20:55:56,447 - INFO - Running test 69 with parameters: pitch_rate=1.5, final_pitch=11.0, stage3_offset=2.5
+2025-07-08 20:55:56,447 - INFO - Mission Validation Results:
+2025-07-08 20:55:56,447 - INFO -   Periapsis: -17.1 km (❌)
+2025-07-08 20:55:56,448 - INFO -   Eccentricity: 0.0982 (❌)
+2025-07-08 20:55:56,448 - INFO -   Stage 3 propellant: 8.8% (✅)
+2025-07-08 20:55:56,448 - INFO -   Horizontal velocity: 7471 m/s (✅)
+2025-07-08 20:55:56,448 - INFO -   Overall success: ❌
+2025-07-08 20:55:56,448 - WARNING - Mission failed: Periapsis too low: -17.1 km < 150 km; Eccentricity too high: 0.0982 > 0.05
+2025-07-08 20:55:56,448 - INFO - === POST-FLIGHT ANALYSIS SUMMARY ===
+2025-07-08 20:55:56,448 - INFO - Max altitude: 277.0 km
+2025-07-08 20:55:56,448 - INFO - Final apoapsis: 289.2 km
+2025-07-08 20:55:56,448 - INFO - Final periapsis: -17.1 km
+2025-07-08 20:55:56,448 - INFO - Final eccentricity: 0.0982
+2025-07-08 20:55:56,449 - INFO - Final velocity: 7481 m/s
+2025-07-08 20:55:56,449 - INFO - Time to apoapsis: 50.3 s
+2025-07-08 20:55:56,449 - INFO - ===================================
+2025-07-08 20:55:56,449 - WARNING - ❌ Test 69 FAILED: Periapsis too low: -17.1 km < 150 km; Eccentricity too high: 0.0982 > 0.05
+2025-07-08 20:55:56,449 - INFO - Running test 73 with parameters: pitch_rate=1.5, final_pitch=12.0, stage3_offset=0.0
+2025-07-08 20:55:56,450 - INFO - Mission Validation Results:
+2025-07-08 20:55:56,450 - INFO -   Periapsis: 37.6 km (❌)
+2025-07-08 20:55:56,450 - INFO -   Eccentricity: 0.1238 (❌)
+2025-07-08 20:55:56,450 - INFO -   Stage 3 propellant: 7.9% (✅)
+2025-07-08 20:55:56,450 - INFO -   Horizontal velocity: 7393 m/s (❌)
+2025-07-08 20:55:56,450 - INFO -   Overall success: ❌
+2025-07-08 20:55:56,450 - WARNING - Mission failed: Periapsis too low: 37.6 km < 150 km; Eccentricity too high: 0.1238 > 0.05; Horizontal velocity too low: 7393 m/s < 7400 m/s
+2025-07-08 20:55:56,451 - INFO - === POST-FLIGHT ANALYSIS SUMMARY ===
+2025-07-08 20:55:56,451 - INFO - Max altitude: 281.3 km
+2025-07-08 20:55:56,451 - INFO - Final apoapsis: 285.8 km
+2025-07-08 20:55:56,451 - INFO - Final periapsis: 37.6 km
+2025-07-08 20:55:56,451 - INFO - Final eccentricity: 0.1238
+2025-07-08 20:55:56,451 - INFO - Final velocity: 7501 m/s
+2025-07-08 20:55:56,451 - INFO - Time to apoapsis: 37.4 s
+2025-07-08 20:55:56,451 - INFO - ===================================
+2025-07-08 20:55:56,452 - WARNING - ❌ Test 73 FAILED: Periapsis too low: 37.6 km < 150 km; Eccentricity too high: 0.1238 > 0.05; Horizontal velocity too low: 7393 m/s < 7400 m/s
+2025-07-08 20:55:56,452 - INFO - Running test 77 with parameters: pitch_rate=1.6, final_pitch=8.0, stage3_offset=-2.5
+2025-07-08 20:55:56,452 - INFO - Mission Validation Results:
+2025-07-08 20:55:56,453 - INFO -   Periapsis: 11.2 km (❌)
+2025-07-08 20:55:56,453 - INFO -   Eccentricity: 0.0584 (❌)
+2025-07-08 20:55:56,453 - INFO -   Stage 3 propellant: 4.1% (❌)
+2025-07-08 20:55:56,454 - INFO -   Horizontal velocity: 7388 m/s (❌)
+2025-07-08 20:55:56,454 - INFO -   Overall success: ❌
+2025-07-08 20:55:56,454 - WARNING - Mission failed: Periapsis too low: 11.2 km < 150 km; Eccentricity too high: 0.0584 > 0.05; Stage 3 propellant too low: 4.1% < 5%; Horizontal velocity too low: 7388 m/s < 7400 m/s
+2025-07-08 20:55:56,454 - INFO - === POST-FLIGHT ANALYSIS SUMMARY ===
+2025-07-08 20:55:56,455 - INFO - Max altitude: 282.0 km
+2025-07-08 20:55:56,455 - INFO - Final apoapsis: 282.2 km
+2025-07-08 20:55:56,455 - INFO - Final periapsis: 11.2 km
+2025-07-08 20:55:56,456 - INFO - Final eccentricity: 0.0584
+2025-07-08 20:55:56,456 - INFO - Final velocity: 7893 m/s
+2025-07-08 20:55:56,456 - INFO - Time to apoapsis: 37.1 s
+2025-07-08 20:55:56,456 - INFO - ===================================
+2025-07-08 20:55:56,456 - WARNING - ❌ Test 77 FAILED: Periapsis too low: 11.2 km < 150 km; Eccentricity too high: 0.0584 > 0.05; Stage 3 propellant too low: 4.1% < 5%; Horizontal velocity too low: 7388 m/s < 7400 m/s
+2025-07-08 20:55:56,457 - INFO - Running test 82 with parameters: pitch_rate=1.6, final_pitch=9.0, stage3_offset=-2.5
+2025-07-08 20:55:56,457 - INFO - Mission Validation Results:
+2025-07-08 20:55:56,457 - INFO -   Periapsis: -29.1 km (❌)
+2025-07-08 20:55:56,458 - INFO -   Eccentricity: 0.0957 (❌)
+2025-07-08 20:55:56,458 - INFO -   Stage 3 propellant: 7.9% (✅)
+2025-07-08 20:55:56,458 - INFO -   Horizontal velocity: 7322 m/s (❌)
+2025-07-08 20:55:56,458 - INFO -   Overall success: ❌
+2025-07-08 20:55:56,458 - WARNING - Mission failed: Periapsis too low: -29.1 km < 150 km; Eccentricity too high: 0.0957 > 0.05; Horizontal velocity too low: 7322 m/s < 7400 m/s
+2025-07-08 20:55:56,458 - INFO - === POST-FLIGHT ANALYSIS SUMMARY ===
+2025-07-08 20:55:56,458 - INFO - Max altitude: 282.9 km
+2025-07-08 20:55:56,458 - INFO - Final apoapsis: 288.4 km
+2025-07-08 20:55:56,458 - INFO - Final periapsis: -29.1 km
+2025-07-08 20:55:56,458 - INFO - Final eccentricity: 0.0957
+2025-07-08 20:55:56,458 - INFO - Final velocity: 7916 m/s
+2025-07-08 20:55:56,459 - INFO - Time to apoapsis: 43.5 s
+2025-07-08 20:55:56,459 - INFO - ===================================
+2025-07-08 20:55:56,460 - WARNING - ❌ Test 82 FAILED: Periapsis too low: -29.1 km < 150 km; Eccentricity too high: 0.0957 > 0.05; Horizontal velocity too low: 7322 m/s < 7400 m/s
+2025-07-08 20:55:56,461 - INFO - Running test 86 with parameters: pitch_rate=1.6, final_pitch=10.0, stage3_offset=-5.0
+2025-07-08 20:55:56,461 - INFO - Mission Validation Results:
+2025-07-08 20:55:56,462 - INFO -   Periapsis: -14.1 km (❌)
+2025-07-08 20:55:56,462 - INFO -   Eccentricity: 0.0791 (❌)
+2025-07-08 20:55:56,462 - INFO -   Stage 3 propellant: 5.7% (✅)
+2025-07-08 20:55:56,462 - INFO -   Horizontal velocity: 7202 m/s (❌)
+2025-07-08 20:55:56,463 - INFO -   Overall success: ❌
+2025-07-08 20:55:56,463 - WARNING - Mission failed: Periapsis too low: -14.1 km < 150 km; Eccentricity too high: 0.0791 > 0.05; Horizontal velocity too low: 7202 m/s < 7400 m/s
+2025-07-08 20:55:56,463 - INFO - === POST-FLIGHT ANALYSIS SUMMARY ===
+2025-07-08 20:55:56,463 - INFO - Max altitude: 276.9 km
+2025-07-08 20:55:56,463 - INFO - Final apoapsis: 274.0 km
+2025-07-08 20:55:56,463 - INFO - Final periapsis: -14.1 km
+2025-07-08 20:55:56,463 - INFO - Final eccentricity: 0.0791
+2025-07-08 20:55:56,463 - INFO - Final velocity: 7939 m/s
+2025-07-08 20:55:56,463 - INFO - Time to apoapsis: 54.0 s
+2025-07-08 20:55:56,463 - INFO - ===================================
+2025-07-08 20:55:56,464 - WARNING - ❌ Test 86 FAILED: Periapsis too low: -14.1 km < 150 km; Eccentricity too high: 0.0791 > 0.05; Horizontal velocity too low: 7202 m/s < 7400 m/s
+2025-07-08 20:55:56,464 - INFO - Running test 90 with parameters: pitch_rate=1.6, final_pitch=10.0, stage3_offset=5.0
+2025-07-08 20:55:56,464 - INFO - Mission Validation Results:
+2025-07-08 20:55:56,464 - INFO -   Periapsis: -6.6 km (❌)
+2025-07-08 20:55:56,464 - INFO -   Eccentricity: 0.0582 (❌)
+2025-07-08 20:55:56,465 - INFO -   Stage 3 propellant: 5.3% (✅)
+2025-07-08 20:55:56,465 - INFO -   Horizontal velocity: 7432 m/s (✅)
+2025-07-08 20:55:56,465 - INFO -   Overall success: ❌
+2025-07-08 20:55:56,465 - WARNING - Mission failed: Periapsis too low: -6.6 km < 150 km; Eccentricity too high: 0.0582 > 0.05
+2025-07-08 20:55:56,465 - INFO - === POST-FLIGHT ANALYSIS SUMMARY ===
+2025-07-08 20:55:56,465 - INFO - Max altitude: 276.0 km
+2025-07-08 20:55:56,466 - INFO - Final apoapsis: 277.8 km
+2025-07-08 20:55:56,466 - INFO - Final periapsis: -6.6 km
+2025-07-08 20:55:56,466 - INFO - Final eccentricity: 0.0582
+2025-07-08 20:55:56,466 - INFO - Final velocity: 8038 m/s
+2025-07-08 20:55:56,466 - INFO - Time to apoapsis: 38.4 s
+2025-07-08 20:55:56,466 - INFO - ===================================
+2025-07-08 20:55:56,467 - WARNING - ❌ Test 90 FAILED: Periapsis too low: -6.6 km < 150 km; Eccentricity too high: 0.0582 > 0.05
+2025-07-08 20:55:56,467 - INFO - Running test 95 with parameters: pitch_rate=1.6, final_pitch=11.0, stage3_offset=5.0
+2025-07-08 20:55:56,467 - INFO - Mission Validation Results:
+2025-07-08 20:55:56,467 - INFO -   Periapsis: -13.6 km (❌)
+2025-07-08 20:55:56,467 - INFO -   Eccentricity: 0.0768 (❌)
+2025-07-08 20:55:56,467 - INFO -   Stage 3 propellant: 8.2% (✅)
+2025-07-08 20:55:56,468 - INFO -   Horizontal velocity: 7346 m/s (❌)
+2025-07-08 20:55:56,468 - INFO -   Overall success: ❌
+2025-07-08 20:55:56,468 - WARNING - Mission failed: Periapsis too low: -13.6 km < 150 km; Eccentricity too high: 0.0768 > 0.05; Horizontal velocity too low: 7346 m/s < 7400 m/s
+2025-07-08 20:55:56,468 - INFO - === POST-FLIGHT ANALYSIS SUMMARY ===
+2025-07-08 20:55:56,468 - INFO - Max altitude: 283.0 km
+2025-07-08 20:55:56,468 - INFO - Final apoapsis: 273.4 km
+2025-07-08 20:55:56,468 - INFO - Final periapsis: -13.6 km
+2025-07-08 20:55:56,468 - INFO - Final eccentricity: 0.0768
+2025-07-08 20:55:56,468 - INFO - Final velocity: 8018 m/s
+2025-07-08 20:55:56,468 - INFO - Time to apoapsis: 53.9 s
+2025-07-08 20:55:56,468 - INFO - ===================================
+2025-07-08 20:55:56,469 - WARNING - ❌ Test 95 FAILED: Periapsis too low: -13.6 km < 150 km; Eccentricity too high: 0.0768 > 0.05; Horizontal velocity too low: 7346 m/s < 7400 m/s
+2025-07-08 20:55:56,469 - INFO - Running test 99 with parameters: pitch_rate=1.6, final_pitch=12.0, stage3_offset=2.5
+2025-07-08 20:55:56,469 - INFO - Mission Validation Results:
+2025-07-08 20:55:56,470 - INFO -   Periapsis: 39.1 km (❌)
+2025-07-08 20:55:56,470 - INFO -   Eccentricity: 0.0757 (❌)
+2025-07-08 20:55:56,470 - INFO -   Stage 3 propellant: 7.9% (✅)
+2025-07-08 20:55:56,470 - INFO -   Horizontal velocity: 7436 m/s (✅)
+2025-07-08 20:55:56,470 - INFO -   Overall success: ❌
+2025-07-08 20:55:56,470 - WARNING - Mission failed: Periapsis too low: 39.1 km < 150 km; Eccentricity too high: 0.0757 > 0.05
+2025-07-08 20:55:56,471 - INFO - === POST-FLIGHT ANALYSIS SUMMARY ===
+2025-07-08 20:55:56,471 - INFO - Max altitude: 286.6 km
+2025-07-08 20:55:56,471 - INFO - Final apoapsis: 278.6 km
+2025-07-08 20:55:56,471 - INFO - Final periapsis: 39.1 km
+2025-07-08 20:55:56,471 - INFO - Final eccentricity: 0.0757
+2025-07-08 20:55:56,472 - INFO - Final velocity: 7769 m/s
+2025-07-08 20:55:56,472 - INFO - Time to apoapsis: 49.1 s
+2025-07-08 20:55:56,472 - INFO - ===================================
+2025-07-08 20:55:56,473 - WARNING - ❌ Test 99 FAILED: Periapsis too low: 39.1 km < 150 km; Eccentricity too high: 0.0757 > 0.05
+2025-07-08 20:55:56,473 - INFO - Running test 103 with parameters: pitch_rate=1.7, final_pitch=8.0, stage3_offset=0.0
+2025-07-08 20:55:56,473 - INFO - Mission Validation Results:
+2025-07-08 20:55:56,474 - INFO -   Periapsis: -4.2 km (❌)
+2025-07-08 20:55:56,474 - INFO -   Eccentricity: 0.0727 (❌)
+2025-07-08 20:55:56,474 - INFO -   Stage 3 propellant: 12.7% (✅)
+2025-07-08 20:55:56,474 - INFO -   Horizontal velocity: 7413 m/s (✅)
+2025-07-08 20:55:56,475 - INFO -   Overall success: ❌
+2025-07-08 20:55:56,475 - WARNING - Mission failed: Periapsis too low: -4.2 km < 150 km; Eccentricity too high: 0.0727 > 0.05
+2025-07-08 20:55:56,475 - INFO - === POST-FLIGHT ANALYSIS SUMMARY ===
+2025-07-08 20:55:56,475 - INFO - Max altitude: 278.1 km
+2025-07-08 20:55:56,476 - INFO - Final apoapsis: 267.5 km
+2025-07-08 20:55:56,476 - INFO - Final periapsis: -4.2 km
+2025-07-08 20:55:56,476 - INFO - Final eccentricity: 0.0727
+2025-07-08 20:55:56,476 - INFO - Final velocity: 7583 m/s
+2025-07-08 20:55:56,476 - INFO - Time to apoapsis: 47.2 s
+2025-07-08 20:55:56,477 - INFO - ===================================
+2025-07-08 20:55:56,477 - WARNING - ❌ Test 103 FAILED: Periapsis too low: -4.2 km < 150 km; Eccentricity too high: 0.0727 > 0.05
+2025-07-08 20:55:56,477 - INFO - Running test 107 with parameters: pitch_rate=1.7, final_pitch=9.0, stage3_offset=-2.5
+2025-07-08 20:55:56,478 - INFO - Mission Validation Results:
+2025-07-08 20:55:56,478 - INFO -   Periapsis: -12.1 km (❌)
+2025-07-08 20:55:56,478 - INFO -   Eccentricity: 0.0355 (✅)
+2025-07-08 20:55:56,478 - INFO -   Stage 3 propellant: 7.1% (✅)
+2025-07-08 20:55:56,478 - INFO -   Horizontal velocity: 7336 m/s (❌)
+2025-07-08 20:55:56,478 - INFO -   Overall success: ❌
+2025-07-08 20:55:56,478 - WARNING - Mission failed: Periapsis too low: -12.1 km < 150 km; Horizontal velocity too low: 7336 m/s < 7400 m/s
+2025-07-08 20:55:56,478 - INFO - === POST-FLIGHT ANALYSIS SUMMARY ===
+2025-07-08 20:55:56,479 - INFO - Max altitude: 281.7 km
+2025-07-08 20:55:56,479 - INFO - Final apoapsis: 284.9 km
+2025-07-08 20:55:56,479 - INFO - Final periapsis: -12.1 km
+2025-07-08 20:55:56,479 - INFO - Final eccentricity: 0.0355
+2025-07-08 20:55:56,479 - INFO - Final velocity: 7611 m/s
+2025-07-08 20:55:56,479 - INFO - Time to apoapsis: 44.4 s
+2025-07-08 20:55:56,479 - INFO - ===================================
+2025-07-08 20:55:56,480 - WARNING - ❌ Test 107 FAILED: Periapsis too low: -12.1 km < 150 km; Horizontal velocity too low: 7336 m/s < 7400 m/s
+2025-07-08 20:55:56,480 - INFO - Running test 112 with parameters: pitch_rate=1.7, final_pitch=10.0, stage3_offset=-2.5
+2025-07-08 20:55:56,480 - INFO - Mission Validation Results:
+2025-07-08 20:55:56,480 - INFO -   Periapsis: -25.3 km (❌)
+2025-07-08 20:55:56,480 - INFO -   Eccentricity: 0.0767 (❌)
+2025-07-08 20:55:56,480 - INFO -   Stage 3 propellant: 9.2% (✅)
+2025-07-08 20:55:56,480 - INFO -   Horizontal velocity: 7300 m/s (❌)
+2025-07-08 20:55:56,480 - INFO -   Overall success: ❌
+2025-07-08 20:55:56,481 - WARNING - Mission failed: Periapsis too low: -25.3 km < 150 km; Eccentricity too high: 0.0767 > 0.05; Horizontal velocity too low: 7300 m/s < 7400 m/s
+2025-07-08 20:55:56,481 - INFO - === POST-FLIGHT ANALYSIS SUMMARY ===
+2025-07-08 20:55:56,481 - INFO - Max altitude: 282.4 km
+2025-07-08 20:55:56,481 - INFO - Final apoapsis: 294.8 km
+2025-07-08 20:55:56,481 - INFO - Final periapsis: -25.3 km
+2025-07-08 20:55:56,481 - INFO - Final eccentricity: 0.0767
+2025-07-08 20:55:56,481 - INFO - Final velocity: 7868 m/s
+2025-07-08 20:55:56,481 - INFO - Time to apoapsis: 43.6 s
+2025-07-08 20:55:56,481 - INFO - ===================================
+2025-07-08 20:55:56,482 - WARNING - ❌ Test 112 FAILED: Periapsis too low: -25.3 km < 150 km; Eccentricity too high: 0.0767 > 0.05; Horizontal velocity too low: 7300 m/s < 7400 m/s
+2025-07-08 20:55:56,482 - INFO - Running test 116 with parameters: pitch_rate=1.7, final_pitch=11.0, stage3_offset=-5.0
+2025-07-08 20:55:56,482 - INFO - Mission Validation Results:
+2025-07-08 20:55:56,482 - INFO -   Periapsis: -23.6 km (❌)
+2025-07-08 20:55:56,482 - INFO -   Eccentricity: 0.0644 (❌)
+2025-07-08 20:55:56,482 - INFO -   Stage 3 propellant: 7.9% (✅)
+2025-07-08 20:55:56,482 - INFO -   Horizontal velocity: 7521 m/s (✅)
+2025-07-08 20:55:56,482 - INFO -   Overall success: ❌
+2025-07-08 20:55:56,483 - WARNING - Mission failed: Periapsis too low: -23.6 km < 150 km; Eccentricity too high: 0.0644 > 0.05
+2025-07-08 20:55:56,483 - INFO - === POST-FLIGHT ANALYSIS SUMMARY ===
+2025-07-08 20:55:56,483 - INFO - Max altitude: 277.1 km
+2025-07-08 20:55:56,483 - INFO - Final apoapsis: 265.1 km
+2025-07-08 20:55:56,483 - INFO - Final periapsis: -23.6 km
+2025-07-08 20:55:56,483 - INFO - Final eccentricity: 0.0644
+2025-07-08 20:55:56,483 - INFO - Final velocity: 7815 m/s
+2025-07-08 20:55:56,483 - INFO - Time to apoapsis: 43.8 s
+2025-07-08 20:55:56,483 - INFO - ===================================
+2025-07-08 20:55:56,484 - WARNING - ❌ Test 116 FAILED: Periapsis too low: -23.6 km < 150 km; Eccentricity too high: 0.0644 > 0.05
+2025-07-08 20:55:56,484 - INFO - Running test 120 with parameters: pitch_rate=1.7, final_pitch=11.0, stage3_offset=5.0
+2025-07-08 20:55:56,484 - INFO - Mission Validation Results:
+2025-07-08 20:55:56,484 - INFO -   Periapsis: 41.5 km (❌)
+2025-07-08 20:55:56,484 - INFO -   Eccentricity: 0.0565 (❌)
+2025-07-08 20:55:56,484 - INFO -   Stage 3 propellant: 7.9% (✅)
+2025-07-08 20:55:56,484 - INFO -   Horizontal velocity: 7238 m/s (❌)
+2025-07-08 20:55:56,485 - INFO -   Overall success: ❌
+2025-07-08 20:55:56,485 - WARNING - Mission failed: Periapsis too low: 41.5 km < 150 km; Eccentricity too high: 0.0565 > 0.05; Horizontal velocity too low: 7238 m/s < 7400 m/s
+2025-07-08 20:55:56,485 - INFO - === POST-FLIGHT ANALYSIS SUMMARY ===
+2025-07-08 20:55:56,485 - INFO - Max altitude: 291.6 km
+2025-07-08 20:55:56,485 - INFO - Final apoapsis: 281.5 km
+2025-07-08 20:55:56,485 - INFO - Final periapsis: 41.5 km
+2025-07-08 20:55:56,485 - INFO - Final eccentricity: 0.0565
+2025-07-08 20:55:56,485 - INFO - Final velocity: 7926 m/s
+2025-07-08 20:55:56,485 - INFO - Time to apoapsis: 47.0 s
+2025-07-08 20:55:56,485 - INFO - ===================================
+2025-07-08 20:55:56,486 - WARNING - ❌ Test 120 FAILED: Periapsis too low: 41.5 km < 150 km; Eccentricity too high: 0.0565 > 0.05; Horizontal velocity too low: 7238 m/s < 7400 m/s
+2025-07-08 20:55:56,486 - INFO - Running test 125 with parameters: pitch_rate=1.7, final_pitch=12.0, stage3_offset=5.0
+2025-07-08 20:55:56,486 - INFO - Mission Validation Results:
+2025-07-08 20:55:56,487 - INFO -   Periapsis: 1.2 km (❌)
+2025-07-08 20:55:56,487 - INFO -   Eccentricity: 0.0461 (✅)
+2025-07-08 20:55:56,487 - INFO -   Stage 3 propellant: 7.2% (✅)
+2025-07-08 20:55:56,487 - INFO -   Horizontal velocity: 7107 m/s (❌)
+2025-07-08 20:55:56,487 - INFO -   Overall success: ❌
+2025-07-08 20:55:56,487 - WARNING - Mission failed: Periapsis too low: 1.2 km < 150 km; Horizontal velocity too low: 7107 m/s < 7400 m/s
+2025-07-08 20:55:56,487 - INFO - === POST-FLIGHT ANALYSIS SUMMARY ===
+2025-07-08 20:55:56,487 - INFO - Max altitude: 281.6 km
+2025-07-08 20:55:56,488 - INFO - Final apoapsis: 273.0 km
+2025-07-08 20:55:56,488 - INFO - Final periapsis: 1.2 km
+2025-07-08 20:55:56,488 - INFO - Final eccentricity: 0.0461
+2025-07-08 20:55:56,488 - INFO - Final velocity: 7863 m/s
+2025-07-08 20:55:56,489 - INFO - Time to apoapsis: 46.0 s
+2025-07-08 20:55:56,489 - INFO - ===================================
+2025-07-08 20:55:56,489 - WARNING - ❌ Test 125 FAILED: Periapsis too low: 1.2 km < 150 km; Horizontal velocity too low: 7107 m/s < 7400 m/s
+2025-07-08 20:55:56,491 - INFO - Summary report saved to parameter_sweep_summary.json
+2025-07-08 20:55:56,491 - INFO - Parameter sweep completed in 0.2 seconds
+2025-07-08 20:55:56,491 - INFO - Success rate: 0/30 (0.0%)
+2025-07-08 20:55:56,492 - WARNING - pandas not available, skipping correlation analysis
+2025-07-08 20:56:24,584 - INFO - Starting nominal run validation...
+2025-07-08 20:56:24,585 - INFO - Target: 3/5 runs must succeed
+2025-07-08 20:56:24,585 - INFO - Running nominal test 1/10...
+2025-07-08 20:56:24,601 - INFO - Mission Validation Results:
+2025-07-08 20:56:24,601 - INFO -   Periapsis: 157.1 km (✅)
+2025-07-08 20:56:24,601 - INFO -   Eccentricity: 0.0705 (❌)
+2025-07-08 20:56:24,601 - INFO -   Stage 3 propellant: 8.9% (✅)
+2025-07-08 20:56:24,601 - INFO -   Horizontal velocity: 7379 m/s (❌)
+2025-07-08 20:56:24,601 - INFO -   Overall success: ❌
+2025-07-08 20:56:24,601 - WARNING - Mission failed: Eccentricity too high: 0.0705 > 0.05; Horizontal velocity too low: 7379 m/s < 7400 m/s
+2025-07-08 20:56:24,601 - INFO - === POST-FLIGHT ANALYSIS SUMMARY ===
+2025-07-08 20:56:24,601 - INFO - Max altitude: 180.2 km
+2025-07-08 20:56:24,601 - INFO - Final apoapsis: 180.9 km
+2025-07-08 20:56:24,601 - INFO - Final periapsis: 157.1 km
+2025-07-08 20:56:24,602 - INFO - Final eccentricity: 0.0705
+2025-07-08 20:56:24,602 - INFO - Final velocity: 7773 m/s
+2025-07-08 20:56:24,602 - INFO - Time to apoapsis: 46.0 s
+2025-07-08 20:56:24,602 - INFO - ===================================
+2025-07-08 20:56:24,602 - WARNING - ❌ Run 1 FAILED - Periapsis: 157.1 km, Eccentricity: 0.0705
+2025-07-08 20:56:24,602 - INFO - Running nominal test 2/10...
+2025-07-08 20:56:24,602 - INFO - Mission Validation Results:
+2025-07-08 20:56:24,602 - INFO -   Periapsis: 164.2 km (✅)
+2025-07-08 20:56:24,602 - INFO -   Eccentricity: 0.0383 (✅)
+2025-07-08 20:56:24,602 - INFO -   Stage 3 propellant: 6.5% (✅)
+2025-07-08 20:56:24,602 - INFO -   Horizontal velocity: 7314 m/s (❌)
+2025-07-08 20:56:24,602 - INFO -   Overall success: ❌
+2025-07-08 20:56:24,602 - WARNING - Mission failed: Horizontal velocity too low: 7314 m/s < 7400 m/s
+2025-07-08 20:56:24,602 - INFO - === POST-FLIGHT ANALYSIS SUMMARY ===
+2025-07-08 20:56:24,602 - INFO - Max altitude: 179.8 km
+2025-07-08 20:56:24,603 - INFO - Final apoapsis: 177.3 km
+2025-07-08 20:56:24,603 - INFO - Final periapsis: 164.2 km
+2025-07-08 20:56:24,603 - INFO - Final eccentricity: 0.0383
+2025-07-08 20:56:24,603 - INFO - Final velocity: 7720 m/s
+2025-07-08 20:56:24,603 - INFO - Time to apoapsis: 48.7 s
+2025-07-08 20:56:24,603 - INFO - ===================================
+2025-07-08 20:56:24,603 - WARNING - ❌ Run 2 FAILED - Periapsis: 164.2 km, Eccentricity: 0.0383
+2025-07-08 20:56:24,603 - INFO - Running nominal test 3/10...
+2025-07-08 20:56:24,603 - INFO - Mission Validation Results:
+2025-07-08 20:56:24,603 - INFO -   Periapsis: 160.8 km (✅)
+2025-07-08 20:56:24,603 - INFO -   Eccentricity: 0.0565 (❌)
+2025-07-08 20:56:24,603 - INFO -   Stage 3 propellant: 6.7% (✅)
+2025-07-08 20:56:24,603 - INFO -   Horizontal velocity: 7270 m/s (❌)
+2025-07-08 20:56:24,603 - INFO -   Overall success: ❌
+2025-07-08 20:56:24,603 - WARNING - Mission failed: Eccentricity too high: 0.0565 > 0.05; Horizontal velocity too low: 7270 m/s < 7400 m/s
+2025-07-08 20:56:24,603 - INFO - === POST-FLIGHT ANALYSIS SUMMARY ===
+2025-07-08 20:56:24,604 - INFO - Max altitude: 179.3 km
+2025-07-08 20:56:24,604 - INFO - Final apoapsis: 180.1 km
+2025-07-08 20:56:24,604 - INFO - Final periapsis: 160.8 km
+2025-07-08 20:56:24,604 - INFO - Final eccentricity: 0.0565
+2025-07-08 20:56:24,604 - INFO - Final velocity: 7790 m/s
+2025-07-08 20:56:24,604 - INFO - Time to apoapsis: 45.6 s
+2025-07-08 20:56:24,604 - INFO - ===================================
+2025-07-08 20:56:24,604 - WARNING - ❌ Run 3 FAILED - Periapsis: 160.8 km, Eccentricity: 0.0565
+2025-07-08 20:56:24,604 - INFO - Running nominal test 4/10...
+2025-07-08 20:56:24,604 - INFO - Mission Validation Results:
+2025-07-08 20:56:24,604 - INFO -   Periapsis: 163.9 km (✅)
+2025-07-08 20:56:24,604 - INFO -   Eccentricity: 0.0525 (❌)
+2025-07-08 20:56:24,604 - INFO -   Stage 3 propellant: 8.4% (✅)
+2025-07-08 20:56:24,604 - INFO -   Horizontal velocity: 7391 m/s (❌)
+2025-07-08 20:56:24,604 - INFO -   Overall success: ❌
+2025-07-08 20:56:24,604 - WARNING - Mission failed: Eccentricity too high: 0.0525 > 0.05; Horizontal velocity too low: 7391 m/s < 7400 m/s
+2025-07-08 20:56:24,604 - INFO - === POST-FLIGHT ANALYSIS SUMMARY ===
+2025-07-08 20:56:24,605 - INFO - Max altitude: 183.7 km
+2025-07-08 20:56:24,605 - INFO - Final apoapsis: 182.1 km
+2025-07-08 20:56:24,605 - INFO - Final periapsis: 163.9 km
+2025-07-08 20:56:24,605 - INFO - Final eccentricity: 0.0525
+2025-07-08 20:56:24,605 - INFO - Final velocity: 7760 m/s
+2025-07-08 20:56:24,605 - INFO - Time to apoapsis: 44.9 s
+2025-07-08 20:56:24,605 - INFO - ===================================
+2025-07-08 20:56:24,605 - WARNING - ❌ Run 4 FAILED - Periapsis: 163.9 km, Eccentricity: 0.0525
+2025-07-08 20:56:24,605 - INFO - Running nominal test 5/10...
+2025-07-08 20:56:24,605 - INFO - Mission Validation Results:
+2025-07-08 20:56:24,605 - INFO -   Periapsis: 164.2 km (✅)
+2025-07-08 20:56:24,605 - INFO -   Eccentricity: 0.0374 (✅)
+2025-07-08 20:56:24,605 - INFO -   Stage 3 propellant: 6.9% (✅)
+2025-07-08 20:56:24,605 - INFO -   Horizontal velocity: 7490 m/s (✅)
+2025-07-08 20:56:24,606 - INFO -   Overall success: ✅
+2025-07-08 20:56:24,606 - INFO - === POST-FLIGHT ANALYSIS SUMMARY ===
+2025-07-08 20:56:24,606 - INFO - Max altitude: 178.8 km
+2025-07-08 20:56:24,606 - INFO - Final apoapsis: 176.9 km
+2025-07-08 20:56:24,606 - INFO - Final periapsis: 164.2 km
+2025-07-08 20:56:24,606 - INFO - Final eccentricity: 0.0374
+2025-07-08 20:56:24,606 - INFO - Final velocity: 7832 m/s
+2025-07-08 20:56:24,606 - INFO - Time to apoapsis: 43.0 s
+2025-07-08 20:56:24,606 - INFO - ===================================
+2025-07-08 20:56:24,606 - INFO - ✅ Run 5 SUCCESS - Periapsis: 164.2 km, Eccentricity: 0.0374
+2025-07-08 20:56:24,607 - INFO - 
+==================================================
+2025-07-08 20:56:24,607 - INFO - NOMINAL RUN VALIDATION SUMMARY
+2025-07-08 20:56:24,607 - INFO - ==================================================
+2025-07-08 20:56:24,607 - INFO - ❌ VALIDATION FAILED
+2025-07-08 20:56:24,607 - INFO - Success rate: 1/5 (20.0%)
+2025-07-08 20:56:24,607 - INFO - Required: ≥ 3/5 runs
+2025-07-08 20:56:24,607 - INFO - 
+Performance Statistics (successful runs):
+2025-07-08 20:56:24,607 - INFO -   Periapsis: 164.2 ± 0.0 km
+2025-07-08 20:56:24,607 - INFO -   Eccentricity: 0.0374 ± 0.0000
+2025-07-08 20:56:24,607 - INFO -   Stage 3 propellant: 6.9% ± 0.0%
+2025-07-08 20:56:24,607 - INFO - 
+Failed runs: [1, 2, 3, 4]
+2025-07-08 20:56:24,607 - INFO - 
+Total execution time: 0.0 seconds
+2025-07-08 20:56:24,607 - INFO - ==================================================
+2025-07-08 20:56:24,608 - INFO - Results saved to nominal_validation_summary.json and nominal_validation_results.csv
+2025-07-08 20:56:24,608 - WARNING - ❌ System NOT ready for Monte Carlo analysis
+2025-07-08 20:56:24,608 - WARNING - Nominal validation failed: 1/5 runs successful
+2025-07-08 20:56:24,608 - WARNING - Required: ≥ 3 successful runs

@@ -1,0 +1,9 @@
+{
+  "total_runs": 30,
+  "successful_runs": 0,
+  "success_rate": 0.0,
+  "elapsed_time_seconds": 0.19187092781066895,
+  "timestamp": "2025-07-08 20:55:56",
+  "config_file": "sweep_config.yaml",
+  "results_file": "sweep_results.csv"
+}

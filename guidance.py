@@ -67,17 +67,119 @@ def apply_pitch_rate_limiting(target_pitch: float, current_time: float, altitude
 
 def get_target_pitch_angle(altitude: float, velocity: float, time: float = 0) -> float:
     """
-    Calculate target pitch angle based on a balanced pitch-over maneuver.
+    Calculate target pitch angle based on altitude/velocity triggers.
+    Professor v36: Refactored to use altitude/velocity triggers for optimal gravity turn
+    Target: Horizontal velocity ≥ 7.4 km/s by 220 km altitude
     """
-    # Initial vertical ascent for 20 seconds
-    if time < 20:
+    # Initial vertical ascent until 10 km altitude
+    if altitude < 10000:
         return 90.0
-    # Gradual pitch-over
-    elif time < 120:
-        return 90.0 - (time - 20) * 0.75  # 0.75 deg/s pitch rate
-    # Continue to horizontal
+    
+    # Early pitch-over phase: 10-50 km altitude
+    elif altitude < 50000:
+        # Aggressive pitch-over to build horizontal velocity
+        progress = (altitude - 10000) / 40000  # 0 to 1
+        return 90.0 - progress * 45.0  # 90° to 45°
+    
+    # Mid-flight phase: 50-150 km altitude
+    elif altitude < 150000:
+        # Continue pitch-over based on velocity ratio
+        horizontal_velocity = velocity * np.cos(np.radians(get_current_pitch_from_velocity(velocity)))
+        target_horizontal_velocity = 7400  # 7.4 km/s target
+        
+        if horizontal_velocity < target_horizontal_velocity:
+            # More aggressive pitch if behind velocity target
+            progress = (altitude - 50000) / 100000  # 0 to 1
+            return 45.0 - progress * 25.0  # 45° to 20°
+        else:
+            # More conservative if ahead of velocity target
+            progress = (altitude - 50000) / 100000  # 0 to 1
+            return 45.0 - progress * 15.0  # 45° to 30°
+    
+    # High altitude phase: 150+ km altitude
+    else:
+        # Final approach to horizontal based on velocity
+        horizontal_velocity = velocity * np.cos(np.radians(get_current_pitch_from_velocity(velocity)))
+        target_horizontal_velocity = 7400  # 7.4 km/s target
+        
+        if horizontal_velocity < target_horizontal_velocity:
+            # Stay more vertical to build horizontal velocity
+            return max(15.0, 30.0 - (altitude - 150000) / 10000)
+        else:
+            # Approach horizontal for circularization
+            return max(10.0, 20.0 - (altitude - 150000) / 20000)
+
+def get_current_pitch_from_velocity(velocity: float) -> float:
+    """Helper function to estimate current pitch from velocity magnitude"""
+    # Simple approximation based on typical ascent profile
+    if velocity < 1000:
+        return 90.0
+    elif velocity < 3000:
+        return 60.0
+    elif velocity < 5000:
+        return 30.0
     else:
         return 15.0
+
+def plan_circularization_burn(state) -> float:
+    """
+    Plan delta-V to raise periapsis at next apoapsis.
+    Professor v36: Auto-planned circularization burn implementation
+    
+    Args:
+        state: Mission state object with orbital parameters
+        
+    Returns:
+        Required delta-V in m/s to circularize orbit
+    """
+    # Earth gravitational parameter (m³/s²)
+    mu = 3.986004418e14  # Earth standard gravitational parameter
+    
+    # Get current orbital parameters
+    r_apo = state.r_apo if hasattr(state, 'r_apo') else state.apoapsis + 6.371e6
+    r_peri = state.r_peri if hasattr(state, 'r_peri') else state.periapsis + 6.371e6
+    
+    # Current velocity at apoapsis
+    v_apo_current = np.sqrt(mu * (2/r_apo - 2/(r_apo + r_peri)))
+    
+    # Target circular velocity at apoapsis
+    v_apo_circular = np.sqrt(mu / r_apo)
+    
+    # Required delta-V
+    dv_required = v_apo_circular - v_apo_current
+    
+    # Return positive delta-V only (no negative burns)
+    return max(dv_required, 0.0)
+
+def should_start_circularization_burn(mission, current_time: float) -> bool:
+    """
+    Determine if circularization burn should start.
+    Professor v36: Start burn ~20 seconds before apoapsis
+    
+    Args:
+        mission: Mission object with orbital state
+        current_time: Current mission time
+        
+    Returns:
+        True if burn should start, False otherwise
+    """
+    # Get time to apoapsis
+    try:
+        time_to_apoapsis = mission.get_time_to_apoapsis()
+        
+        # Start burn 20 seconds before apoapsis
+        if time_to_apoapsis <= 20.0 and time_to_apoapsis > 0:
+            return True
+    except:
+        # Fallback: use altitude-based trigger
+        altitude = mission.get_altitude()
+        apoapsis = mission.get_apoapsis()
+        
+        # Start if within 5 km of apoapsis
+        if abs(altitude - apoapsis) <= 5000:
+            return True
+    
+    return False
 
 def compute_thrust_direction(mission, t: float, thrust_magnitude: float) -> Vector3:
     """

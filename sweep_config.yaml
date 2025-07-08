@@ -1,0 +1,104 @@
+# Parameter Sweep Configuration for Saturn V LEO Optimization
+# Professor v36: Parameter sweep tests for stable 160x160 km LEO
+# Target: Periapsis > 150 km, Eccentricity < 0.05
+
+# Test parameters based on professor's guidance
+parameters:
+  # Early pitch rate variations (1.3-1.7 °/s)
+  early_pitch_rate:
+    min: 1.3
+    max: 1.7
+    step: 0.1
+    unit: "degrees/second"
+    description: "Pitch rate during early ascent phase"
+  
+  # Final target pitch variations (8-12°)
+  final_target_pitch:
+    min: 8.0
+    max: 12.0
+    step: 1.0
+    unit: "degrees"
+    description: "Final pitch angle for orbital insertion"
+  
+  # Stage 3 ignition timing offset (±5 seconds)
+  stage3_ignition_offset:
+    min: -5.0
+    max: 5.0
+    step: 2.5
+    unit: "seconds"
+    description: "Timing offset for Stage 3 ignition"
+
+# Success criteria
+success_criteria:
+  periapsis_km:
+    min: 150.0
+    target: 160.0
+    description: "Minimum periapsis for stable orbit"
+  
+  eccentricity:
+    max: 0.05
+    target: 0.0
+    description: "Maximum eccentricity for circular orbit"
+  
+  apoapsis_km:
+    min: 150.0
+    max: 250.0
+    target: 160.0
+    description: "Target apoapsis for LEO"
+  
+  stage3_propellant_margin:
+    min: 0.05
+    description: "Minimum 5% propellant remaining in Stage 3"
+
+# Test configuration
+test_config:
+  total_runs: 30
+  timeout_seconds: 300
+  log_file: "sweep_results.csv"
+  
+  # Output metrics to track
+  metrics:
+    - "apoapsis_km"
+    - "periapsis_km"
+    - "eccentricity"
+    - "max_altitude_km"
+    - "final_velocity_ms"
+    - "stage3_propellant_remaining"
+    - "mission_success"
+    - "time_to_apoapsis"
+    - "horizontal_velocity_at_220km"
+
+# Contingency parameters (if initial sweep fails)
+contingency:
+  periapsis_boost_ms:
+    description: "Additional Stage 3 delta-V if periapsis < 0"
+    default: 50.0
+    max: 200.0
+  
+  pitch_rate_reduction:
+    description: "Reduce early pitch rate if eccentricity > 0.1"
+    default: 0.1
+    unit: "degrees/second"
+  
+  pitch_delay_seconds:
+    description: "Delay initial pitch if Max-Q violation"
+    default: 2.0
+    max: 10.0
+
+# Logging configuration
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(levelname)s - %(message)s"
+  file: "parameter_sweep.log"
+  
+  # Detailed telemetry for analysis
+  telemetry:
+    enabled: true
+    sample_rate: 1.0  # seconds
+    fields:
+      - "time"
+      - "altitude"
+      - "velocity"
+      - "pitch_angle"
+      - "stage"
+      - "propellant_remaining"

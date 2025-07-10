@@ -621,3 +621,99 @@ Total execution time: 0.0 seconds
 2025-07-08 20:56:24,608 - WARNING - ❌ System NOT ready for Monte Carlo analysis
 2025-07-08 20:56:24,608 - WARNING - Nominal validation failed: 1/5 runs successful
 2025-07-08 20:56:24,608 - WARNING - Required: ≥ 3 successful runs
+2025-07-10 21:02:48,268 - INFO - Starting parameter sweep...
+2025-07-10 21:02:48,271 - INFO - Generated 30 parameter sets for testing
+2025-07-10 21:02:48,271 - INFO - Running test 1 with parameters: pitch_rate=1.6, final_pitch=7.0, stage3_offset=-30.0
+2025-07-10 21:02:48,286 - ERROR - Error in test 1: [Errno 2] No such file or directory: 'python'
+2025-07-10 21:02:48,286 - WARNING - ❌ Test 1 FAILED: [Errno 2] No such file or directory: 'python'
+2025-07-10 21:02:48,286 - INFO - Running test 4 with parameters: pitch_rate=1.6, final_pitch=7.0, stage3_offset=-15.0
+2025-07-10 21:02:48,299 - ERROR - Error in test 4: [Errno 2] No such file or directory: 'python'
+2025-07-10 21:02:48,299 - WARNING - ❌ Test 4 FAILED: [Errno 2] No such file or directory: 'python'
+2025-07-10 21:02:48,299 - INFO - Running test 7 with parameters: pitch_rate=1.6, final_pitch=7.5, stage3_offset=-20.0
+2025-07-10 21:02:48,304 - ERROR - Error in test 7: [Errno 2] No such file or directory: 'python'
+2025-07-10 21:02:48,304 - WARNING - ❌ Test 7 FAILED: [Errno 2] No such file or directory: 'python'
+2025-07-10 21:02:48,304 - INFO - Running test 11 with parameters: pitch_rate=1.6, final_pitch=8.0, stage3_offset=-20.0
+2025-07-10 21:02:48,309 - ERROR - Error in test 11: [Errno 2] No such file or directory: 'python'
+2025-07-10 21:02:48,310 - WARNING - ❌ Test 11 FAILED: [Errno 2] No such file or directory: 'python'
+2025-07-10 21:02:48,310 - INFO - Running test 14 with parameters: pitch_rate=1.6, final_pitch=8.5, stage3_offset=-25.0
+2025-07-10 21:02:48,316 - ERROR - Error in test 14: [Errno 2] No such file or directory: 'python'
+2025-07-10 21:02:48,317 - WARNING - ❌ Test 14 FAILED: [Errno 2] No such file or directory: 'python'
+2025-07-10 21:02:48,317 - INFO - Running test 18 with parameters: pitch_rate=1.6, final_pitch=9.0, stage3_offset=-25.0
+2025-07-10 21:02:48,321 - ERROR - Error in test 18: [Errno 2] No such file or directory: 'python'
+2025-07-10 21:02:48,322 - WARNING - ❌ Test 18 FAILED: [Errno 2] No such file or directory: 'python'
+2025-07-10 21:02:48,322 - INFO - Running test 21 with parameters: pitch_rate=1.6, final_pitch=7.0, stage3_offset=-30.0
+2025-07-10 21:02:48,326 - ERROR - Error in test 21: [Errno 2] No such file or directory: 'python'
+2025-07-10 21:02:48,326 - WARNING - ❌ Test 21 FAILED: [Errno 2] No such file or directory: 'python'
+2025-07-10 21:02:48,327 - INFO - Running test 24 with parameters: pitch_rate=1.6, final_pitch=7.0, stage3_offset=-15.0
+2025-07-10 21:02:48,333 - ERROR - Error in test 24: [Errno 2] No such file or directory: 'python'
+2025-07-10 21:02:48,333 - WARNING - ❌ Test 24 FAILED: [Errno 2] No such file or directory: 'python'
+2025-07-10 21:02:48,333 - INFO - Running test 28 with parameters: pitch_rate=1.6, final_pitch=7.5, stage3_offset=-15.0
+2025-07-10 21:02:48,337 - ERROR - Error in test 28: [Errno 2] No such file or directory: 'python'
+2025-07-10 21:02:48,338 - WARNING - ❌ Test 28 FAILED: [Errno 2] No such file or directory: 'python'
+2025-07-10 21:02:48,338 - INFO - Running test 31 with parameters: pitch_rate=1.6, final_pitch=8.0, stage3_offset=-20.0
+2025-07-10 21:02:48,342 - ERROR - Error in test 31: [Errno 2] No such file or directory: 'python'
+2025-07-10 21:02:48,343 - WARNING - ❌ Test 31 FAILED: [Errno 2] No such file or directory: 'python'
+2025-07-10 21:02:48,343 - INFO - Running test 35 with parameters: pitch_rate=1.6, final_pitch=8.5, stage3_offset=-20.0
+2025-07-10 21:02:48,349 - ERROR - Error in test 35: [Errno 2] No such file or directory: 'python'
+2025-07-10 21:02:48,350 - WARNING - ❌ Test 35 FAILED: [Errno 2] No such file or directory: 'python'
+2025-07-10 21:02:48,350 - INFO - Running test 38 with parameters: pitch_rate=1.6, final_pitch=9.0, stage3_offset=-25.0
+2025-07-10 21:02:48,354 - ERROR - Error in test 38: [Errno 2] No such file or directory: 'python'
+2025-07-10 21:02:48,354 - WARNING - ❌ Test 38 FAILED: [Errno 2] No such file or directory: 'python'
+2025-07-10 21:02:48,354 - INFO - Running test 41 with parameters: pitch_rate=1.6, final_pitch=7.0, stage3_offset=-30.0
+2025-07-10 21:02:48,359 - ERROR - Error in test 41: [Errno 2] No such file or directory: 'python'
+2025-07-10 21:02:48,360 - WARNING - ❌ Test 41 FAILED: [Errno 2] No such file or directory: 'python'
+2025-07-10 21:02:48,360 - INFO - Running test 45 with parameters: pitch_rate=1.6, final_pitch=7.5, stage3_offset=-30.0
+2025-07-10 21:02:48,367 - ERROR - Error in test 45: [Errno 2] No such file or directory: 'python'
+2025-07-10 21:02:48,368 - WARNING - ❌ Test 45 FAILED: [Errno 2] No such file or directory: 'python'
+2025-07-10 21:02:48,368 - INFO - Running test 48 with parameters: pitch_rate=1.6, final_pitch=7.5, stage3_offset=-15.0
+2025-07-10 21:02:48,372 - ERROR - Error in test 48: [Errno 2] No such file or directory: 'python'
+2025-07-10 21:02:48,373 - WARNING - ❌ Test 48 FAILED: [Errno 2] No such file or directory: 'python'
+2025-07-10 21:02:48,373 - INFO - Running test 52 with parameters: pitch_rate=1.6, final_pitch=8.0, stage3_offset=-15.0
+2025-07-10 21:02:48,377 - ERROR - Error in test 52: [Errno 2] No such file or directory: 'python'
+2025-07-10 21:02:48,378 - WARNING - ❌ Test 52 FAILED: [Errno 2] No such file or directory: 'python'
+2025-07-10 21:02:48,378 - INFO - Running test 55 with parameters: pitch_rate=1.6, final_pitch=8.5, stage3_offset=-20.0
+2025-07-10 21:02:48,385 - ERROR - Error in test 55: [Errno 2] No such file or directory: 'python'
+2025-07-10 21:02:48,385 - WARNING - ❌ Test 55 FAILED: [Errno 2] No such file or directory: 'python'
+2025-07-10 21:02:48,385 - INFO - Running test 59 with parameters: pitch_rate=1.6, final_pitch=9.0, stage3_offset=-20.0
+2025-07-10 21:02:48,390 - ERROR - Error in test 59: [Errno 2] No such file or directory: 'python'
+2025-07-10 21:02:48,390 - WARNING - ❌ Test 59 FAILED: [Errno 2] No such file or directory: 'python'
+2025-07-10 21:02:48,390 - INFO - Running test 62 with parameters: pitch_rate=1.7, final_pitch=7.0, stage3_offset=-25.0
+2025-07-10 21:02:48,394 - ERROR - Error in test 62: [Errno 2] No such file or directory: 'python'
+2025-07-10 21:02:48,396 - WARNING - ❌ Test 62 FAILED: [Errno 2] No such file or directory: 'python'
+2025-07-10 21:02:48,396 - INFO - Running test 65 with parameters: pitch_rate=1.7, final_pitch=7.5, stage3_offset=-30.0
+2025-07-10 21:02:48,402 - ERROR - Error in test 65: [Errno 2] No such file or directory: 'python'
+2025-07-10 21:02:48,402 - WARNING - ❌ Test 65 FAILED: [Errno 2] No such file or directory: 'python'
+2025-07-10 21:02:48,402 - INFO - Running test 69 with parameters: pitch_rate=1.7, final_pitch=8.0, stage3_offset=-30.0
+2025-07-10 21:02:48,409 - ERROR - Error in test 69: [Errno 2] No such file or directory: 'python'
+2025-07-10 21:02:48,409 - WARNING - ❌ Test 69 FAILED: [Errno 2] No such file or directory: 'python'
+2025-07-10 21:02:48,410 - INFO - Running test 72 with parameters: pitch_rate=1.7, final_pitch=8.0, stage3_offset=-15.0
+2025-07-10 21:02:48,419 - ERROR - Error in test 72: [Errno 2] No such file or directory: 'python'
+2025-07-10 21:02:48,419 - WARNING - ❌ Test 72 FAILED: [Errno 2] No such file or directory: 'python'
+2025-07-10 21:02:48,419 - INFO - Running test 76 with parameters: pitch_rate=1.7, final_pitch=8.5, stage3_offset=-15.0
+2025-07-10 21:02:48,426 - ERROR - Error in test 76: [Errno 2] No such file or directory: 'python'
+2025-07-10 21:02:48,427 - WARNING - ❌ Test 76 FAILED: [Errno 2] No such file or directory: 'python'
+2025-07-10 21:02:48,427 - INFO - Running test 79 with parameters: pitch_rate=1.7, final_pitch=9.0, stage3_offset=-20.0
+2025-07-10 21:02:48,436 - ERROR - Error in test 79: [Errno 2] No such file or directory: 'python'
+2025-07-10 21:02:48,437 - WARNING - ❌ Test 79 FAILED: [Errno 2] No such file or directory: 'python'
+2025-07-10 21:02:48,437 - INFO - Running test 82 with parameters: pitch_rate=1.8, final_pitch=7.0, stage3_offset=-25.0
+2025-07-10 21:02:48,444 - ERROR - Error in test 82: [Errno 2] No such file or directory: 'python'
+2025-07-10 21:02:48,446 - WARNING - ❌ Test 82 FAILED: [Errno 2] No such file or directory: 'python'
+2025-07-10 21:02:48,447 - INFO - Running test 86 with parameters: pitch_rate=1.8, final_pitch=7.5, stage3_offset=-25.0
+2025-07-10 21:02:48,455 - ERROR - Error in test 86: [Errno 2] No such file or directory: 'python'
+2025-07-10 21:02:48,456 - WARNING - ❌ Test 86 FAILED: [Errno 2] No such file or directory: 'python'
+2025-07-10 21:02:48,456 - INFO - Running test 89 with parameters: pitch_rate=1.8, final_pitch=8.0, stage3_offset=-30.0
+2025-07-10 21:02:48,466 - ERROR - Error in test 89: [Errno 2] No such file or directory: 'python'
+2025-07-10 21:02:48,467 - WARNING - ❌ Test 89 FAILED: [Errno 2] No such file or directory: 'python'
+2025-07-10 21:02:48,467 - INFO - Running test 93 with parameters: pitch_rate=1.8, final_pitch=8.5, stage3_offset=-30.0
+2025-07-10 21:02:48,474 - ERROR - Error in test 93: [Errno 2] No such file or directory: 'python'
+2025-07-10 21:02:48,474 - WARNING - ❌ Test 93 FAILED: [Errno 2] No such file or directory: 'python'
+2025-07-10 21:02:48,475 - INFO - Running test 96 with parameters: pitch_rate=1.8, final_pitch=8.5, stage3_offset=-15.0
+2025-07-10 21:02:48,486 - ERROR - Error in test 96: [Errno 2] No such file or directory: 'python'
+2025-07-10 21:02:48,487 - WARNING - ❌ Test 96 FAILED: [Errno 2] No such file or directory: 'python'
+2025-07-10 21:02:48,487 - INFO - Running test 100 with parameters: pitch_rate=1.8, final_pitch=9.0, stage3_offset=-15.0
+2025-07-10 21:02:48,493 - ERROR - Error in test 100: [Errno 2] No such file or directory: 'python'
+2025-07-10 21:02:48,493 - WARNING - ❌ Test 100 FAILED: [Errno 2] No such file or directory: 'python'
+2025-07-10 21:02:48,494 - INFO - Summary report saved to parameter_sweep_summary.json
+2025-07-10 21:02:48,494 - INFO - Parameter sweep completed in 0.2 seconds
+2025-07-10 21:02:48,494 - INFO - Success rate: 0/30 (0.0%)
+2025-07-10 21:02:48,495 - WARNING - pandas not available, skipping correlation analysis

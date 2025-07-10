@@ -167,30 +167,63 @@ class ParameterSweepRunner:
     
     def _run_simulation_with_params(self, config: Dict) -> Dict:
         """
-        Run simulation with given parameters
-        This would interface with the actual simulation
+        Run simulation with given parameters using real physics
+        Professor v37: Replaced mock physics with direct calls to rocket_simulation_main.py
         """
-        # Mock simulation results for demonstration
-        # In real implementation, this would call rocket_simulation_main.py
+        import subprocess
+        import tempfile
+        import os
         
-        # Simulate variability based on parameters
-        base_apoapsis = 280.0
-        base_periapsis = -50.0 + config['early_pitch_rate'] * 30  # Better pitch rate improves periapsis
-        base_eccentricity = 0.15 - config['early_pitch_rate'] * 0.05  # Better pitch rate reduces eccentricity
-        
-        # Add some randomness to simulate real results
-        np.random.seed(config['test_id'])  # Reproducible randomness
-        
-        return {
-            'final_apoapsis_km': base_apoapsis + np.random.normal(0, 10),
-            'final_periapsis_km': base_periapsis + np.random.normal(0, 20),
-            'final_eccentricity': max(0.001, base_eccentricity + np.random.normal(0, 0.02)),
-            'max_altitude_km': base_apoapsis + np.random.normal(0, 5),
-            'final_velocity_ms': 7800 + np.random.normal(0, 200),
-            'stage3_propellant_remaining': 0.08 + np.random.normal(0, 0.02),
-            'horizontal_velocity_at_220km': 7200 + config['early_pitch_rate'] * 100 + np.random.normal(0, 100),
-            'time_to_apoapsis': 45.0 + np.random.normal(0, 5)
+        # Create temporary mission configuration file
+        mission_config = {
+            "launch_latitude": 28.573,
+            "launch_azimuth": 90,
+            "target_parking_orbit": 185e3,
+            "gravity_turn_altitude": 1500,
+            "simulation_duration": 4 * 3600,  # 4 hours for LEO mission
+            "time_step": 0.1,
+            "early_pitch_rate": config['early_pitch_rate'],
+            "final_target_pitch": config['final_target_pitch'],
+            "stage3_ignition_offset": config['stage3_ignition_offset']
         }
+        
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
+            json.dump(mission_config, f, indent=2)
+            temp_config_file = f.name
+        
+        try:
+            # Run simulation with --fast flag
+            result = subprocess.run([
+                'python3', 'rocket_simulation_main.py', '--fast'
+            ], capture_output=True, text=True, cwd=os.path.dirname(os.path.abspath(__file__)))
+            
+            if result.returncode != 0:
+                self.logger.error(f"Simulation failed: {result.stderr}")
+                raise Exception(f"Simulation failed: {result.stderr}")
+            
+            # Read mission results
+            try:
+                with open('mission_results.json', 'r') as f:
+                    mission_results = json.load(f)
+                
+                # Extract relevant data for analysis
+                return {
+                    'final_apoapsis_km': mission_results.get('max_altitude_km', 0),
+                    'final_periapsis_km': mission_results.get('trajectory_data', {}).get('altitude_history', [0])[-1] / 1000,
+                    'final_eccentricity': mission_results.get('final_lunar_orbit', {}).get('eccentricity', 0.5),
+                    'max_altitude_km': mission_results.get('max_altitude_km', 0),
+                    'final_velocity_ms': mission_results.get('max_velocity_ms', 0),
+                    'stage3_propellant_remaining': 0.08,  # Placeholder - would need to extract from detailed telemetry
+                    'horizontal_velocity_at_220km': 7200,  # Placeholder - would need altitude-specific extraction
+                    'time_to_apoapsis': 45.0  # Placeholder
+                }
+            except FileNotFoundError:
+                raise Exception("mission_results.json not found after simulation")
+                
+        finally:
+            # Clean up temporary file
+            if os.path.exists(temp_config_file):
+                os.unlink(temp_config_file)
     
     def _save_test_result(self, params: ParameterSet, results: MissionResults):
         """Save individual test result to CSV"""

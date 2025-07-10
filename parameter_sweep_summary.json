@@ -2,8 +2,8 @@
   "total_runs": 30,
   "successful_runs": 0,
   "success_rate": 0.0,
-  "elapsed_time_seconds": 0.19187092781066895,
-  "timestamp": "2025-07-08 20:55:56",
-  "config_file": "sweep_config.yaml",
-  "results_file": "sweep_results.csv"
+  "elapsed_time_seconds": 0.22188973426818848,
+  "timestamp": "2025-07-10 21:02:48",
+  "config_file": "sweep_config_v37.yaml",
+  "results_file": "sweep_results_v37.csv"
 }

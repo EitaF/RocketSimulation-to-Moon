@@ -1,0 +1,38 @@
+# Professor v37 Parameter Sweep Configuration
+# Focused parameter sweep for LEO optimization
+
+parameters:
+  # Early pitch rate: 1.55 - 1.75 °/s (step 0.05)
+  early_pitch_rate:
+    min: 1.55
+    max: 1.75
+    step: 0.05
+    
+  # Final pitch target: 7 - 9 ° (step 0.5)
+  final_target_pitch:
+    min: 7.0
+    max: 9.0
+    step: 0.5
+    
+  # Burn start offset: -30 to -15 s (step 5s)
+  stage3_ignition_offset:
+    min: -30.0
+    max: -15.0
+    step: 5.0
+
+test_config:
+  total_runs: 30
+  log_file: "sweep_results_v37.csv"
+  timeout_seconds: 300
+  
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(levelname)s - %(message)s"
+  file: "parameter_sweep_v37.log"
+
+success_criteria:
+  periapsis_min_km: 150
+  periapsis_max_km: 170
+  eccentricity_max: 0.05
+  horizontal_velocity_min_ms: 7450  # 7.45 km/s
+  stage3_propellant_min_percent: 5

@@ -1606,14 +1606,16 @@ def main():
     with open("mission_results.json", "w") as f:
         json.dump(mission_results, f, indent=2)
     
-    # Professor v33: Generate and save lunar orbit trajectory plot
-    try:
-        from trajectory_visualizer import create_lunar_orbit_trajectory_plot
-        print("\nGenerating lunar orbit trajectory plot...")
-        fig, _ = create_lunar_orbit_trajectory_plot(results)
-        print("Lunar orbit trajectory plot saved as 'lunar_orbit_trajectory.png'")
-    except Exception as e:
-        print(f"Warning: Could not generate trajectory plot: {e}")
+    # Professor v33: Generate and save lunar orbit trajectory plot (skip in fast mode)
+    import os
+    if not os.environ.get('ROCKET_FAST_MODE'):
+        try:
+            from trajectory_visualizer import create_lunar_orbit_trajectory_plot
+            print("\nGenerating lunar orbit trajectory plot...")
+            fig, _ = create_lunar_orbit_trajectory_plot(results)
+            print("Lunar orbit trajectory plot saved as 'lunar_orbit_trajectory.png'")
+        except Exception as e:
+            print(f"Warning: Could not generate trajectory plot: {e}")
     
     print("\n" + "="*60)
     print("PROFESSOR V33 MISSION RESULTS SUMMARY")
@@ -1637,4 +1639,17 @@ def main():
 
 
 if __name__ == "__main__":
+    import argparse
+    
+    parser = argparse.ArgumentParser(description='Run Saturn V rocket simulation')
+    parser.add_argument('--fast', action='store_true', 
+                       help='Skip visualization and reduce output for batch processing')
+    
+    args = parser.parse_args()
+    
+    # Set global flag for fast mode
+    if args.fast:
+        import os
+        os.environ['ROCKET_FAST_MODE'] = '1'
+    
     main()

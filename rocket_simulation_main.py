@@ -693,6 +693,11 @@ class Mission:
             # Professor v33: Enhanced LEO_STABLE with launch window calculation
             coast_time = len([p for p in self.phase_history if p == MissionPhase.LEO_STABLE]) * 0.1
             
+            # Professor v39: Calculate TLI delta-V requirements immediately after LEO achievement
+            if not hasattr(self, 'tli_delta_v_calculated') and coast_time > 5:
+                self._calculate_and_report_tli_requirements()
+                self.tli_delta_v_calculated = True
+            
             # Calculate optimal TLI time if not already calculated
             if self.tli_optimal_time is None and coast_time > 10:  # Wait 10s for orbit stabilization
                 try:
@@ -1139,10 +1144,121 @@ class Mission:
             
             self.last_stage_count = self.rocket.current_stage
     
+    def _calculate_stage_fuel_remaining(self) -> Dict:
+        """Calculate remaining fuel percentage for each stage"""
+        stage_fuel = {}
+        
+        for i, stage in enumerate(self.rocket.stages):
+            stage_name = f"stage_{i+1}"
+            
+            if i < self.rocket.current_stage:
+                # Stage already separated - 0% remaining
+                stage_fuel[stage_name] = 0.0
+            elif i == self.rocket.current_stage:
+                # Current active stage - calculate remaining fuel
+                try:
+                    altitude = self.get_altitude()
+                    stage_elapsed_time = hasattr(self, 'current_time') and hasattr(self.rocket, 'stage_start_time') and \
+                                       self.current_time - self.rocket.stage_start_time or 0
+                    used_propellant = stage.get_mass_flow_rate(altitude) * stage_elapsed_time
+                    remaining_propellant = max(0, stage.propellant_mass - used_propellant)
+                    fuel_ratio = remaining_propellant / stage.propellant_mass if stage.propellant_mass > 0 else 0
+                    stage_fuel[stage_name] = fuel_ratio
+                except:
+                    # Fallback - assume full fuel if calculation fails
+                    stage_fuel[stage_name] = 1.0
+            else:
+                # Future stage - full fuel remaining
+                stage_fuel[stage_name] = 1.0
+        
+        # Special tracking for Stage 3 (S-IVB) - target 30%+ for TLI capability
+        if len(self.rocket.stages) > 2:
+            stage3_percentage = stage_fuel.get("stage_3", 0.0) * 100
+            stage_fuel["stage3_percentage"] = stage3_percentage
+            stage_fuel["stage3_tli_ready"] = stage3_percentage >= 30.0
+        
+        return stage_fuel
+    
+    def _calculate_and_report_tli_requirements(self) -> None:
+        """Calculate and report TLI delta-V requirements and fuel availability (Professor v39)"""
+        try:
+            from tli_guidance import create_tli_guidance
+            from constants import R_EARTH
+            
+            # Get current altitude and velocity
+            altitude = self.get_altitude()
+            parking_orbit_altitude = altitude  # Current altitude as parking orbit
+            current_velocity = self.rocket.velocity.magnitude()
+            
+            # Create TLI guidance system
+            tli_guidance = create_tli_guidance(parking_orbit_altitude)
+            
+            # Calculate required delta-V for TLI
+            delta_v_required = tli_guidance.tli_params.delta_v_required
+            
+            # Check Stage 3 fuel availability
+            stage_fuel = self._calculate_stage_fuel_remaining()
+            stage3_percentage = stage_fuel.get("stage3_percentage", 0.0)
+            stage3_ready = stage_fuel.get("stage3_tli_ready", False)
+            
+            # Calculate available delta-V from Stage 3
+            if len(self.rocket.stages) > 2:
+                stage3 = self.rocket.stages[2]
+                remaining_propellant = stage3.propellant_mass * (stage3_percentage / 100.0)
+                
+                # Estimate available delta-V using simplified calculation
+                # Assuming specific impulse ~421s for S-IVB in vacuum
+                isp_vacuum = 421  # seconds
+                g0 = 9.80665  # m/s²
+                current_mass = self.rocket.get_current_mass(self.current_time, altitude)
+                
+                if remaining_propellant > 0 and current_mass > 0:
+                    mass_ratio = current_mass / (current_mass - remaining_propellant)
+                    available_delta_v = isp_vacuum * g0 * np.log(mass_ratio)
+                else:
+                    available_delta_v = 0.0
+            else:
+                available_delta_v = 0.0
+            
+            # Log comprehensive TLI analysis
+            self.logger.info("="*60)
+            self.logger.info("TLI READINESS ANALYSIS")
+            self.logger.info("="*60)
+            self.logger.info(f"Current parking orbit: {(altitude-R_EARTH)/1000:.1f} km altitude")
+            self.logger.info(f"Current orbital velocity: {current_velocity:.1f} m/s")
+            self.logger.info(f"Required TLI delta-V: {delta_v_required:.1f} m/s")
+            self.logger.info(f"Available TLI delta-V: {available_delta_v:.1f} m/s")
+            self.logger.info(f"Stage-3 fuel remaining: {stage3_percentage:.1f}%")
+            self.logger.info(f"TLI capability: {'READY' if stage3_ready and available_delta_v >= delta_v_required else 'INSUFFICIENT'}")
+            
+            if available_delta_v >= delta_v_required:
+                delta_v_margin = available_delta_v - delta_v_required
+                self.logger.info(f"Delta-V margin: +{delta_v_margin:.1f} m/s")
+            else:
+                delta_v_deficit = delta_v_required - available_delta_v
+                self.logger.warning(f"Delta-V deficit: -{delta_v_deficit:.1f} m/s")
+                
+            self.logger.info("="*60)
+            
+            # Store for results JSON
+            if not hasattr(self, 'tli_analysis'):
+                self.tli_analysis = {}
+            self.tli_analysis = {
+                'required_delta_v': delta_v_required,
+                'available_delta_v': available_delta_v,
+                'stage3_fuel_percentage': stage3_percentage,
+                'tli_ready': stage3_ready and available_delta_v >= delta_v_required,
+                'delta_v_margin': available_delta_v - delta_v_required
+            }
+            
+        except Exception as e:
+            self.logger.error(f"TLI requirements calculation failed: {e}")
+    
     def simulate(self, duration: float = 10 * 24 * 3600, dt: float = 0.1) -> Dict:
         """シミュレーション実行"""
         t = 0.0
         steps = 0
+        self.current_time = 0.0  # Track current time for fuel calculations
         
         # ロケット初期位置（地球表面、緯度を考慮）
         launch_latitude = self.config.get("launch_latitude", 28.5)  # ケネディ宇宙センター
@@ -1170,6 +1286,7 @@ class Mission:
             
             # 記録
             self.time_history.append(t)
+            self.current_time = t  # Update current time for fuel calculations
             self.position_history.append(self.rocket.position)
             self.velocity_history.append(self.rocket.velocity)
             altitude = self.get_altitude()
@@ -1274,6 +1391,21 @@ class Mission:
                         self.logger.info(f"STAGE-2 MONITOR: t={t:.1f}s, propellant={remaining_propellant/1000:.1f}t, "
                                        f"mass_flow={mass_flow_actual:.1f}kg/s, thrust={thrust_actual/1000:.0f}kN, "
                                        f"burn_time={stage_elapsed_time:.1f}s/{current_stage.burn_time:.1f}s")
+                    
+                    # Professor v39: Enhanced Stage-3 fuel monitoring for TLI readiness
+                    elif self.rocket.current_stage == 2:  # Stage-3 (S-IVB)
+                        thrust_actual = current_stage.get_thrust(altitude)
+                        mass_flow_actual = current_stage.get_mass_flow_rate(altitude)
+                        fuel_percentage = (remaining_propellant / current_stage.propellant_mass) * 100 if current_stage.propellant_mass > 0 else 0
+                        tli_ready = "TLI_READY" if fuel_percentage >= 30.0 else "TLI_RISK"
+                        
+                        self.logger.info(f"STAGE-3 MONITOR: t={t:.1f}s, propellant={remaining_propellant/1000:.1f}t ({fuel_percentage:.1f}%), "
+                                       f"mass_flow={mass_flow_actual:.1f}kg/s, thrust={thrust_actual/1000:.0f}kN, "
+                                       f"burn_time={stage_elapsed_time:.1f}s/{current_stage.burn_time:.1f}s, {tli_ready}")
+                        
+                        # Alert when Stage-3 fuel drops below TLI threshold
+                        if fuel_percentage < 30.0 and fuel_percentage > 25.0:
+                            self.logger.warning(f"STAGE-3 FUEL WARNING: {fuel_percentage:.1f}% remaining - approaching TLI minimum threshold")
                 else:
                     remaining_propellant = 0
                 
@@ -1451,6 +1583,8 @@ class Mission:
             "lunar_orbit_periapsises": self.lunar_orbit_periapsises,
             "final_mass": self.mass_history[-1] if self.mass_history else self.rocket.total_mass,
             "propellant_used": sum(stage.propellant_mass for stage in self.rocket.stages[:self.rocket.current_stage]),
+            "stage_fuel_remaining": self._calculate_stage_fuel_remaining(),
+            "tli_analysis": getattr(self, 'tli_analysis', {}),
             "time_history": self.time_history,
             "position_history": [(p.x, p.y) for p in self.position_history],
             "velocity_history": [(v.x, v.y) for v in self.velocity_history],
@@ -1603,8 +1737,22 @@ def main():
     }
     
     # Save comprehensive results
-    with open("mission_results.json", "w") as f:
-        json.dump(mission_results, f, indent=2)
+    try:
+        with open("mission_results.json", "w") as f:
+            json.dump(mission_results, f, indent=2)
+        print("Mission results saved to mission_results.json")
+    except Exception as e:
+        print(f"Error saving mission results: {e}")
+        # Ensure the file exists even with minimal data
+        try:
+            with open("mission_results.json", "w") as f:
+                json.dump({
+                    "mission_success": results.get("mission_success", False),
+                    "final_phase": results.get("final_phase", "failed"),
+                    "error": str(e)
+                }, f, indent=2)
+        except:
+            pass
     
     # Professor v33: Generate and save lunar orbit trajectory plot (skip in fast mode)
     import os

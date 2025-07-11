@@ -23,7 +23,7 @@ parameters:
 test_config:
   total_runs: 30
   log_file: "sweep_results_v37.csv"
-  timeout_seconds: 300
+  timeout_seconds: 900  # Professor v39: Extended from 300s to 900s for LEO phase
   
 logging:
   level: "INFO"

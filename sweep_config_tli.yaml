@@ -1,0 +1,46 @@
+# Professor v39 TLI Parameter Sweep Configuration
+# Extended parameter sweep for TLI phase optimization
+
+parameters:
+  # Early pitch rate: 1.50 - 1.80 °/s (step 0.05) - expanded range
+  early_pitch_rate:
+    min: 1.50
+    max: 1.80
+    step: 0.05
+    
+  # Final pitch target: 7 - 9 ° (step 0.25) - finer granularity
+  final_target_pitch:
+    min: 7.0
+    max: 9.0
+    step: 0.25
+    
+  # Burn start offset: -35 to -10 s (step 5s) - expanded range
+  stage3_ignition_offset:
+    min: -35.0
+    max: -10.0
+    step: 5.0
+
+test_config:
+  total_runs: 50  # More runs for TLI optimization
+  log_file: "sweep_results_tli.csv"
+  timeout_seconds: 6000  # Professor v39: 6000s for TLI phase (100 minutes)
+  
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(levelname)s - %(message)s"
+  file: "parameter_sweep_tli.log"
+
+success_criteria:
+  periapsis_min_km: 150
+  periapsis_max_km: 170
+  eccentricity_max: 0.05
+  horizontal_velocity_min_ms: 7450  # 7.45 km/s
+  stage3_propellant_min_percent: 30  # 30% minimum for TLI capability
+  tli_delta_v_available: 3130  # Target delta-V for lunar transfer
+
+# TLI-specific configuration
+tli_config:
+  enabled: true
+  target_c3_energy: 0.0  # km²/s² - Earth escape energy
+  parking_orbit_altitude: 185000  # 185 km
+  burn_duration_max: 900  # 15 minutes maximum TLI burn

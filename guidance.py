@@ -206,11 +206,31 @@ def should_end_circularization_burn(mission, current_time: float, burn_start_tim
     except:
         pass
     
-    # Professor v37: Extended duration check - continue until dv_req < -5 m/s
+    # Professor v39: Fixed burn termination - stop when |dv_req| < 5 m/s with orbital checks
     try:
         dv_required = plan_circularization_burn(mission)
-        if dv_required < -5.0:  # Was < 1 m/s
-            return True
+        
+        # Check if delta-V requirement is within ±5 m/s
+        dv_within_tolerance = abs(dv_required) < 5.0
+        
+        # Additional checks: verify perigee > 150km and eccentricity < 0.05
+        try:
+            from constants import R_EARTH
+            altitude = mission.get_altitude()
+            apoapsis, periapsis, eccentricity = mission.get_orbital_elements()
+            
+            perigee_acceptable = (periapsis - R_EARTH) > 150000  # 150 km
+            eccentricity_acceptable = eccentricity < 0.05
+            
+            if dv_within_tolerance and perigee_acceptable and eccentricity_acceptable:
+                mission.logger.info(f"CIRCULARIZATION COMPLETE: dv_req={dv_required:.1f}m/s, "
+                                  f"perigee={(periapsis-R_EARTH)/1000:.1f}km, ecc={eccentricity:.3f}")
+                return True
+        except:
+            # Fallback to just delta-V check if orbital elements fail
+            if dv_within_tolerance:
+                return True
+            
     except:
         pass
     

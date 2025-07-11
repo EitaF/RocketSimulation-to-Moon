@@ -1,27 +1,16 @@
 {
-  "mission_name": "Apollo 11 Simulation",
-  "launch_site": "Kennedy Space Center",
-  "launch_latitude": 28.573,
-  "launch_azimuth": 72,
-  "target_parking_orbit": 200000,
-  "gravity_turn_altitude": 8000,
-  "simulation_duration": 14400,
+  "launch_latitude": 28.5,
+  "early_pitch_rate": 1.65,
+  "final_target_pitch": 8.0,
+  "stage3_ignition_offset": -25.0,
+  "simulation_duration": 3600,
   "time_step": 0.1,
-  "visualization": {
-    "update_interval": 100,
-    "trail_length": 5000,
-    "show_moon_orbit": true,
-    "show_earth_rotation": true,
-    "show_velocity_vectors": true
-  },
-  "rocket_parameters": {
-    "drag_coefficient": 0.3,
-    "cross_sectional_area": 80.0
-  },
-  "abort_conditions": {
-    "max_altitude": 500000000,
-    "min_altitude": -1000,
-    "max_velocity": 20000,
-    "max_acceleration": 100
+  "verbose_abort": true,
+  "abort_thresholds": {
+    "earth_impact_altitude": -100.0,
+    "propellant_critical_percent": 99.5,
+    "min_safe_time": 5.0,
+    "max_flight_path_angle": 85.0,
+    "min_thrust_threshold": 5000.0
   }
 }

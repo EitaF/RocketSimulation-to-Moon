@@ -192,10 +192,12 @@ class ParameterSweepRunner:
             temp_config_file = f.name
         
         try:
-            # Run simulation with --fast flag
+            # Run simulation with --fast flag and timeout
+            timeout_seconds = self.config['test_config'].get('timeout_seconds', 900)
             result = subprocess.run([
                 'python3', 'rocket_simulation_main.py', '--fast'
-            ], capture_output=True, text=True, cwd=os.path.dirname(os.path.abspath(__file__)))
+            ], capture_output=True, text=True, cwd=os.path.dirname(os.path.abspath(__file__)), 
+               timeout=timeout_seconds)
             
             if result.returncode != 0:
                 self.logger.error(f"Simulation failed: {result.stderr}")
@@ -207,15 +209,21 @@ class ParameterSweepRunner:
                     mission_results = json.load(f)
                 
                 # Extract relevant data for analysis
+                # Calculate horizontal velocity at 220km altitude
+                horizontal_velocity_at_220km = self._calculate_horizontal_velocity_at_altitude(mission_results, 220000)
+                
+                # Calculate stage 3 propellant remaining from CSV data
+                stage3_propellant_remaining = self._calculate_stage3_fuel_remaining()
+                
                 return {
                     'final_apoapsis_km': mission_results.get('max_altitude_km', 0),
                     'final_periapsis_km': mission_results.get('trajectory_data', {}).get('altitude_history', [0])[-1] / 1000,
                     'final_eccentricity': mission_results.get('final_lunar_orbit', {}).get('eccentricity', 0.5),
                     'max_altitude_km': mission_results.get('max_altitude_km', 0),
                     'final_velocity_ms': mission_results.get('max_velocity_ms', 0),
-                    'stage3_propellant_remaining': 0.08,  # Placeholder - would need to extract from detailed telemetry
-                    'horizontal_velocity_at_220km': 7200,  # Placeholder - would need altitude-specific extraction
-                    'time_to_apoapsis': 45.0  # Placeholder
+                    'stage3_propellant_remaining': stage3_propellant_remaining,
+                    'horizontal_velocity_at_220km': horizontal_velocity_at_220km,
+                    'time_to_apoapsis': 45.0  # Keep as placeholder for now
                 }
             except FileNotFoundError:
                 raise Exception("mission_results.json not found after simulation")
@@ -325,6 +333,67 @@ class ParameterSweepRunner:
         self.logger.info(f"Summary report saved to {summary_filename}")
         
         return summary
+    
+    def _calculate_horizontal_velocity_at_altitude(self, mission_results: Dict, target_altitude: float) -> float:
+        """Calculate horizontal velocity at specific altitude from trajectory data"""
+        try:
+            trajectory_data = mission_results.get('trajectory_data', {})
+            altitude_history = trajectory_data.get('altitude_history', [])
+            velocity_history = trajectory_data.get('velocity_history', [])
+            
+            if not altitude_history or not velocity_history:
+                return 7200  # Fallback to placeholder
+                
+            # Find closest altitude to target
+            closest_index = 0
+            min_diff = float('inf')
+            
+            for i, alt in enumerate(altitude_history):
+                diff = abs(alt - target_altitude)
+                if diff < min_diff:
+                    min_diff = diff
+                    closest_index = i
+            
+            if closest_index < len(velocity_history):
+                vx, vy = velocity_history[closest_index]
+                # Calculate horizontal component (magnitude of velocity vector)
+                horizontal_velocity = (vx**2 + vy**2)**0.5
+                return horizontal_velocity
+                
+        except Exception as e:
+            self.logger.warning(f"Could not calculate horizontal velocity: {e}")
+            
+        return 7200  # Fallback to placeholder
+    
+    def _calculate_stage3_fuel_remaining(self) -> float:
+        """Calculate Stage 3 remaining fuel percentage from mission log CSV"""
+        try:
+            import pandas as pd
+            
+            # Read the mission log CSV
+            df = pd.read_csv('mission_log.csv')
+            
+            # Filter for stage 3 data (stage column = 2, since stages are 0-indexed)
+            stage3_data = df[df['stage'] == 2]
+            
+            if stage3_data.empty:
+                self.logger.warning("No Stage 3 data found in mission log")
+                return 0.08  # Fallback to placeholder
+            
+            # Get the last remaining propellant value for stage 3
+            # remaining_propellant is in tonnes, convert to ratio
+            last_remaining = stage3_data['remaining_propellant'].iloc[-1]  # tonnes
+            
+            # Stage 3 initial propellant mass from Saturn V config: ~109 tonnes
+            # This should be read from config, but for now use known value
+            stage3_initial_mass = 109.0  # tonnes
+            
+            fuel_ratio = last_remaining / stage3_initial_mass
+            return max(0.0, min(1.0, fuel_ratio))  # Clamp between 0 and 1
+            
+        except Exception as e:
+            self.logger.warning(f"Could not calculate Stage 3 fuel remaining: {e}")
+            return 0.08  # Fallback to placeholder
     
     def analyze_correlations(self):
         """

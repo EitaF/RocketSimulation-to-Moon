@@ -238,6 +238,48 @@ class MonteCarloOrchestrator:
                         noise_dist['mean'], noise_dist['std_dev']
                     )
         
+        # Professor v39: Atmospheric density variation (±5%)
+        if 'atmospheric_density' in distributions:
+            dist = distributions['atmospheric_density']
+            if dist['type'] == 'normal':
+                variations['atmospheric_density_factor'] = np.random.normal(
+                    1.0, dist.get('variation_percent', 5.0) / 100.0 / 3.0  # 3-sigma = 5%
+                )
+        
+        # Professor v39: Engine specific impulse variation (±1%)  
+        if 'engine_isp' in distributions:
+            dist = distributions['engine_isp']
+            if dist['type'] == 'normal':
+                variations['engine_isp_factor'] = np.random.normal(
+                    1.0, dist.get('variation_percent', 1.0) / 100.0 / 3.0  # 3-sigma = 1%
+                )
+        
+        # Professor v39: IMU noise
+        if 'imu_noise' in distributions:
+            imu_config = distributions['imu_noise']
+            variations['imu_noise'] = {}
+            
+            # Position noise
+            if 'position_noise' in imu_config:
+                pos_noise = imu_config['position_noise']
+                variations['imu_noise']['position_error'] = np.random.normal(
+                    0.0, pos_noise.get('sigma', 10.0)
+                )
+            
+            # Velocity noise  
+            if 'velocity_noise' in imu_config:
+                vel_noise = imu_config['velocity_noise']
+                variations['imu_noise']['velocity_error'] = np.random.normal(
+                    0.0, vel_noise.get('sigma', 0.1)
+                )
+            
+            # Attitude noise
+            if 'attitude_noise' in imu_config:
+                att_noise = imu_config['attitude_noise']
+                variations['imu_noise']['attitude_error'] = np.random.normal(
+                    0.0, att_noise.get('sigma', 0.1)
+                )
+        
         return variations
     
     def _apply_variations_to_config(self, base_config: Dict, variations: Dict) -> Dict:
@@ -272,6 +314,18 @@ class MonteCarloOrchestrator:
         
         if 'initial_vehicle_mass' in variations:
             config['initial_mass_factor'] = variations['initial_vehicle_mass']
+        
+        # Professor v39: Apply atmospheric density variation
+        if 'atmospheric_density_factor' in variations:
+            config['atmospheric_density_factor'] = variations['atmospheric_density_factor']
+        
+        # Professor v39: Apply engine Isp variation
+        if 'engine_isp_factor' in variations:
+            config['engine_isp_factor'] = variations['engine_isp_factor']
+        
+        # Professor v39: Apply IMU noise
+        if 'imu_noise' in variations:
+            config['imu_noise'] = variations['imu_noise']
         
         # Add run-specific identifiers
         config['run_id'] = variations['run_id']

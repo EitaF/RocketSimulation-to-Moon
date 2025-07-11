@@ -1,0 +1,93 @@
+# Professor v39 Monte Carlo Simulation Configuration
+# Stochastic parameter support for reliability verification
+
+monte_carlo:
+  enabled: false  # Enable Monte Carlo simulation mode
+  runs: 100  # Number of Monte Carlo runs
+  random_seed: 42  # Seed for reproducible results
+  
+# Stochastic parameter variations
+stochastic_parameters:
+  
+  # Atmospheric density variation ±5%
+  atmospheric_density:
+    enabled: true
+    distribution: "normal"  # normal, uniform
+    variation_percent: 5.0  # ±5% variation
+    description: "Atmospheric density uncertainty"
+    
+  # Engine specific impulse variation ±1%
+  engine_isp:
+    enabled: true
+    distribution: "normal"
+    variation_percent: 1.0  # ±1% variation
+    description: "Engine Isp performance uncertainty"
+    apply_to: ["stage1", "stage2", "stage3"]  # Which stages to apply
+    
+  # IMU/Navigation noise
+  imu_noise:
+    enabled: true
+    
+    # Position measurement noise
+    position_noise:
+      sigma: 10.0  # meters (1-sigma)
+      distribution: "normal"
+      
+    # Velocity measurement noise  
+    velocity_noise:
+      sigma: 0.1  # m/s (1-sigma)
+      distribution: "normal"
+      
+    # Attitude measurement noise
+    attitude_noise:
+      sigma: 0.1  # degrees (1-sigma) 
+      distribution: "normal"
+      
+  # Engine thrust variation
+  thrust_variation:
+    enabled: true
+    distribution: "normal"
+    variation_percent: 2.0  # ±2% thrust variation
+    description: "Engine thrust performance uncertainty"
+    
+  # Propellant mass uncertainty
+  propellant_mass:
+    enabled: true
+    distribution: "normal"
+    variation_percent: 1.0  # ±1% propellant loading uncertainty
+    description: "Propellant loading/measurement uncertainty"
+    
+  # Wind disturbance during ascent
+  wind_disturbance:
+    enabled: true
+    max_velocity: 20.0  # m/s maximum wind speed
+    altitude_profile: "exponential_decay"  # exponential_decay, constant, linear
+    random_direction: true
+    description: "Atmospheric wind disturbance"
+
+# Success criteria for Monte Carlo runs
+monte_carlo_success_criteria:
+  leo_achievement_rate: 90.0  # Minimum 90% LEO success rate
+  tli_readiness_rate: 80.0   # Minimum 80% TLI ready (>30% Stage-3 fuel)
+  orbit_accuracy:
+    periapsis_tolerance_km: 20.0  # ±20 km periapsis tolerance
+    apoapsis_tolerance_km: 50.0   # ±50 km apoapsis tolerance
+    eccentricity_tolerance: 0.02  # ±0.02 eccentricity tolerance
+
+# Output configuration
+monte_carlo_output:
+  save_individual_runs: false  # Save detailed data for each run
+  statistics_file: "monte_carlo_statistics.json"
+  summary_plots: true  # Generate statistical plots
+  confidence_level: 95  # 95% confidence intervals
+  
+# Failure mode analysis
+failure_analysis:
+  track_failure_modes: true
+  failure_categories:
+    - "launch_failure"
+    - "stage_separation_failure" 
+    - "orbit_insertion_failure"
+    - "insufficient_fuel"
+    - "guidance_failure"
+    - "structural_failure"

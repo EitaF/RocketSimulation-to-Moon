@@ -235,7 +235,9 @@ def should_end_circularization_burn(mission, current_time: float, burn_start_tim
         pass
     
     # Maximum burn duration safety check (prevent infinite burn)
-    if burn_duration > 60.0:  # 60 seconds maximum
+    # Professor v41: Increased limit for deep elliptical orbit circularization
+    if burn_duration > 300.0:  # 5 minutes maximum for circularization
+        mission.logger.warning(f"Maximum burn duration reached: {burn_duration:.1f}s > 300s")
         return True
     
     return False

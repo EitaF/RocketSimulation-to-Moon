@@ -7,5 +7,5 @@
   "PITCH_OPTIMIZATION": false,
   "MONTE_CARLO_MODE": false,
   "DEBUG_MODE": false,
-  "SAFE_MODE": true
+  "SAFE_MODE": false
 }

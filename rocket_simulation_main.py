@@ -131,8 +131,7 @@ class Mission:
         self.csv_writer = csv.writer(self.csv_file)
         self.csv_writer.writerow(["time", "altitude", "velocity", "mass", "delta_v", "phase", "stage", "apoapsis", "periapsis", "eccentricity", "flight_path_angle", "pitch_angle", "remaining_propellant", "dynamic_pressure", "max_dynamic_pressure"])
         
-        # ロガー設定
-        logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+        # ロガー設定 (logging.basicConfig is now handled in main)
         self.logger = logging.getLogger(__name__)
         
         # Professor v27: Initialize orbital monitor and guidance system
@@ -478,10 +477,10 @@ class Mission:
         
         # Debug: always log current phase when in STAGE_SEPARATION
         if str(current_phase) == "MissionPhase.STAGE_SEPARATION" or current_phase.value == "stage_separation":
-            self.logger.info(f"DEBUG: Found STAGE_SEPARATION! current_stage = {self.rocket.current_stage}, type={type(current_phase)}")
+            self.logger.debug(f"Found STAGE_SEPARATION! current_stage = {self.rocket.current_stage}, type={type(current_phase)}")
         
         if current_phase == MissionPhase.STAGE_SEPARATION:
-            self.logger.info(f"DEBUG: ENUM comparison worked! current_stage = {self.rocket.current_stage}")
+            self.logger.debug(f"ENUM comparison worked! current_stage = {self.rocket.current_stage}")
         
         # Additional debug for all phases
         if hasattr(self, '_debug_counter'):
@@ -490,7 +489,7 @@ class Mission:
             self._debug_counter = 1
         
         if self._debug_counter % 1000 == 0:  # Every 100 seconds
-            self.logger.info(f"PHASE_DEBUG: t={len(self.time_history)*0.1:.1f}s, phase={current_phase.value}, stage={self.rocket.current_stage}")
+            self.logger.debug(f"Phase debug: t={len(self.time_history)*0.1:.1f}s, phase={current_phase.value}, stage={self.rocket.current_stage}")
 
         # Professor v19: Realistic MECO conditions for current ΔV capability
         # Start with achievable intermediate targets, then improve progressively
@@ -529,7 +528,7 @@ class Mission:
         # Professor v19: Debug the exact condition values
         current_time = len(self.time_history) * 0.1
         if current_phase == MissionPhase.APOAPSIS_RAISE and current_time > 160 and current_time < 200:
-            self.logger.info(f"BURN_STOP_DEBUG t={current_time:.1f}s: apo={apoapsis:.0f}m (target={target_apoapsis:.0f}m, has={has_target_apoapsis}), "
+            self.logger.debug(f"Burn stop debug t={current_time:.1f}s: apo={apoapsis:.0f}m (target={target_apoapsis:.0f}m, has={has_target_apoapsis}), "
                            f"v={velocity:.0f}m/s (threshold={velocity_threshold:.0f}, ok={velocity > velocity_threshold}), "
                            f"should_stop={should_stop_burning}")
 
@@ -563,8 +562,8 @@ class Mission:
                         self._stage3_debug_counter = 1
                     
                     if self._stage3_debug_counter % 50 == 0:  # Every 5 seconds when close
-                        self.logger.info(f"STAGE-3 DEBUG: v={velocity:.0f}m/s (≥3500?), alt={altitude/1000:.1f}km (≥30?), stage={self.rocket.current_stage} (==1?)")
-                        self.logger.info(f"STAGE-3 DEBUG: triggers: vel={velocity_trigger}, alt={altitude_trigger}, combined={stage3_velocity_trigger}")
+                        self.logger.debug(f"Stage-3 debug: v={velocity:.0f}m/s (≥3500?), alt={altitude/1000:.1f}km (≥30?), stage={self.rocket.current_stage} (==1?)")
+                        self.logger.debug(f"Stage-3 debug: triggers: vel={velocity_trigger}, alt={altitude_trigger}, combined={stage3_velocity_trigger}")
                 
                 if stage3_velocity_trigger:
                     # Trigger Stage-2 separation and Stage-3 ignition
@@ -623,29 +622,59 @@ class Mission:
 
         elif current_phase == MissionPhase.CIRCULARIZATION:
             # Action A1: Overhauled Circularization Control Logic with S-IVB Engine Cutoff
-            # 1. Get current orbital elements
-            apoapsis, periapsis, eccentricity = self.get_orbital_elements()
+            # Professor v41: Enhanced with fuel guard-rail and detailed logging
             
-            # 2. Professor v29: Define stable orbit condition for S-IVB cutoff
-            # Stable orbit: periapsis > 150km AND eccentricity < 0.005
-            periapsis_stable = periapsis >= (R_EARTH + 150e3)  # 150km as per professor
-            eccentricity_stable = eccentricity < 0.005  # Low eccentricity for circular orbit
-            is_orbit_stable = periapsis_stable and eccentricity_stable
-
-            # 3. Implement the new logic with S-IVB engine cutoff
-            if is_orbit_stable:
+            # 1. Get current orbital elements and Stage-3 state
+            apoapsis, periapsis, eccentricity = self.get_orbital_elements()
+            stage3 = self.rocket.stages[2] if len(self.rocket.stages) > 2 else None
+            
+            # 2. Professor v41: Detailed Stage-3 fuel logging
+            if stage3 and hasattr(self, 'circularization_start_time'):
+                burn_duration = self.t - self.circularization_start_time
+                mass_flow_rate = stage3.get_mass_flow_rate(self.get_altitude())
+                fuel_remaining = stage3.propellant_mass
+                fuel_fraction = fuel_remaining / 160000.0  # Original propellant mass
+                periapsis_error = periapsis - (R_EARTH + 180e3)  # Target 180km periapsis
+                
+                # Log every 0.1s as requested by professor
+                if self.t % 0.1 < 0.05:  # Approximately every 0.1s
+                    self.logger.debug(
+                        f"{self.t:.1f}s | m_dot={mass_flow_rate:.3f} kg/s "
+                        f"fuel_left={fuel_remaining:.1f} kg ({fuel_fraction*100:.1f}%) "
+                        f"periapsis_err={periapsis_error:.1f} m"
+                    )
+            elif not hasattr(self, 'circularization_start_time'):
+                # First time entering circularization phase
+                self.circularization_start_time = self.t
+                self.logger.info(f"CIRCULARIZATION BURN START at t={self.t:.1f}s")
+            
+            # 3. Professor v41: Fuel guard-rail limiter (5% minimum)
+            if stage3 and stage3.propellant_mass > 0:
+                fuel_fraction = stage3.propellant_mass / 160000.0
+                if fuel_fraction <= 0.05:
+                    self.rocket.phase = MissionPhase.LEO_STABLE
+                    self.logger.warning("Fuel guard-rail hit; forcing burn shutdown.")
+                    self.logger.warning(f" -> Fuel remaining: {fuel_fraction*100:.1f}% (≤5%)")
+                    self.logger.warning(f" -> Residual periapsis: {(periapsis-R_EARTH)/1000:.1f} km")
+                    return
+            
+            # 4. Check for burn termination using guidance system
+            from guidance import should_end_circularization_burn
+            if hasattr(self, 'circularization_start_time') and should_end_circularization_burn(self, self.t, self.circularization_start_time):
                 # Professor v29: Command S-IVB engine shutdown for stable orbit
                 self.rocket.phase = MissionPhase.LEO_STABLE
-                self.logger.info(f"SUCCESS: S-IVB ENGINE CUTOFF - Stable LEO achieved!")
+                self.logger.info(f"SUCCESS: S-IVB ENGINE CUTOFF - Circularization complete!")
                 self.logger.info(f" -> Apoapsis: {(apoapsis-R_EARTH)/1000:.1f} km, Periapsis: {(periapsis-R_EARTH)/1000:.1f} km")
-                self.logger.info(f" -> Eccentricity: {eccentricity:.4f} (< 0.005 ✓)")
-                self.logger.info(f" -> S-IVB engine shutdown commanded for stable orbit maintenance")
+                self.logger.info(f" -> Eccentricity: {eccentricity:.4f}")
+                if stage3:
+                    fuel_fraction = stage3.propellant_mass / 160000.0
+                    self.logger.info(f" -> Stage-3 fuel remaining: {fuel_fraction*100:.1f}%")
             
             elif not self.rocket.is_thrusting:
                 self.rocket.phase = MissionPhase.FAILED
                 self.logger.error(f"FAILURE: Out of fuel during circularization burn.")
-                self.logger.error(f" -> Final Periapsis: {(periapsis-R_EARTH)/1000:.1f} km (Target > 150 km)")
-                self.logger.error(f" -> Final Eccentricity: {eccentricity:.4f} (Target < 0.005)")
+                self.logger.error(f" -> Final Periapsis: {(periapsis-R_EARTH)/1000:.1f} km (Target > 180 km)")
+                self.logger.error(f" -> Final Eccentricity: {eccentricity:.4f} (Target < 0.05)")
 
             # else: continue burning...
 
@@ -1792,8 +1821,20 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Run Saturn V rocket simulation')
     parser.add_argument('--fast', action='store_true', 
                        help='Skip visualization and reduce output for batch processing')
+    parser.add_argument('--debug', action='store_true',
+                       help='Enable debug-level logging for detailed output')
+    parser.add_argument('--quiet', action='store_true',
+                       help='Enable quiet mode with minimal logging output')
     
     args = parser.parse_args()
+    
+    # Configure logging level based on arguments
+    if args.debug:
+        logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+    elif args.quiet:
+        logging.basicConfig(level=logging.WARNING, format='%(asctime)s - %(levelname)s - %(message)s')
+    else:
+        logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
     
     # Set global flag for fast mode
     if args.fast:

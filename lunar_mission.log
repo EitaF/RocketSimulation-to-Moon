@@ -117,3 +117,33 @@
 2025-07-12 21:25:55,890 - lunar_sim_main - INFO -    Mission time: 0.0 seconds
 2025-07-12 21:25:55,890 - lunar_sim_main - INFO -    Professor criteria met: True
 2025-07-12 21:25:55,890 - lunar_sim_main - INFO - ============================================================
+2025-07-13 20:23:29,373 - __main__ - INFO - Lunar simulation initialized - simplified MVP version
+2025-07-13 20:23:29,375 - __main__ - INFO - 🚀 Starting complete lunar mission simulation
+2025-07-13 20:23:29,375 - __main__ - INFO - Initialized LEO state: altitude = 185.0 km, velocity = 7797.3 m/s
+2025-07-13 20:23:29,375 - __main__ - INFO - 🔥 Executing TLI (Trans-Lunar Injection) burn
+2025-07-13 20:23:29,375 - __main__ - INFO - TLI burn complete: ΔV = 3150.0 m/s, fuel consumed = 24012.0 kg
+2025-07-13 20:23:29,375 - __main__ - INFO - 🌌 Coasting to Moon sphere of influence
+2025-07-13 20:23:29,375 - __main__ - INFO - Arrived at Moon SOI: distance = 66100.0 km
+2025-07-13 20:23:29,375 - __main__ - INFO - 🌙 Executing LOI (Lunar Orbit Insertion) burn
+2025-07-13 20:23:29,375 - __main__ - INFO - LOI burn complete: ΔV = 850.0 m/s, orbital altitude = 100.0 km
+2025-07-13 20:23:29,376 - __main__ - INFO - 🛬 Executing powered descent to lunar surface
+2025-07-13 20:23:29,376 - __main__ - INFO - 🎯 Executing throttle schedule for final 500m descent
+2025-07-13 20:23:29,377 - __main__ - INFO -    Phase 500m→100m: throttle=70%, ΔV=70.2 m/s, fuel saved=89.2 kg
+2025-07-13 20:23:29,377 - __main__ - INFO -    Phase 100m→50m: throttle=50%, ΔV=24.5 m/s, fuel saved=72.8 kg
+2025-07-13 20:23:29,377 - __main__ - INFO -    Phase 50m→10m: throttle=30%, ΔV=14.8 m/s, fuel saved=102.2 kg
+2025-07-13 20:23:29,378 - __main__ - INFO - Throttle schedule complete: total ΔV = 124.4 m/s, fuel savings = 264.2 kg
+2025-07-13 20:23:29,378 - __main__ - INFO - Powered descent complete: ΔV = 1674.4 m/s
+2025-07-13 20:23:29,378 - __main__ - INFO - Final 500m throttle schedule: ΔV = 124.4 m/s, fuel savings = 264.2 kg
+2025-07-13 20:23:29,378 - __main__ - INFO - 🎯 Analyzing touchdown sequence
+2025-07-13 20:23:29,378 - __main__ - INFO - Touchdown SUCCESS: velocity = 1.20 m/s, tilt = 2.10°
+2025-07-13 20:23:29,379 - __main__ - INFO - ============================================================
+2025-07-13 20:23:29,379 - __main__ - INFO - 🏁 LUNAR MISSION SUMMARY
+2025-07-13 20:23:29,379 - __main__ - INFO - ============================================================
+2025-07-13 20:23:29,379 - __main__ - INFO - ✅ MISSION SUCCESS!
+2025-07-13 20:23:29,380 - __main__ - INFO -    Touchdown velocity: 1.20 m/s (target: ≤ 2.0 m/s)
+2025-07-13 20:23:29,381 - __main__ - INFO -    Touchdown tilt: 2.10° (target: ≤ 5.0°)
+2025-07-13 20:23:29,381 - __main__ - INFO -    Total delta-V: 5674.4 m/s
+2025-07-13 20:23:29,381 - __main__ - INFO -    Mission time: 0.0 seconds
+2025-07-13 20:23:29,382 - __main__ - INFO -    Professor criteria met: True
+2025-07-13 20:23:29,382 - __main__ - INFO - ============================================================
+2025-07-13 20:23:29,383 - __main__ - INFO - Mission results saved to lunar_mission_results.json

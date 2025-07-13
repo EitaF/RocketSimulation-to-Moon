@@ -563,6 +563,113 @@ class LunarSimulation:
         self.logger.info(f"Mission results saved to {filename}")
 
 
+def run_from_leo_state(state_json):
+    """
+    Pure function to run lunar mission from LEO state JSON
+    
+    Args:
+        state_json: Dictionary or JSON string containing LEO state
+                   Expected format: {
+                       "time": float (UTC timestamp),
+                       "position": [x, y, z] (km),
+                       "velocity": [vx, vy, vz] (km/s), 
+                       "mass": float (kg),
+                       "RAAN": float (rad),
+                       "eccentricity": float
+                   }
+    
+    Returns:
+        Mission results dictionary with touchdown analysis
+    """
+    import json
+    
+    # Parse JSON if string provided
+    if isinstance(state_json, str):
+        leo_state_data = json.loads(state_json)
+    else:
+        leo_state_data = state_json
+    
+    # Create simulation instance
+    simulation = LunarSimulation()
+    
+    # Override initial state with provided LEO state
+    leo_state = MissionState(
+        time=leo_state_data.get('time', 0.0),
+        position=[p * 1000 for p in leo_state_data['position']],  # Convert km to m
+        velocity=[v * 1000 for v in leo_state_data['velocity']],  # Convert km/s to m/s
+        mass=leo_state_data['mass'],
+        altitude=np.linalg.norm(leo_state_data['position']) * 1000 - R_EARTH,  # Calculate altitude
+        phase="LEO",
+        delta_v_used=0.0,
+        fuel_remaining=leo_state_data['mass'] - 15000  # Assume dry mass 15000 kg
+    )
+    
+    simulation.mission_states.append(leo_state)
+    simulation.logger.info(f"Starting from provided LEO state: altitude = {leo_state.altitude/1000:.1f} km")
+    
+    try:
+        # Execute mission phases starting from TLI
+        tli_result = simulation._execute_tli_burn(leo_state)
+        
+        if not tli_result['success']:
+            return simulation._create_failure_result("TLI burn failed")
+        
+        # Continue with rest of mission
+        coast_result = simulation._coast_to_moon_soi(tli_result['final_state'])
+        
+        if not coast_result['success']:
+            return simulation._create_failure_result("Coast to Moon failed")
+        
+        loi_result = simulation._execute_loi_burn(coast_result['final_state'])
+        
+        if not loi_result['success']:
+            return simulation._create_failure_result("LOI burn failed")
+        
+        descent_result = simulation._execute_powered_descent(loi_result['final_state'])
+        
+        if not descent_result['success']:
+            return simulation._create_failure_result("Powered descent failed")
+        
+        touchdown_result = simulation._analyze_touchdown(descent_result['final_state'])
+        
+        # Generate mission summary
+        mission_summary = {
+            'success': touchdown_result.success,
+            'phases': {
+                'tli': {k: (v.to_dict() if hasattr(v, 'to_dict') else v) for k, v in tli_result.items()},
+                'coast': {k: (v.to_dict() if hasattr(v, 'to_dict') else v) for k, v in coast_result.items()},
+                'loi': {k: (v.to_dict() if hasattr(v, 'to_dict') else v) for k, v in loi_result.items()},
+                'descent': {k: (v.to_dict() if hasattr(v, 'to_dict') else v) for k, v in descent_result.items()}
+            },
+            'touchdown': touchdown_result.to_dict(),
+            'total_delta_v': sum([
+                tli_result.get('delta_v_used', 0),
+                loi_result.get('delta_v_used', 0),
+                descent_result.get('delta_v_used', 0)
+            ]),
+            'mission_states': [state.to_dict() for state in simulation.mission_states],
+            'performance_metrics': {
+                'meets_velocity_target': touchdown_result.velocity <= 2.0,
+                'meets_tilt_target': touchdown_result.tilt_angle <= 5.0,
+                'meets_professor_criteria': (
+                    touchdown_result.velocity <= 2.0 and 
+                    touchdown_result.tilt_angle <= 5.0 and 
+                    touchdown_result.success
+                )
+            }
+        }
+        
+        # Return success indicator in format expected by professor
+        if mission_summary['success'] and mission_summary['performance_metrics']['meets_professor_criteria']:
+            return "Landing SUCCESS"
+        else:
+            return f"Landing FAILED: {mission_summary.get('reason', 'Performance criteria not met')}"
+            
+    except Exception as e:
+        simulation.logger.error(f"Mission failed with exception: {e}")
+        return f"Landing FAILED: Exception {str(e)}"
+
+
 def main():
     """Main execution function"""
     print("🚀 LUNAR LANDING SIMULATION - MVP")

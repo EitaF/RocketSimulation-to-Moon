@@ -27,6 +27,7 @@ from circularize import create_circularization_burn
 from patched_conic_solver import check_soi_transition, convert_to_lunar_frame
 from launch_window_calculator import LaunchWindowCalculator
 from mid_course_correction import MidCourseCorrection
+from leo_state_schema import LEOStateSchema
 
 # 物理定数
 G = 6.67430e-11  # 万有引力定数 [m^3/kg/s^2]
@@ -168,6 +169,7 @@ class Mission:
         Check if LEO mission success criteria are met
         Professor v27: Stable circular orbit within 5km tolerance
         Professor v29: Updated to recognize LEO_STABLE phase as mission success
+        Professor v44: Emit leo_state.json on success with compliant schema
         """
         # Professor v29: LEO_STABLE phase indicates successful S-IVB cutoff
         if self.rocket.phase == MissionPhase.LEO_STABLE:
@@ -182,6 +184,9 @@ class Mission:
                     self.logger.info(f"   Periapsis: {periapsis_km:.1f} km") 
                     self.logger.info(f"   Eccentricity: {orbital_state.eccentricity:.4f}")
                     self.logger.info(f"   Altitude difference: {abs(apoapsis_km - periapsis_km):.1f} km")
+                    
+                    # Professor v44: Emit compliant leo_state.json on success
+                    self._emit_leo_state_json(orbital_state)
             return True
         
         # Original success criteria (fallback)
@@ -207,11 +212,76 @@ class Mission:
             periapsis_km = (orbital_state.periapsis - R_EARTH) / 1000
             self.logger.info(f"🎉 LEO MISSION SUCCESS! Stable circular orbit achieved:")
             self.logger.info(f"   Apoapsis: {apoapsis_km:.1f} km")
+            
+            # Professor v44: Emit compliant leo_state.json on success
+            self._emit_leo_state_json(orbital_state)
             self.logger.info(f"   Periapsis: {periapsis_km:.1f} km") 
             self.logger.info(f"   Eccentricity: {orbital_state.eccentricity:.4f}")
             self.logger.info(f"   Altitude difference: {abs(apoapsis_km - periapsis_km):.1f} km")
         
         return success
+    
+    def _emit_leo_state_json(self, orbital_state) -> None:
+        """
+        Emit compliant leo_state.json file for mission handoff
+        Professor v44: Generate standardized state vector (km, km/s, kg, rad units)
+        """
+        try:
+            import time
+            
+            # Convert position to km (from meters)
+            position_km = [
+                self.rocket.position.x / 1000,
+                self.rocket.position.y / 1000, 
+                self.rocket.position.z / 1000
+            ]
+            
+            # Convert velocity to km/s (from m/s)
+            velocity_km_s = [
+                self.rocket.velocity.x / 1000,
+                self.rocket.velocity.y / 1000,
+                self.rocket.velocity.z / 1000
+            ]
+            
+            # Calculate RAAN (simplified - use current orbital angle)
+            # For this demo, use the angle in the orbit plane
+            raan_rad = np.arctan2(self.rocket.position.y, self.rocket.position.x)
+            if raan_rad < 0:
+                raan_rad += 2 * np.pi
+            
+            # Create LEO state data
+            leo_state_data = {
+                "time": time.time(),  # Current UTC timestamp
+                "position": position_km,
+                "velocity": velocity_km_s,
+                "mass": self.rocket.mass,  # kg
+                "RAAN": raan_rad,  # rad
+                "eccentricity": orbital_state.eccentricity
+            }
+            
+            # Validate against schema
+            leo_state = LEOStateSchema(**leo_state_data)
+            
+            # Ensure meets professor's criteria
+            validation = leo_state.validate_leo_criteria()
+            if not validation['meets_criteria']:
+                self.logger.warning(f"LEO state validation failed: {validation}")
+                return
+            
+            # Write to file
+            with open('leo_state.json', 'w') as f:
+                json.dump(leo_state_data, f, indent=2)
+            
+            self.logger.info(f"📄 LEO state JSON emitted: leo_state.json")
+            self.logger.info(f"   Position magnitude: {np.linalg.norm(position_km):.1f} km")
+            self.logger.info(f"   Velocity magnitude: {np.linalg.norm(velocity_km_s):.3f} km/s")
+            self.logger.info(f"   Mass: {self.rocket.mass:.0f} kg")
+            self.logger.info(f"   RAAN: {raan_rad:.3f} rad ({np.degrees(raan_rad):.1f}°)")
+            self.logger.info(f"   Eccentricity: {orbital_state.eccentricity:.4f}")
+            self.logger.info(f"   Altitude: {validation['altitude_value']:.1f} km")
+            
+        except Exception as e:
+            self.logger.error(f"Failed to emit leo_state.json: {e}")
     
     def _initialize_moon(self) -> CelestialBody:
         """月の初期位置を設定（影響圏設定含む）"""
@@ -1050,12 +1120,13 @@ class Mission:
         if hasattr(self, 'config') and self.config.get("verbose_abort", False):
             velocity = self.rocket.velocity.magnitude()
             flight_path_angle = np.degrees(self.get_flight_path_angle())
-            thrust_mag = self.rocket.get_thrust_vector().magnitude()
+            thrust_mag = self.get_thrust_vector(0.0).magnitude()
             
             # Propellant info
             if self.rocket.current_stage < len(self.rocket.stages):
                 stage = self.rocket.stages[self.rocket.current_stage]
-                used_prop = stage.get_mass_flow_rate(altitude) * self.rocket.stage_burn_time
+                stage_elapsed_time = self.current_time - self.rocket.stage_start_time
+                used_prop = stage.get_mass_flow_rate(altitude) * stage_elapsed_time
                 remaining_prop = stage.propellant_mass - used_prop
                 prop_ratio = remaining_prop / stage.propellant_mass if stage.propellant_mass > 0 else 0
             else:

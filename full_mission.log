@@ -1,0 +1,273 @@
+2025-07-13 20:18:06,375 - __main__ - INFO - Full Mission Driver initialized - 1 runs planned
+2025-07-13 20:18:06,375 - __main__ - INFO - 🚀 FULL MISSION START: Earth to Moon
+2025-07-13 20:18:06,375 - __main__ - INFO - ============================================================
+2025-07-13 20:18:06,376 - __main__ - INFO - 🌍 Phase 1: Launch to LEO
+2025-07-13 20:18:06,376 - __main__ - INFO -    Executing Saturn V launch simulation...
+2025-07-13 20:18:06,377 - orbital_monitor - INFO - Orbital Monitor initialized
+2025-07-13 20:18:06,377 - guidance_strategy - INFO - PEG Strategy initialized - Target: 200km, Thrust deficit: 0.0%
+2025-07-13 20:18:06,377 - circularize - INFO - Circularization burn controller initialized
+2025-07-13 20:18:06,377 - guidance_strategy - INFO - Circularization strategy initialized
+2025-07-13 20:18:06,383 - guidance_strategy - INFO - Guidance context initialized with Strategy pattern
+2025-07-13 20:18:06,383 - circularize - INFO - Circularization burn controller initialized
+2025-07-13 20:18:06,383 - rocket_simulation_main - INFO - Professor v27: Orbital monitor and PEG guidance system initialized
+2025-07-13 20:18:06,383 - rocket_simulation_main - INFO - Mission start: Saturn V
+2025-07-13 20:18:06,383 - rocket_simulation_main - INFO - Initial position: Vector3(5.60e+06, 3.04e+06, 0.00e+00)
+2025-07-13 20:18:06,383 - rocket_simulation_main - INFO - Initial velocity: 407.2 m/s
+2025-07-13 20:18:06,383 - rocket_simulation_main - INFO - Total rocket mass: 3854.5 tons
+2025-07-13 20:18:06,384 - __main__ - ERROR - Launch phase failed: 'Rocket' object has no attribute 'get_thrust_vector'
+2025-07-13 20:18:45,097 - __main__ - INFO - Full Mission Driver initialized - 1 runs planned
+2025-07-13 20:18:45,097 - __main__ - INFO - 🚀 FULL MISSION START: Earth to Moon
+2025-07-13 20:18:45,097 - __main__ - INFO - ============================================================
+2025-07-13 20:18:45,097 - __main__ - INFO - 🌍 Phase 1: Launch to LEO
+2025-07-13 20:18:45,097 - __main__ - INFO -    Executing Saturn V launch simulation...
+2025-07-13 20:18:45,100 - orbital_monitor - INFO - Orbital Monitor initialized
+2025-07-13 20:18:45,100 - guidance_strategy - INFO - PEG Strategy initialized - Target: 200km, Thrust deficit: 0.0%
+2025-07-13 20:18:45,100 - circularize - INFO - Circularization burn controller initialized
+2025-07-13 20:18:45,100 - guidance_strategy - INFO - Circularization strategy initialized
+2025-07-13 20:18:45,102 - guidance_strategy - INFO - Guidance context initialized with Strategy pattern
+2025-07-13 20:18:45,102 - circularize - INFO - Circularization burn controller initialized
+2025-07-13 20:18:45,102 - rocket_simulation_main - INFO - Professor v27: Orbital monitor and PEG guidance system initialized
+2025-07-13 20:18:45,102 - rocket_simulation_main - INFO - Mission start: Saturn V
+2025-07-13 20:18:45,103 - rocket_simulation_main - INFO - Initial position: Vector3(5.60e+06, 3.04e+06, 0.00e+00)
+2025-07-13 20:18:45,103 - rocket_simulation_main - INFO - Initial velocity: 407.2 m/s
+2025-07-13 20:18:45,103 - rocket_simulation_main - INFO - Total rocket mass: 3854.5 tons
+2025-07-13 20:18:46,138 - engine - INFO - Built interpolators for S-IC: altitude range 0-100000m, 2D Isp: True
+2025-07-13 20:18:46,139 - engine - INFO - Built interpolators for S-II: altitude range 0-100000m, 2D Isp: True
+2025-07-13 20:18:46,139 - engine - INFO - Built interpolators for S-IVB: altitude range 0-100000m, 2D Isp: True
+2025-07-13 20:18:46,140 - guidance_strategy - INFO - Guidance strategy switched: peg → peg
+2025-07-13 20:18:46,141 - __main__ - ERROR - Launch phase failed: 'Rocket' object has no attribute 'stage_burn_time'
+2025-07-13 20:19:08,010 - __main__ - INFO - Full Mission Driver initialized - 1 runs planned
+2025-07-13 20:19:08,011 - __main__ - INFO - 🚀 FULL MISSION START: Earth to Moon
+2025-07-13 20:19:08,011 - __main__ - INFO - ============================================================
+2025-07-13 20:19:08,011 - __main__ - INFO - 🌍 Phase 1: Launch to LEO
+2025-07-13 20:19:08,011 - __main__ - INFO -    Executing Saturn V launch simulation...
+2025-07-13 20:19:08,012 - orbital_monitor - INFO - Orbital Monitor initialized
+2025-07-13 20:19:08,012 - guidance_strategy - INFO - PEG Strategy initialized - Target: 200km, Thrust deficit: 0.0%
+2025-07-13 20:19:08,012 - circularize - INFO - Circularization burn controller initialized
+2025-07-13 20:19:08,012 - guidance_strategy - INFO - Circularization strategy initialized
+2025-07-13 20:19:08,014 - guidance_strategy - INFO - Guidance context initialized with Strategy pattern
+2025-07-13 20:19:08,014 - circularize - INFO - Circularization burn controller initialized
+2025-07-13 20:19:08,014 - rocket_simulation_main - INFO - Professor v27: Orbital monitor and PEG guidance system initialized
+2025-07-13 20:19:08,014 - rocket_simulation_main - INFO - Mission start: Saturn V
+2025-07-13 20:19:08,014 - rocket_simulation_main - INFO - Initial position: Vector3(5.60e+06, 3.04e+06, 0.00e+00)
+2025-07-13 20:19:08,014 - rocket_simulation_main - INFO - Initial velocity: 407.2 m/s
+2025-07-13 20:19:08,014 - rocket_simulation_main - INFO - Total rocket mass: 3854.5 tons
+2025-07-13 20:19:08,551 - engine - INFO - Built interpolators for S-IC: altitude range 0-100000m, 2D Isp: True
+2025-07-13 20:19:08,552 - engine - INFO - Built interpolators for S-II: altitude range 0-100000m, 2D Isp: True
+2025-07-13 20:19:08,552 - engine - INFO - Built interpolators for S-IVB: altitude range 0-100000m, 2D Isp: True
+2025-07-13 20:19:08,553 - guidance_strategy - INFO - Guidance strategy switched: peg → peg
+2025-07-13 20:19:08,553 - __main__ - ERROR - Launch phase failed: 'Mission' object has no attribute 'time'
+2025-07-13 20:19:31,387 - __main__ - INFO - Full Mission Driver initialized - 1 runs planned
+2025-07-13 20:19:31,388 - __main__ - INFO - 🚀 FULL MISSION START: Earth to Moon
+2025-07-13 20:19:31,388 - __main__ - INFO - ============================================================
+2025-07-13 20:19:31,388 - __main__ - INFO - 🌍 Phase 1: Launch to LEO
+2025-07-13 20:19:31,388 - __main__ - INFO -    Executing Saturn V launch simulation...
+2025-07-13 20:19:31,389 - orbital_monitor - INFO - Orbital Monitor initialized
+2025-07-13 20:19:31,389 - guidance_strategy - INFO - PEG Strategy initialized - Target: 200km, Thrust deficit: 0.0%
+2025-07-13 20:19:31,389 - circularize - INFO - Circularization burn controller initialized
+2025-07-13 20:19:31,389 - guidance_strategy - INFO - Circularization strategy initialized
+2025-07-13 20:19:31,391 - guidance_strategy - INFO - Guidance context initialized with Strategy pattern
+2025-07-13 20:19:31,391 - circularize - INFO - Circularization burn controller initialized
+2025-07-13 20:19:31,391 - rocket_simulation_main - INFO - Professor v27: Orbital monitor and PEG guidance system initialized
+2025-07-13 20:19:31,392 - rocket_simulation_main - INFO - Mission start: Saturn V
+2025-07-13 20:19:31,392 - rocket_simulation_main - INFO - Initial position: Vector3(5.60e+06, 3.04e+06, 0.00e+00)
+2025-07-13 20:19:31,392 - rocket_simulation_main - INFO - Initial velocity: 407.2 m/s
+2025-07-13 20:19:31,392 - rocket_simulation_main - INFO - Total rocket mass: 3854.5 tons
+2025-07-13 20:19:32,095 - engine - INFO - Built interpolators for S-IC: altitude range 0-100000m, 2D Isp: True
+2025-07-13 20:19:32,096 - engine - INFO - Built interpolators for S-II: altitude range 0-100000m, 2D Isp: True
+2025-07-13 20:19:32,096 - engine - INFO - Built interpolators for S-IVB: altitude range 0-100000m, 2D Isp: True
+2025-07-13 20:19:32,097 - guidance_strategy - INFO - Guidance strategy switched: peg → peg
+2025-07-13 20:19:32,103 - atmosphere - WARNING - pymsis library not found. For enhanced atmospheric modeling, please install it:
+  pip install pymsis
+or install all dependencies with:
+  pip install -r requirements.txt
+Falling back to enhanced ISA atmospheric model.
+2025-07-13 20:19:32,104 - atmosphere - INFO - Using enhanced ISA atmospheric model (NRLMSISE-00 not available)
+2025-07-13 20:19:32,104 - rocket_simulation_main - INFO - TELEMETRY: t=0.0s, stage=1, alt=0.0km, v=407m/s, propellant=100.0%, γ=0.0°
+2025-07-13 20:19:32,127 - rocket_simulation_main - INFO - TELEMETRY: t=1.0s, stage=1, alt=-0.0km, v=407m/s, propellant=99.5%, γ=-0.1°
+2025-07-13 20:19:32,143 - rocket_simulation_main - INFO - TELEMETRY: t=2.0s, stage=1, alt=-0.0km, v=406m/s, propellant=99.1%, γ=-0.3°
+2025-07-13 20:19:32,159 - rocket_simulation_main - INFO - TELEMETRY: t=3.0s, stage=1, alt=-0.0km, v=406m/s, propellant=98.6%, γ=-0.4°
+2025-07-13 20:19:32,183 - rocket_simulation_main - INFO - TELEMETRY: t=4.0s, stage=1, alt=-0.0km, v=405m/s, propellant=98.1%, γ=-0.5°
+2025-07-13 20:19:32,202 - rocket_simulation_main - INFO - TELEMETRY: t=5.0s, stage=1, alt=-0.0km, v=405m/s, propellant=97.6%, γ=-0.6°
+2025-07-13 20:19:32,222 - rocket_simulation_main - INFO - TELEMETRY: t=6.0s, stage=1, alt=-0.0km, v=404m/s, propellant=97.2%, γ=-0.7°
+2025-07-13 20:19:32,240 - rocket_simulation_main - INFO - TELEMETRY: t=7.0s, stage=1, alt=-0.0km, v=404m/s, propellant=96.7%, γ=-0.9°
+2025-07-13 20:19:32,268 - rocket_simulation_main - INFO - TELEMETRY: t=8.0s, stage=1, alt=-0.0km, v=403m/s, propellant=96.2%, γ=-1.0°
+2025-07-13 20:19:32,292 - rocket_simulation_main - INFO - TELEMETRY: t=9.0s, stage=1, alt=-0.0km, v=402m/s, propellant=95.8%, γ=-1.1°
+2025-07-13 20:19:32,311 - rocket_simulation_main - INFO - TELEMETRY: t=10.0s, stage=1, alt=-0.0km, v=402m/s, propellant=95.3%, γ=-1.2°
+2025-07-13 20:19:32,327 - rocket_simulation_main - INFO - TELEMETRY: t=11.0s, stage=1, alt=-0.1km, v=401m/s, propellant=94.8%, γ=-1.2°
+2025-07-13 20:19:32,344 - rocket_simulation_main - INFO - TELEMETRY: t=12.0s, stage=1, alt=-0.1km, v=401m/s, propellant=94.3%, γ=-1.3°
+2025-07-13 20:19:32,360 - rocket_simulation_main - INFO - TELEMETRY: t=13.0s, stage=1, alt=-0.1km, v=400m/s, propellant=93.9%, γ=-1.4°
+2025-07-13 20:19:32,375 - rocket_simulation_main - INFO - TELEMETRY: t=14.0s, stage=1, alt=-0.1km, v=400m/s, propellant=93.4%, γ=-1.5°
+2025-07-13 20:19:32,391 - rocket_simulation_main - INFO - TELEMETRY: t=15.0s, stage=1, alt=-0.1km, v=399m/s, propellant=92.9%, γ=-1.6°
+2025-07-13 20:19:32,405 - rocket_simulation_main - ERROR - Mission failed: Crashed into Earth at altitude -100.8 m
+2025-07-13 20:19:32,405 - rocket_simulation_main - ERROR - ABORT_REASON: Earth impact - altitude -100.8m
+2025-07-13 20:19:32,406 - rocket_simulation_main - ERROR - ABORT_STATE: v=398.9m/s, γ=-1.6°, apo=-0.1km, peri=-6362.9km
+2025-07-13 20:22:37,821 - __main__ - INFO - Full Mission Driver initialized - 1 runs planned
+2025-07-13 20:22:37,821 - __main__ - INFO - 🚀 FULL MISSION START: Earth to Moon
+2025-07-13 20:22:37,821 - __main__ - INFO - ============================================================
+2025-07-13 20:22:37,821 - __main__ - INFO - 🌍 Phase 1: Launch to LEO
+2025-07-13 20:22:37,821 - __main__ - INFO -    Executing Saturn V launch simulation...
+2025-07-13 20:22:37,822 - orbital_monitor - INFO - Orbital Monitor initialized
+2025-07-13 20:22:37,822 - guidance_strategy - INFO - PEG Strategy initialized - Target: 200km, Thrust deficit: 0.0%
+2025-07-13 20:22:37,822 - circularize - INFO - Circularization burn controller initialized
+2025-07-13 20:22:37,822 - guidance_strategy - INFO - Circularization strategy initialized
+2025-07-13 20:22:37,824 - guidance_strategy - INFO - Guidance context initialized with Strategy pattern
+2025-07-13 20:22:37,824 - circularize - INFO - Circularization burn controller initialized
+2025-07-13 20:22:37,825 - rocket_simulation_main - INFO - Professor v27: Orbital monitor and PEG guidance system initialized
+2025-07-13 20:22:37,826 - rocket_simulation_main - INFO - Mission start: Saturn V
+2025-07-13 20:22:37,826 - rocket_simulation_main - INFO - Initial position: Vector3(5.60e+06, 3.04e+06, 0.00e+00)
+2025-07-13 20:22:37,826 - rocket_simulation_main - INFO - Initial velocity: 407.2 m/s
+2025-07-13 20:22:37,826 - rocket_simulation_main - INFO - Total rocket mass: 3854.5 tons
+2025-07-13 20:22:38,225 - engine - INFO - Built interpolators for S-IC: altitude range 0-100000m, 2D Isp: True
+2025-07-13 20:22:38,226 - engine - INFO - Built interpolators for S-II: altitude range 0-100000m, 2D Isp: True
+2025-07-13 20:22:38,227 - engine - INFO - Built interpolators for S-IVB: altitude range 0-100000m, 2D Isp: True
+2025-07-13 20:22:38,227 - guidance_strategy - INFO - Guidance strategy switched: peg → peg
+2025-07-13 20:22:38,229 - atmosphere - WARNING - pymsis library not found. For enhanced atmospheric modeling, please install it:
+  pip install pymsis
+or install all dependencies with:
+  pip install -r requirements.txt
+Falling back to enhanced ISA atmospheric model.
+2025-07-13 20:22:38,229 - atmosphere - INFO - Using enhanced ISA atmospheric model (NRLMSISE-00 not available)
+2025-07-13 20:22:38,229 - rocket_simulation_main - INFO - TELEMETRY: t=0.0s, stage=1, alt=0.0km, v=407m/s, propellant=100.0%, γ=0.0°
+2025-07-13 20:22:38,260 - rocket_simulation_main - INFO - TELEMETRY: t=1.0s, stage=1, alt=-0.0km, v=407m/s, propellant=99.5%, γ=-0.1°
+2025-07-13 20:22:38,283 - rocket_simulation_main - INFO - TELEMETRY: t=2.0s, stage=1, alt=-0.0km, v=406m/s, propellant=99.1%, γ=-0.3°
+2025-07-13 20:22:38,304 - rocket_simulation_main - INFO - TELEMETRY: t=3.0s, stage=1, alt=-0.0km, v=406m/s, propellant=98.6%, γ=-0.4°
+2025-07-13 20:22:38,320 - rocket_simulation_main - INFO - TELEMETRY: t=4.0s, stage=1, alt=-0.0km, v=405m/s, propellant=98.1%, γ=-0.5°
+2025-07-13 20:22:38,338 - rocket_simulation_main - INFO - TELEMETRY: t=5.0s, stage=1, alt=-0.0km, v=405m/s, propellant=97.6%, γ=-0.6°
+2025-07-13 20:22:38,354 - rocket_simulation_main - INFO - TELEMETRY: t=6.0s, stage=1, alt=-0.0km, v=404m/s, propellant=97.2%, γ=-0.7°
+2025-07-13 20:22:38,376 - rocket_simulation_main - INFO - TELEMETRY: t=7.0s, stage=1, alt=-0.0km, v=404m/s, propellant=96.7%, γ=-0.9°
+2025-07-13 20:22:38,394 - rocket_simulation_main - INFO - TELEMETRY: t=8.0s, stage=1, alt=-0.0km, v=403m/s, propellant=96.2%, γ=-1.0°
+2025-07-13 20:22:38,410 - rocket_simulation_main - INFO - TELEMETRY: t=9.0s, stage=1, alt=-0.0km, v=402m/s, propellant=95.8%, γ=-1.1°
+2025-07-13 20:22:38,427 - rocket_simulation_main - INFO - TELEMETRY: t=10.0s, stage=1, alt=-0.0km, v=402m/s, propellant=95.3%, γ=-1.2°
+2025-07-13 20:22:38,444 - rocket_simulation_main - INFO - TELEMETRY: t=11.0s, stage=1, alt=-0.1km, v=401m/s, propellant=94.8%, γ=-1.2°
+2025-07-13 20:22:38,460 - rocket_simulation_main - INFO - TELEMETRY: t=12.0s, stage=1, alt=-0.1km, v=401m/s, propellant=94.3%, γ=-1.3°
+2025-07-13 20:22:38,476 - rocket_simulation_main - INFO - TELEMETRY: t=13.0s, stage=1, alt=-0.1km, v=400m/s, propellant=93.9%, γ=-1.4°
+2025-07-13 20:22:38,497 - rocket_simulation_main - INFO - TELEMETRY: t=14.0s, stage=1, alt=-0.1km, v=400m/s, propellant=93.4%, γ=-1.5°
+2025-07-13 20:22:38,515 - rocket_simulation_main - INFO - TELEMETRY: t=15.0s, stage=1, alt=-0.1km, v=399m/s, propellant=92.9%, γ=-1.6°
+2025-07-13 20:22:38,531 - rocket_simulation_main - ERROR - Mission failed: Crashed into Earth at altitude -100.8 m
+2025-07-13 20:22:38,531 - rocket_simulation_main - ERROR - ABORT_REASON: Earth impact - altitude -100.8m
+2025-07-13 20:22:38,531 - rocket_simulation_main - ERROR - ABORT_STATE: v=398.9m/s, γ=-1.6°, apo=-0.1km, peri=-6362.9km
+2025-07-13 20:23:54,305 - __main__ - INFO - Full Mission Driver initialized - 1 runs planned
+2025-07-13 20:23:54,306 - __main__ - INFO - 🚀 FULL MISSION START: Earth to Moon
+2025-07-13 20:23:54,306 - __main__ - INFO - ============================================================
+2025-07-13 20:23:54,306 - __main__ - INFO - 🌍 Phase 1: Launch to LEO
+2025-07-13 20:23:54,306 - __main__ - INFO -    Executing Saturn V launch simulation...
+2025-07-13 20:23:54,307 - orbital_monitor - INFO - Orbital Monitor initialized
+2025-07-13 20:23:54,307 - guidance_strategy - INFO - PEG Strategy initialized - Target: 200km, Thrust deficit: 0.0%
+2025-07-13 20:23:54,307 - circularize - INFO - Circularization burn controller initialized
+2025-07-13 20:23:54,307 - guidance_strategy - INFO - Circularization strategy initialized
+2025-07-13 20:23:54,309 - guidance_strategy - INFO - Guidance context initialized with Strategy pattern
+2025-07-13 20:23:54,309 - circularize - INFO - Circularization burn controller initialized
+2025-07-13 20:23:54,309 - rocket_simulation_main - INFO - Professor v27: Orbital monitor and PEG guidance system initialized
+2025-07-13 20:23:54,309 - rocket_simulation_main - INFO - Mission start: Saturn V
+2025-07-13 20:23:54,309 - rocket_simulation_main - INFO - Initial position: Vector3(5.60e+06, 3.04e+06, 0.00e+00)
+2025-07-13 20:23:54,309 - rocket_simulation_main - INFO - Initial velocity: 407.2 m/s
+2025-07-13 20:23:54,309 - rocket_simulation_main - INFO - Total rocket mass: 3854.5 tons
+2025-07-13 20:23:54,720 - engine - INFO - Built interpolators for S-IC: altitude range 0-100000m, 2D Isp: True
+2025-07-13 20:23:54,721 - engine - INFO - Built interpolators for S-II: altitude range 0-100000m, 2D Isp: True
+2025-07-13 20:23:54,722 - engine - INFO - Built interpolators for S-IVB: altitude range 0-100000m, 2D Isp: True
+2025-07-13 20:23:54,722 - guidance_strategy - INFO - Guidance strategy switched: peg → peg
+2025-07-13 20:23:54,723 - atmosphere - WARNING - pymsis library not found. For enhanced atmospheric modeling, please install it:
+  pip install pymsis
+or install all dependencies with:
+  pip install -r requirements.txt
+Falling back to enhanced ISA atmospheric model.
+2025-07-13 20:23:54,723 - atmosphere - INFO - Using enhanced ISA atmospheric model (NRLMSISE-00 not available)
+2025-07-13 20:23:54,723 - rocket_simulation_main - INFO - TELEMETRY: t=0.0s, stage=1, alt=0.0km, v=407m/s, propellant=100.0%, γ=0.0°
+2025-07-13 20:23:54,748 - rocket_simulation_main - INFO - TELEMETRY: t=1.0s, stage=1, alt=-0.0km, v=407m/s, propellant=99.5%, γ=-0.1°
+2025-07-13 20:23:54,770 - rocket_simulation_main - INFO - TELEMETRY: t=2.0s, stage=1, alt=-0.0km, v=406m/s, propellant=99.1%, γ=-0.3°
+2025-07-13 20:23:54,790 - rocket_simulation_main - INFO - TELEMETRY: t=3.0s, stage=1, alt=-0.0km, v=406m/s, propellant=98.6%, γ=-0.4°
+2025-07-13 20:23:54,809 - rocket_simulation_main - INFO - TELEMETRY: t=4.0s, stage=1, alt=-0.0km, v=405m/s, propellant=98.1%, γ=-0.5°
+2025-07-13 20:23:54,827 - rocket_simulation_main - INFO - TELEMETRY: t=5.0s, stage=1, alt=-0.0km, v=405m/s, propellant=97.6%, γ=-0.6°
+2025-07-13 20:23:54,846 - rocket_simulation_main - INFO - TELEMETRY: t=6.0s, stage=1, alt=-0.0km, v=404m/s, propellant=97.2%, γ=-0.7°
+2025-07-13 20:23:54,874 - rocket_simulation_main - INFO - TELEMETRY: t=7.0s, stage=1, alt=-0.0km, v=404m/s, propellant=96.7%, γ=-0.9°
+2025-07-13 20:23:54,894 - rocket_simulation_main - INFO - TELEMETRY: t=8.0s, stage=1, alt=-0.0km, v=403m/s, propellant=96.2%, γ=-1.0°
+2025-07-13 20:23:54,915 - rocket_simulation_main - INFO - TELEMETRY: t=9.0s, stage=1, alt=-0.0km, v=402m/s, propellant=95.8%, γ=-1.1°
+2025-07-13 20:23:54,936 - rocket_simulation_main - INFO - TELEMETRY: t=10.0s, stage=1, alt=-0.0km, v=402m/s, propellant=95.3%, γ=-1.2°
+2025-07-13 20:23:54,954 - rocket_simulation_main - INFO - TELEMETRY: t=11.0s, stage=1, alt=-0.1km, v=401m/s, propellant=94.8%, γ=-1.2°
+2025-07-13 20:23:54,972 - rocket_simulation_main - INFO - TELEMETRY: t=12.0s, stage=1, alt=-0.1km, v=401m/s, propellant=94.3%, γ=-1.3°
+2025-07-13 20:23:54,991 - rocket_simulation_main - INFO - TELEMETRY: t=13.0s, stage=1, alt=-0.1km, v=400m/s, propellant=93.9%, γ=-1.4°
+2025-07-13 20:23:55,013 - rocket_simulation_main - INFO - TELEMETRY: t=14.0s, stage=1, alt=-0.1km, v=400m/s, propellant=93.4%, γ=-1.5°
+2025-07-13 20:23:55,036 - rocket_simulation_main - INFO - TELEMETRY: t=15.0s, stage=1, alt=-0.1km, v=399m/s, propellant=92.9%, γ=-1.6°
+2025-07-13 20:23:55,053 - rocket_simulation_main - ERROR - Mission failed: Crashed into Earth at altitude -100.8 m
+2025-07-13 20:23:55,053 - rocket_simulation_main - ERROR - ABORT_REASON: Earth impact - altitude -100.8m
+2025-07-13 20:23:55,053 - rocket_simulation_main - ERROR - ABORT_STATE: v=398.9m/s, γ=-1.6°, apo=-0.1km, peri=-6362.9km
+2025-07-13 20:23:55,054 - __main__ - WARNING -    Launch failed - using demo LEO state for integration test
+2025-07-13 20:23:55,055 - __main__ - INFO -    ✅ Demo LEO state copied for integration test
+2025-07-13 20:24:09,629 - __main__ - INFO - Full Mission Driver initialized - 1 runs planned
+2025-07-13 20:24:09,630 - __main__ - INFO - 🚀 FULL MISSION START: Earth to Moon
+2025-07-13 20:24:09,630 - __main__ - INFO - ============================================================
+2025-07-13 20:24:09,630 - __main__ - INFO - 🌍 Phase 1: Launch to LEO
+2025-07-13 20:24:09,630 - __main__ - INFO -    Executing Saturn V launch simulation...
+2025-07-13 20:24:09,631 - orbital_monitor - INFO - Orbital Monitor initialized
+2025-07-13 20:24:09,631 - guidance_strategy - INFO - PEG Strategy initialized - Target: 200km, Thrust deficit: 0.0%
+2025-07-13 20:24:09,631 - circularize - INFO - Circularization burn controller initialized
+2025-07-13 20:24:09,631 - guidance_strategy - INFO - Circularization strategy initialized
+2025-07-13 20:24:09,633 - guidance_strategy - INFO - Guidance context initialized with Strategy pattern
+2025-07-13 20:24:09,633 - circularize - INFO - Circularization burn controller initialized
+2025-07-13 20:24:09,633 - rocket_simulation_main - INFO - Professor v27: Orbital monitor and PEG guidance system initialized
+2025-07-13 20:24:09,633 - rocket_simulation_main - INFO - Mission start: Saturn V
+2025-07-13 20:24:09,634 - rocket_simulation_main - INFO - Initial position: Vector3(5.60e+06, 3.04e+06, 0.00e+00)
+2025-07-13 20:24:09,634 - rocket_simulation_main - INFO - Initial velocity: 407.2 m/s
+2025-07-13 20:24:09,634 - rocket_simulation_main - INFO - Total rocket mass: 3854.5 tons
+2025-07-13 20:24:10,053 - engine - INFO - Built interpolators for S-IC: altitude range 0-100000m, 2D Isp: True
+2025-07-13 20:24:10,054 - engine - INFO - Built interpolators for S-II: altitude range 0-100000m, 2D Isp: True
+2025-07-13 20:24:10,055 - engine - INFO - Built interpolators for S-IVB: altitude range 0-100000m, 2D Isp: True
+2025-07-13 20:24:10,056 - guidance_strategy - INFO - Guidance strategy switched: peg → peg
+2025-07-13 20:24:10,058 - atmosphere - WARNING - pymsis library not found. For enhanced atmospheric modeling, please install it:
+  pip install pymsis
+or install all dependencies with:
+  pip install -r requirements.txt
+Falling back to enhanced ISA atmospheric model.
+2025-07-13 20:24:10,059 - atmosphere - INFO - Using enhanced ISA atmospheric model (NRLMSISE-00 not available)
+2025-07-13 20:24:10,059 - rocket_simulation_main - INFO - TELEMETRY: t=0.0s, stage=1, alt=0.0km, v=407m/s, propellant=100.0%, γ=0.0°
+2025-07-13 20:24:10,085 - rocket_simulation_main - INFO - TELEMETRY: t=1.0s, stage=1, alt=-0.0km, v=407m/s, propellant=99.5%, γ=-0.1°
+2025-07-13 20:24:10,103 - rocket_simulation_main - INFO - TELEMETRY: t=2.0s, stage=1, alt=-0.0km, v=406m/s, propellant=99.1%, γ=-0.3°
+2025-07-13 20:24:10,122 - rocket_simulation_main - INFO - TELEMETRY: t=3.0s, stage=1, alt=-0.0km, v=406m/s, propellant=98.6%, γ=-0.4°
+2025-07-13 20:24:10,140 - rocket_simulation_main - INFO - TELEMETRY: t=4.0s, stage=1, alt=-0.0km, v=405m/s, propellant=98.1%, γ=-0.5°
+2025-07-13 20:24:10,161 - rocket_simulation_main - INFO - TELEMETRY: t=5.0s, stage=1, alt=-0.0km, v=405m/s, propellant=97.6%, γ=-0.6°
+2025-07-13 20:24:10,183 - rocket_simulation_main - INFO - TELEMETRY: t=6.0s, stage=1, alt=-0.0km, v=404m/s, propellant=97.2%, γ=-0.7°
+2025-07-13 20:24:10,201 - rocket_simulation_main - INFO - TELEMETRY: t=7.0s, stage=1, alt=-0.0km, v=404m/s, propellant=96.7%, γ=-0.9°
+2025-07-13 20:24:10,221 - rocket_simulation_main - INFO - TELEMETRY: t=8.0s, stage=1, alt=-0.0km, v=403m/s, propellant=96.2%, γ=-1.0°
+2025-07-13 20:24:10,238 - rocket_simulation_main - INFO - TELEMETRY: t=9.0s, stage=1, alt=-0.0km, v=402m/s, propellant=95.8%, γ=-1.1°
+2025-07-13 20:24:10,257 - rocket_simulation_main - INFO - TELEMETRY: t=10.0s, stage=1, alt=-0.0km, v=402m/s, propellant=95.3%, γ=-1.2°
+2025-07-13 20:24:10,278 - rocket_simulation_main - INFO - TELEMETRY: t=11.0s, stage=1, alt=-0.1km, v=401m/s, propellant=94.8%, γ=-1.2°
+2025-07-13 20:24:10,299 - rocket_simulation_main - INFO - TELEMETRY: t=12.0s, stage=1, alt=-0.1km, v=401m/s, propellant=94.3%, γ=-1.3°
+2025-07-13 20:24:10,317 - rocket_simulation_main - INFO - TELEMETRY: t=13.0s, stage=1, alt=-0.1km, v=400m/s, propellant=93.9%, γ=-1.4°
+2025-07-13 20:24:10,336 - rocket_simulation_main - INFO - TELEMETRY: t=14.0s, stage=1, alt=-0.1km, v=400m/s, propellant=93.4%, γ=-1.5°
+2025-07-13 20:24:10,356 - rocket_simulation_main - INFO - TELEMETRY: t=15.0s, stage=1, alt=-0.1km, v=399m/s, propellant=92.9%, γ=-1.6°
+2025-07-13 20:24:10,375 - rocket_simulation_main - ERROR - Mission failed: Crashed into Earth at altitude -100.8 m
+2025-07-13 20:24:10,375 - rocket_simulation_main - ERROR - ABORT_REASON: Earth impact - altitude -100.8m
+2025-07-13 20:24:10,375 - rocket_simulation_main - ERROR - ABORT_STATE: v=398.9m/s, γ=-1.6°, apo=-0.1km, peri=-6362.9km
+2025-07-13 20:24:10,376 - __main__ - INFO - 🛰️  Phase 2: LEO State Handoff
+2025-07-13 20:24:10,376 - __main__ - INFO -    Validating leo_state.json...
+2025-07-13 20:24:10,380 - __main__ - INFO -    ✅ LEO state validation successful
+2025-07-13 20:24:10,380 - __main__ - INFO -    Altitude: 185.0 km
+2025-07-13 20:24:10,380 - __main__ - INFO -    Eccentricity: 0.0050
+2025-07-13 20:24:10,380 - __main__ - INFO -    Mass: 45000 kg
+2025-07-13 20:24:10,381 - __main__ - INFO - 🌙 Phase 3: LEO to Lunar Touchdown
+2025-07-13 20:24:10,381 - __main__ - INFO -    Executing lunar mission from LEO...
+2025-07-13 20:24:10,381 - lunar_sim_main - INFO - Lunar simulation initialized - simplified MVP version
+2025-07-13 20:24:10,381 - lunar_sim_main - INFO - Starting from provided LEO state: altitude = 185.0 km
+2025-07-13 20:24:10,381 - lunar_sim_main - INFO - 🔥 Executing TLI (Trans-Lunar Injection) burn
+2025-07-13 20:24:10,381 - lunar_sim_main - INFO - TLI burn complete: ΔV = 3150.0 m/s, fuel consumed = 24012.0 kg
+2025-07-13 20:24:10,381 - lunar_sim_main - INFO - 🌌 Coasting to Moon sphere of influence
+2025-07-13 20:24:10,381 - lunar_sim_main - INFO - Arrived at Moon SOI: distance = 66100.0 km
+2025-07-13 20:24:10,382 - lunar_sim_main - INFO - 🌙 Executing LOI (Lunar Orbit Insertion) burn
+2025-07-13 20:24:10,382 - lunar_sim_main - INFO - LOI burn complete: ΔV = 850.0 m/s, orbital altitude = 100.0 km
+2025-07-13 20:24:10,382 - lunar_sim_main - INFO - 🛬 Executing powered descent to lunar surface
+2025-07-13 20:24:10,382 - lunar_sim_main - INFO - 🎯 Executing throttle schedule for final 500m descent
+2025-07-13 20:24:10,382 - lunar_sim_main - INFO -    Phase 500m→100m: throttle=70%, ΔV=70.2 m/s, fuel saved=89.2 kg
+2025-07-13 20:24:10,382 - lunar_sim_main - INFO -    Phase 100m→50m: throttle=50%, ΔV=24.5 m/s, fuel saved=72.8 kg
+2025-07-13 20:24:10,382 - lunar_sim_main - INFO -    Phase 50m→10m: throttle=30%, ΔV=14.8 m/s, fuel saved=102.2 kg
+2025-07-13 20:24:10,382 - lunar_sim_main - INFO - Throttle schedule complete: total ΔV = 124.4 m/s, fuel savings = 264.2 kg
+2025-07-13 20:24:10,382 - lunar_sim_main - INFO - Powered descent complete: ΔV = 1674.4 m/s
+2025-07-13 20:24:10,382 - lunar_sim_main - INFO - Final 500m throttle schedule: ΔV = 124.4 m/s, fuel savings = 264.2 kg
+2025-07-13 20:24:10,382 - lunar_sim_main - INFO - 🎯 Analyzing touchdown sequence
+2025-07-13 20:24:10,382 - lunar_sim_main - INFO - Touchdown SUCCESS: velocity = 1.20 m/s, tilt = 2.10°
+2025-07-13 20:24:10,383 - __main__ - INFO -    Lunar mission result: Landing SUCCESS
+2025-07-13 20:24:10,383 - __main__ - INFO - 🎉 FULL MISSION SUCCESS!
+2025-07-13 20:24:10,383 - __main__ - INFO -    Total execution time: 0.8 seconds
+2025-07-13 20:24:10,383 - __main__ - INFO -    Launch to LEO: ✅
+2025-07-13 20:24:10,383 - __main__ - INFO -    LEO handoff: ✅
+2025-07-13 20:24:10,383 - __main__ - INFO -    Lunar touchdown: ✅

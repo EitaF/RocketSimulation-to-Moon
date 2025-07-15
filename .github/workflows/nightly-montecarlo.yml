@@ -1,0 +1,101 @@
+name: Nightly Monte Carlo Simulation
+
+on:
+  schedule:
+    # Run nightly at 2 AM UTC
+    - cron: '0 2 * * *'
+  workflow_dispatch:  # Allow manual triggering
+
+jobs:
+  monte-carlo:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    
+    - name: Run Monte Carlo campaign (20 runs)
+      run: |
+        python3 full_mission_driver.py --montecarlo 20
+    
+    - name: Check success rate
+      run: |
+        python3 -c "
+        import json
+        import sys
+        
+        try:
+            with open('monte_carlo_campaign_results.json', 'r') as f:
+                results = json.load(f)
+            
+            success_rate = results['success_rate']
+            target_rate = 0.95
+            
+            print(f'Success rate: {success_rate:.1%}')
+            print(f'Target rate: {target_rate:.1%}')
+            print(f'Meets target: {success_rate >= target_rate}')
+            
+            if success_rate >= target_rate:
+                print('✅ Monte Carlo success rate meets Professor v45 target (≥95%)')
+                sys.exit(0)
+            else:
+                print('❌ Monte Carlo success rate below target')
+                sys.exit(1)
+        except Exception as e:
+            print(f'Error reading results: {e}')
+            sys.exit(1)
+        "
+    
+    - name: Upload results artifact
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: monte-carlo-results
+        path: |
+          monte_carlo_campaign_results.json
+          full_mission.log
+          mission_log.csv
+    
+    - name: Create status badge
+      if: always()
+      run: |
+        python3 -c "
+        import json
+        import os
+        
+        try:
+            with open('monte_carlo_campaign_results.json', 'r') as f:
+                results = json.load(f)
+            
+            success_rate = results['success_rate']
+            meets_target = results['meets_target']
+            
+            # Create badge info
+            color = 'green' if meets_target else 'red'
+            status = 'passing' if meets_target else 'failing'
+            
+            badge_url = f'https://img.shields.io/badge/Monte%20Carlo-{success_rate:.0%}-{color}'
+            
+            # Write to GitHub environment
+            with open(os.environ['GITHUB_ENV'], 'a') as f:
+                f.write(f'BADGE_URL={badge_url}\n')
+                f.write(f'SUCCESS_RATE={success_rate:.1%}\n')
+                f.write(f'STATUS={status}\n')
+        except:
+            pass
+        "
+    
+    - name: Update README badge
+      if: always()
+      run: |
+        echo "Monte Carlo Status: ${{ env.STATUS }}"
+        echo "Success Rate: ${{ env.SUCCESS_RATE }}"

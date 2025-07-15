@@ -1,9 +1,0 @@
-{
-  "mission_phase": "Earth-to-Moon Transfer",
-  "launch_window_calculated": true,
-  "tli_time_optimal": 2688.497672704965,
-  "mcc_executed": true,
-  "moon_soi_reached": true,
-  "total_trajectory_points": 5,
-  "integration_status": "ALL MODULES INTEGRATED"
-}
